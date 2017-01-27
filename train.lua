@@ -36,6 +36,7 @@ cmd:option('-input_feed', 1, [[Feed the context vector at each time step as addi
 cmd:option('-residual', false, [[Add residual connections between RNN layers.]])
 cmd:option('-brnn', false, [[Use a bidirectional encoder]])
 cmd:option('-brnn_merge', 'sum', [[Merge action for the bidirectional hidden states: concat or sum]])
+cmd:option('-adaptive_softmax', false, [[Use Adaptive Softmax]])
 
 cmd:text("")
 cmd:text("**Optimization options**")
@@ -132,10 +133,13 @@ local function initParams(model, verbose)
   return params, gradParams
 end
 
-local function buildCriterion(vocabSize, features)
+local function buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
   local criterion = nn.ParallelCriterion(false)
 
   local function addNllCriterion(size)
+    if adaptive_softmax_cutoff then
+      return nn.AdaptiveLoss( adaptive_softmax_cutoff )
+    end
     -- Ignores padding value.
     local w = torch.ones(size)
     w[onmt.Constants.PAD] = 0
@@ -191,7 +195,8 @@ local function trainModel(model, trainData, validData, dataset, info)
 
     -- define criterion of each GPU
     _G.criterion = onmt.utils.Cuda.convert(buildCriterion(dataset.dicts.tgt.words:size(),
-                                                          dataset.dicts.tgt.features))
+                                                          dataset.dicts.tgt.features,
+                                                          model.decoder.adaptive_softmax_cutoff))
 
     -- optimize memory of the first clone
     if not opt.disable_mem_optimization then
