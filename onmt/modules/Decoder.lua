@@ -88,6 +88,11 @@ function Decoder:resetPreallocation()
 
   -- Prototype for preallocated context gradient.
   self.gradContextProto = torch.Tensor()
+
+  -- Prototype for grouped pred and output (for criterion).
+  self.groupedOutputProto = torch.Tensor()
+  self.groupedPredProto = torch.Tensor()
+
 end
 
 --[[ Build a default one time-step of the decoder
@@ -329,48 +334,99 @@ function Decoder:backward(batch, outputs, criterion)
                                                          { batch.size, batch.sourceLength, self.args.rnnSize })
 
   local loss = 0
+  local t = batch.targetLength
 
-  for t = batch.targetLength, 1, -1 do
-    -- Compute decoder output gradients.
-    -- Note: This would typically be in the forward pass.
-    _G.profiler:start("generator.fwd")
-    local pred = self.generator:forward(outputs[t])
-    _G.profiler:stop("generator.fwd")
-    local output = batch:getTargetOutput(t)
+  local K = 20
+  local nfeats
+  local groupedOutput
+  local groupedPred
+
+  while t >= 1 do
+
+    -- Build block of up to K output/pred, to run faster criterion:forward/backward operations.
+    local gi = 0
+    while gi < K and t-gi >= 1 do
+      -- Compute decoder output gradients.
+      -- Note: This would typically be in the forward pass.
+      _G.profiler:start("generator.fwd")
+      local pred = self.generator:forward(outputs[t-gi])
+      _G.profiler:stop("generator.fwd")
+      local output = batch:getTargetOutput(t-gi)
+
+      if not groupedOutput then
+        groupedOutput = {}
+        groupedPred = {}
+        nfeats = #pred
+        for fi = 1, nfeats do
+          table.insert(groupedPred, onmt.utils.Tensor.reuseTensor(self.groupedPredProto,
+                                                                       { K*batch.size, pred[fi]:size(2) }))
+          table.insert(groupedOutput, onmt.utils.Tensor.reuseTensor(self.groupedOutputProto,
+                                                                         { K*batch.size }))
+        end
+      end
+
+      for fi = 1, nfeats do
+        groupedPred[fi]:narrow(1, gi*batch.size+1, batch.size):copy(pred[fi])
+        groupedOutput[fi]:narrow(1, gi*batch.size+1, batch.size):copy(output[fi])
+      end
+
+      gi = gi + 1
+    end
+
+    -- Limit size of the block.
+    for fi = 1, nfeats do
+      groupedPred[fi] = groupedPred[fi]:narrow(1, 1, gi*batch.size)
+      groupedOutput[fi] = groupedOutput[fi]:narrow(1, 1, gi*batch.size)
+    end
 
     _G.profiler:start("criterion.fwd")
-    loss = loss + criterion:forward(pred, output)
+    loss = loss + criterion:forward(groupedPred, groupedOutput)
     _G.profiler:stop("criterion.fwd")
 
     -- Compute the criterion gradient.
     _G.profiler:start("criterion.bwd")
-    local genGradOut = criterion:backward(pred, output)
+    local groupedGenGradOut = criterion:backward(groupedPred, groupedOutput)
     _G.profiler:stop("criterion.bwd")
-    for j = 1, #genGradOut do
-      genGradOut[j]:div(batch.totalSize)
+
+    -- Gradient normalization by the batch size (with parallel threads).
+    for fi = 1, nfeats do
+      groupedGenGradOut[fi]:div(batch.totalSize)
     end
 
-    -- Compute the final layer gradient.
-    _G.profiler:start("generator.bwd")
-    local decGradOut = self.generator:backward(outputs[t], genGradOut)
-    _G.profiler:stop("generator.bwd")
-    gradStatesInput[#gradStatesInput]:add(decGradOut)
+    -- Then unroll back to normal.
+    local gj = 0
+    while gj < gi do
 
-    -- Compute the standarad backward.
-    local gradInput = self:net(t):backward(self.inputs[t], gradStatesInput)
+      -- Compute the final layer gradient.
+      local genGradOut = {}
+      for fi = 1, nfeats do
+        genGradOut[fi] = groupedGenGradOut[fi]:narrow(1, gj*batch.size+1, batch.size)
+      end
 
-    -- Accumulate encoder output gradients.
-    gradContextInput:add(gradInput[self.args.inputIndex.context])
-    gradStatesInput[#gradStatesInput]:zero()
+      _G.profiler:start("generator.bwd")
+      local decGradOut = self.generator:backward(outputs[t], genGradOut)
+      _G.profiler:stop("generator.bwd")
+      gradStatesInput[#gradStatesInput]:add(decGradOut)
 
-    -- Accumulate previous output gradients with input feeding gradients.
-    if self.args.inputFeed and t > 1 then
-      gradStatesInput[#gradStatesInput]:add(gradInput[self.args.inputIndex.inputFeed])
-    end
+      -- Compute the standard backward.
+      local gradInput = self:net(t):backward(self.inputs[t], gradStatesInput)
 
-    -- Prepare next decoder output gradients.
-    for i = 1, #self.statesProto do
-      gradStatesInput[i]:copy(gradInput[i])
+      -- Accumulate encoder output gradients.
+      gradContextInput:add(gradInput[self.args.inputIndex.context])
+      gradStatesInput[#gradStatesInput]:zero()
+
+      -- Accumulate previous output gradients with input feeding gradients.
+      if self.args.inputFeed and t > 1 then
+        gradStatesInput[#gradStatesInput]:add(gradInput[self.args.inputIndex.inputFeed])
+      end
+
+      -- Prepare next decoder output gradients.
+      for i = 1, #self.statesProto do
+        gradStatesInput[i]:copy(gradInput[i])
+      end
+
+      gj = gj + 1
+      t = t - 1
     end
   end
 
