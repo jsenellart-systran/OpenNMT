@@ -1,8 +1,8 @@
 --[[ If available Integrate Adaptive Module
 ]]
 
-local ret1, _ = pcall(require, 'onmt.modules.adaptive-softmax.utils.AdaptiveSoftMax')
-local ret2, _ = pcall(require, 'onmt.modules.adaptive-softmax.utils.AdaptiveLoss')
+local ret1, _ = pcall(require, 'onmt.modules.adaptive-softmax.AdaptiveSoftMax')
+local ret2, _ = pcall(require, 'onmt.modules.adaptive-softmax.AdaptiveLoss')
 
 if ret1 and ret2 then
   -- modules are available - inherit from them
