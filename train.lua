@@ -36,7 +36,7 @@ cmd:option('-input_feed', 1, [[Feed the context vector at each time step as addi
 cmd:option('-residual', false, [[Add residual connections between RNN layers.]])
 cmd:option('-brnn', false, [[Use a bidirectional encoder]])
 cmd:option('-brnn_merge', 'sum', [[Merge action for the bidirectional hidden states: concat or sum]])
-cmd:option('-adaptive_softmax', false, [[Use Adaptive Softmax]])
+cmd:option('-adaptive_softmax', '', [[Use Adaptive Softmax]])
 
 cmd:text("")
 cmd:text("**Optimization options**")
@@ -134,12 +134,13 @@ local function initParams(model, verbose)
 end
 
 local function buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
+  if adaptive_softmax_cutoff then
+    local criterion = nn.AdaptiveLoss( adaptive_softmax_cutoff )
+    return criterion
+  end
   local criterion = nn.ParallelCriterion(false)
 
   local function addNllCriterion(size)
-    if adaptive_softmax_cutoff then
-      return nn.AdaptiveLoss( adaptive_softmax_cutoff )
-    end
     -- Ignores padding value.
     local w = torch.ones(size)
     w[onmt.Constants.PAD] = 0
@@ -194,9 +195,10 @@ local function trainModel(model, trainData, validData, dataset, info)
     end
 
     -- define criterion of each GPU
-    _G.criterion = onmt.utils.Cuda.convert(buildCriterion(dataset.dicts.tgt.words:size(),
+    local criterion = buildCriterion(dataset.dicts.tgt.words:size(),
                                                           dataset.dicts.tgt.features,
-                                                          model.decoder.adaptive_softmax_cutoff))
+                                                          model.decoder.adaptive_softmax_cutoff)
+    _G.criterion = onmt.utils.Cuda.convert(criterion)
 
     -- optimize memory of the first clone
     if not opt.disable_mem_optimization then
@@ -459,6 +461,11 @@ local function main()
   onmt.utils.Cuda.init(opt)
   onmt.utils.Parallel.init(opt)
 
+  if opt.adaptive_softmax then
+    require('onmt.modules.adaptive-softmax.utils.AdaptiveLoss')
+    require('onmt.modules.adaptive-softmax.utils.AdaptiveSoftMax')
+  end
+
   local checkpoint = {}
 
   if opt.train_from:len() > 0 then
@@ -554,7 +561,7 @@ local function main()
     else
       local verbose = idx == 1 and not opt.json_log
       _G.model.encoder = onmt.Models.buildEncoder(opt, dataset.dicts.src)
-      _G.model.decoder = onmt.Models.buildDecoder(opt, dataset.dicts.tgt, verbose)
+      _G.model.decoder = onmt.Models.buildDecoder(opt, dataset.dicts.tgt, verbose, opt.adaptive_softmax)
     end
 
     for _, mod in pairs(_G.model) do

@@ -71,7 +71,7 @@ local function buildEncoder(opt, dicts)
   end
 end
 
-local function buildDecoder(opt, dicts, verbose)
+local function buildDecoder(opt, dicts, verbose, adaptive_softmax)
   local inputNetwork, inputSize = buildInputNetwork(opt, dicts, opt.pre_word_vecs_dec, opt.fix_word_vecs_dec)
 
   local RNN = onmt.LSTM
@@ -83,14 +83,17 @@ local function buildDecoder(opt, dicts, verbose)
 
   local adaptive_softmax_cutoff
   if adaptive_softmax then
-    adaptive_softmax_cutoff = loadstring(" return "..opt.adaptive_softmax)
+    adaptive_softmax_cutoff = loadstring(" return "..opt.adaptive_softmax)()
     table.insert(adaptive_softmax_cutoff, dicts.words:size())
+    if verbose then
+      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(adaptive_softmax_cutoff,',').."}")
+    end
   end
 
   if #dicts.features > 0 then
     generator = onmt.FeaturesGenerator.new(opt.rnn_size, dicts.words:size(), dicts.features)
   else
-    generator = onmt.Generator.new(opt.rnn_size, dicts.words:size(), opt.adaptive_softmax_cutoff)
+    generator = onmt.Generator.new(opt.rnn_size, dicts.words:size(), adaptive_softmax_cutoff)
   end
 
   if opt.input_feed == 1 then
@@ -103,6 +106,7 @@ local function buildDecoder(opt, dicts, verbose)
   local rnn = RNN.new(opt.layers, inputSize, opt.rnn_size, opt.dropout, opt.residual)
 
   local decoder = onmt.Decoder.new(inputNetwork, rnn, generator, opt.input_feed == 1)
+  decoder.generator = generator
   decoder.adaptive_softmax_cutoff = adaptive_softmax_cutoff
   return decoder
 end
