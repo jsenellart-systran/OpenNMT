@@ -43,6 +43,8 @@ cmd:option('-residual', false, [[Add residual connections between RNN layers.]])
 cmd:option('-brnn', false, [[Use a bidirectional encoder]])
 cmd:option('-brnn_merge', 'sum', [[Merge action for the bidirectional hidden states: concat or sum]])
 
+onmt.AdaptiveSoftMax.declareOpts(cmd)
+
 cmd:text("")
 cmd:text("**Optimization options**")
 cmd:text("")
