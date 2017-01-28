@@ -82,7 +82,7 @@ local function buildDecoder(opt, dicts, verbose, adaptive_softmax)
   local generator
 
   local adaptive_softmax_cutoff
-  if adaptive_softmax then
+  if adaptive_softmax ~= '' then
     adaptive_softmax_cutoff = loadstring(" return "..opt.adaptive_softmax)()
     table.insert(adaptive_softmax_cutoff, dicts.words:size())
     if verbose then

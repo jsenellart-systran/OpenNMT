@@ -26,6 +26,10 @@ function Translator:__init(args)
   onmt.utils.Cuda.init(self.opt)
 
   _G.logger:info('Loading \'' .. self.opt.model .. '\'...')
+
+  require('onmt.modules.adaptive-softmax.utils.AdaptiveLoss')
+  require('onmt.modules.adaptive-softmax.utils.AdaptiveSoftMax')
+
   self.checkpoint = torch.load(self.opt.model)
 
   self.models = {}
@@ -212,7 +216,13 @@ function Translator:translateBatch(batch)
 
     decOut, decStates = self.models.decoder:forwardOne(inputs, decStates, context, decOut)
 
-    local out = self.models.decoder.generator:forward(decOut)
+    local out
+    if self.models.decoder.generator.adaptive_softmax then
+      out = self.models.decoder.generator.adaptive_softmax:getLogProb(decOut)
+      print(out)
+    else
+      out = self.models.decoder.generator:forward(decOut)
+    end
 
     for j = 1, #out do
       out[j] = out[j]:view(self.opt.beam_size, remainingSents, out[j]:size(2)):transpose(1, 2):contiguous()
