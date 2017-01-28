@@ -36,7 +36,8 @@ cmd:option('-input_feed', 1, [[Feed the context vector at each time step as addi
 cmd:option('-residual', false, [[Add residual connections between RNN layers.]])
 cmd:option('-brnn', false, [[Use a bidirectional encoder]])
 cmd:option('-brnn_merge', 'sum', [[Merge action for the bidirectional hidden states: concat or sum]])
-cmd:option('-adaptive_softmax', '', [[Use Adaptive Softmax]])
+
+onmt.AdaptiveSoftMax.declareOpts(cmd)
 
 cmd:text("")
 cmd:text("**Optimization options**")
@@ -460,11 +461,6 @@ local function main()
 
   onmt.utils.Cuda.init(opt)
   onmt.utils.Parallel.init(opt)
-
-  if opt.adaptive_softmax then
-    require('onmt.modules.adaptive-softmax.utils.AdaptiveLoss')
-    require('onmt.modules.adaptive-softmax.utils.AdaptiveSoftMax')
-  end
 
   local checkpoint = {}
 

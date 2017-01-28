@@ -27,9 +27,6 @@ function Translator:__init(args)
 
   _G.logger:info('Loading \'' .. self.opt.model .. '\'...')
 
-  require('onmt.modules.adaptive-softmax.utils.AdaptiveLoss')
-  require('onmt.modules.adaptive-softmax.utils.AdaptiveSoftMax')
-
   self.checkpoint = torch.load(self.opt.model)
 
   self.models = {}
