@@ -24,7 +24,19 @@ local function reorder(tab, index, cdata)
   return newTab
 end
 
+--[[ Recursively div table of tensor by constant ]]
+local function div(tab, c)
+  for j = 1, #tab do
+    if type(tab[j]) == 'table' then
+      div(tab[j], c)
+    else
+      tab[j]:div(c)
+    end
+  end
+end
+
 return {
   reorder = reorder,
-  append = append
+  append = append,
+  div = div
 }

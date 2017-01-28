@@ -134,11 +134,11 @@ local function initParams(model, verbose)
 end
 
 local function buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
+  local criterion = nn.ParallelCriterion(false)
   if adaptive_softmax_cutoff then
-    local criterion = nn.AdaptiveLoss( adaptive_softmax_cutoff )
+    criterion:add(nn.AdaptiveLoss( adaptive_softmax_cutoff ))
     return criterion
   end
-  local criterion = nn.ParallelCriterion(false)
 
   local function addNllCriterion(size)
     -- Ignores padding value.
