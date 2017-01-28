@@ -218,8 +218,7 @@ function Translator:translateBatch(batch)
 
     local out
     if self.models.decoder.generator.adaptive_softmax then
-      out = self.models.decoder.generator.adaptive_softmax:getLogProb(decOut)
-      print(out)
+      out = { self.models.decoder.generator.adaptive_softmax:getLogProb(decOut) }
     else
       out = self.models.decoder.generator:forward(decOut)
     end
