@@ -134,6 +134,34 @@ local function initParams(model, verbose)
   return params, gradParams
 end
 
+local function buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
+  local criterion = nn.ParallelCriterion(false)
+  if adaptive_softmax_cutoff then
+    criterion:add(nn.AdaptiveLoss( adaptive_softmax_cutoff ))
+    return criterion
+  end
+
+  local function addNllCriterion(size)
+    -- Ignores padding value.
+    local w = torch.ones(size)
+    w[onmt.Constants.PAD] = 0
+
+    local nll = nn.ClassNLLCriterion(w)
+
+    -- Let the training code manage loss normalization.
+    nll.sizeAverage = false
+    criterion:add(nll)
+  end
+
+  addNllCriterion(vocabSize)
+
+  for j = 1, #features do
+    addNllCriterion(features[j]:size())
+  end
+
+  return criterion
+end
+
 local function eval(model, criterion, data)
   local loss = 0
   local total = 0
@@ -168,9 +196,9 @@ local function trainModel(model, trainData, validData, dataset, info)
     end
 
     -- define criterion of each GPU
-    local criterion = onmt.Criterion.new(dataset.dicts.tgt.words:size(),
-                                         dataset.dicts.tgt.features,
-                                         model.decoder.adaptive_softmax_cutoff)
+    local criterion = buildCriterion(dataset.dicts.tgt.words:size(),
+                                                          dataset.dicts.tgt.features,
+                                                          model.decoder.adaptive_softmax_cutoff)
     _G.criterion = onmt.utils.Cuda.convert(criterion)
 
     -- optimize memory of the first clone
