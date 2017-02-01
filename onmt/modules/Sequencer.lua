@@ -9,6 +9,14 @@ require('nngraph')
 --]]
 local Sequencer, parent = torch.class('onmt.Sequencer', 'nn.Container')
 
+local function _indexVars(net)
+  net:apply(function(module)
+    if module.name == 'decoderAttn' then
+      net.fixedAttn = module
+    end
+  end)
+end
+
 --[[
 Parameters:
 
@@ -18,6 +26,7 @@ function Sequencer:__init(network)
   parent.__init(self)
 
   self.network = network
+  _indexVars(self.network)
   self:add(self.network)
 
   self.networkClones = {}
@@ -85,6 +94,7 @@ function Sequencer:net(t)
     -- outputs for each timestep and to allow backpropagation through time.
     if self.networkClones[t] == nil then
       local clone = self:_sharedClone()
+      _indexVars(clone)
       clone:training()
       self.networkClones[t] = clone
     end

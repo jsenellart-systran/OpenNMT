@@ -43,6 +43,7 @@ function Decoder:__init(inputNetwork, rnn, generator, inputFeed)
   self.args.inputFeed = inputFeed
 
   parent.__init(self, self:_buildModel())
+  self.fixedAttn = self.network.fixedAttn
 
   -- The generator use the output of the decoder sequencer to generate the
   -- likelihoods over the target vocabulary.
@@ -145,7 +146,8 @@ function Decoder:_buildModel()
   outputs = { outputs:split(self.args.numEffectiveLayers) }
 
   -- Compute the attention here using h^L as query.
-  local attnLayer = onmt.GlobalAttention(self.args.rnnSize)
+  -- TODO: select Fixed vs. Global Attention based on option
+  local attnLayer = onmt.FixedAttention(self.args.rnnSize)
   attnLayer.name = 'decoderAttn'
   local attnOutput = attnLayer({outputs[#outputs], context})
   if self.rnn.dropout > 0 then
@@ -185,9 +187,8 @@ function Decoder:maskPadding(sourceSizes, sourceLength, beamSize)
       mod:type(module._type)
       self.softmaxAttn = mod
       return mod
-    else
-      return module
     end
+    return module
   end)
 end
 
@@ -232,6 +233,12 @@ function Decoder:forwardOne(input, prevStates, context, prevOut, t)
   -- Remember inputs for the backward pass.
   if self.train then
     self.inputs[t] = inputs
+  end
+
+  if self.fixedAttn then
+    print('FIXEDATTN')
+    self:net(t).fixedAttn.fixedAttnTensor:resize(context:size(1),context:size(2)):zero()
+    self:net(t).fixedAttn.fixedAttnTensor:select(2,t):fill(1)
   end
 
   local outputs = self:net(t):forward(inputs)
