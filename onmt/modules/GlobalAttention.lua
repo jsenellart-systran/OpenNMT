@@ -36,17 +36,12 @@ function GlobalAttention:_buildModel(dim)
   local inputs = {}
   table.insert(inputs, nn.Identity()())
   table.insert(inputs, nn.Identity()())
+  table.insert(inputs, nn.Identity()())
 
-  local targetT = nn.Linear(dim, dim, false)(inputs[1]) -- batchL x dim
   local context = inputs[2] -- batchL x sourceTimesteps x dim
+  local fixedAttn = inputs[3] -- batchL x sourceL
 
-  -- Get attention.
-  local attn = nn.MM()({context, nn.Replicate(1,3)(targetT)}) -- batchL x sourceL x 1
-  attn = nn.Sum(3)(attn)
-  local softmaxAttn = nn.SoftMax()
-  softmaxAttn.name = 'softmaxAttn'
-  attn = softmaxAttn(attn)
-  attn = nn.Replicate(1,2)(attn) -- batchL x 1 x sourceL
+  local attn = nn.Replicate(1,2)(fixedAttn) -- batchL x 1 x sourceL
 
   -- Apply attention to context.
   local contextCombined = nn.MM()({attn, context}) -- batchL x 1 x dim

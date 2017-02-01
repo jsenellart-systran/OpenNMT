@@ -88,6 +88,10 @@ function Decoder:resetPreallocation()
 
   -- Prototype for preallocated context gradient.
   self.gradContextProto = torch.Tensor()
+
+  -- Prototype for fixedAttn.
+  self.fixedAttnProto = torch.Tensor()
+
 end
 
 --[[ Build a default one time-step of the decoder
@@ -129,6 +133,9 @@ function Decoder:_buildModel()
     self.args.inputIndex.inputFeed = #inputs
   end
 
+  local fixedAttn = nn.Identity()()
+  table.insert(inputs, fixedAttn)
+
   -- Compute the input network.
   local input = self.inputNet(x)
 
@@ -147,7 +154,7 @@ function Decoder:_buildModel()
   -- Compute the attention here using h^L as query.
   local attnLayer = onmt.GlobalAttention(self.args.rnnSize)
   attnLayer.name = 'decoderAttn'
-  local attnOutput = attnLayer({outputs[#outputs], context})
+  local attnOutput = attnLayer({outputs[#outputs], context, fixedAttn})
   if self.rnn.dropout > 0 then
     attnOutput = nn.Dropout(self.rnn.dropout)(attnOutput)
   end
@@ -228,6 +235,15 @@ function Decoder:forwardOne(input, prevStates, context, prevOut, t)
       table.insert(inputs, prevOut)
     end
   end
+
+  local fixedAttn = onmt.utils.Tensor.reuseTensor(self.fixedAttnProto,
+                                                         { context:size(1), context:size(2) })
+  fixedAttn:zero()
+  if t <= context:size(2) then
+    -- set 1 to the source word at position t in hand-build attn vector
+    fixedAttn:select(2,t):fill(1)
+  end
+  table.insert(inputs, fixedAttn)
 
   -- Remember inputs for the backward pass.
   if self.train then
