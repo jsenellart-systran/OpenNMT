@@ -12,6 +12,8 @@ require('onmt.modules.GRU')
 require('onmt.modules.LSTM')
 
 require('onmt.modules.MaskedSoftmax')
+require('onmt.modules.AdaptiveSoftMax')
+
 require('onmt.modules.WordEmbedding')
 require('onmt.modules.FeaturesEmbedding')
 require('onmt.modules.GlobalAttention')

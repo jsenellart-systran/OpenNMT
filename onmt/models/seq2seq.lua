@@ -40,11 +40,13 @@ local seq2seq_options = {
 
 function seq2seq.declareOpts(cmd)
   cmd:setCmdLineOptions(seq2seq_options, "Sequence to Sequence Attention")
+  onmt.AdaptiveSoftMax.declareOpts(cmd)
 end
 
 function seq2seq:__init(args, dicts, verbose)
   parent.__init(self, args)
   onmt.utils.Table.merge(self.args, onmt.ExtendedCmdLine.getModuleOpts(args, seq2seq_options))
+  self.args.adaptive_softmax = args.adaptive_softmax
 
   self.models.encoder = onmt.Factory.buildWordEncoder(args, dicts.src, verbose)
   self.models.decoder = onmt.Factory.buildWordDecoder(args, dicts.tgt, verbose)
@@ -96,7 +98,8 @@ end
 
 function seq2seq:buildCriterion(dataset)
   return onmt.Criterion.new(dataset.dicts.tgt.words:size(),
-                            dataset.dicts.tgt.features)
+                            dataset.dicts.tgt.features,
+                            self.args.adaptive_softmax_cutoff)
 end
 
 function seq2seq:countTokens(batch)

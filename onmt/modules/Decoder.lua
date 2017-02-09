@@ -333,10 +333,13 @@ function Decoder:backward(batch, outputs, criterion)
   for t = batch.targetLength, 1, -1 do
     -- Compute decoder output gradients.
     -- Note: This would typically be in the forward pass.
+    local output = batch:getTargetOutput(t)
+    if self.adaptive_softmax_cutoff then
+      self.generator.adaptive_softmax:setTarget(output[1])
+    end
     _G.profiler:start("generator.fwd")
     local pred = self.generator:forward(outputs[t])
     _G.profiler:stop("generator.fwd")
-    local output = batch:getTargetOutput(t)
 
     _G.profiler:start("criterion.fwd")
     loss = loss + criterion:forward(pred, output)
@@ -346,9 +349,8 @@ function Decoder:backward(batch, outputs, criterion)
     _G.profiler:start("criterion.bwd")
     local genGradOut = criterion:backward(pred, output)
     _G.profiler:stop("criterion.bwd")
-    for j = 1, #genGradOut do
-      genGradOut[j]:div(batch.totalSize)
-    end
+
+    onmt.utils.Table.div(genGradOut, batch.totalSize)
 
     -- Compute the final layer gradient.
     _G.profiler:start("generator.bwd")
@@ -395,8 +397,11 @@ function Decoder:computeLoss(batch, encoderStates, context, criterion)
 
   local loss = 0
   self:forwardAndApply(batch, encoderStates, context, function (out, t)
-    local pred = self.generator:forward(out)
     local output = batch:getTargetOutput(t)
+    if self.adaptive_softmax_cutoff then
+      self.generator.adaptive_softmax:setTarget(output[1])
+    end
+    local pred = self.generator:forward(out)
     loss = loss + criterion:forward(pred, output)
   end)
 

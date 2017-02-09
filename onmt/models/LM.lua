@@ -27,11 +27,13 @@ local LM_options = {
 
 function LM.declareOpts(cmd)
   cmd:setCmdLineOptions(LM_options, "Language Model")
+  onmt.AdaptiveSoftMax.declareOpts(cmd)
 end
 
 function LM:__init(args, dicts)
   parent.__init(self, args)
   onmt.utils.Table.merge(self.args, onmt.ExtendedCmdLine.getModuleOpts(args, LM_options))
+  self.args.adaptive_softmax = args.adaptive_softmax
 
   -- encoder word_vec_size is in src_word_vec_size
   self.args.src_word_vec_size = args.word_vec_size
@@ -39,12 +41,21 @@ function LM:__init(args, dicts)
 
   self.models.encoder = onmt.Factory.buildWordEncoder(self.args, dicts.src)
 
+  local adaptive_softmax_cutoff
+  if self.args.adaptive_softmax and self.args.adaptive_softmax ~= '' then
+    self.adaptive_softmax_cutoff = loadstring(" return "..self.args.adaptive_softmax)()
+    table.insert(self.adaptive_softmax_cutoff, dicts.src.words:size())
+    if verbose then
+      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(self.adaptive_softmax_cutoff,',').."}")
+    end
+  end
+
   if #dicts.src.features > 0 then
     self.models.generator = onmt.FeaturesGenerator.new(self.args.rnn_size,
                                                        dicts.src.words:size(),
                                                        dicts.src.features)
   else
-    self.models.generator = onmt.Generator.new(self.args.rnn_size, dicts.src.words:size())
+    self.models.generator = onmt.Generator.new(self.args.rnn_size, dicts.src.words:size(), self.adaptive_softmax_cutoff)
   end
 
   self.EOS_vector_model = torch.LongTensor(args.max_batch_size):fill(onmt.Constants.EOS)
@@ -83,7 +94,6 @@ function LM:forwardComputeLoss(batch, criterion)
   onmt.utils.Cuda.convert(EOS_vector)
   local loss = 0
   for t = 1, batch.sourceLength do
-    local genOutputs = self.models.generator:forward(context:select(2, t))
     -- LM is supposed to predict the following word.
     local output
     if t ~= batch.sourceLength then
@@ -91,6 +101,12 @@ function LM:forwardComputeLoss(batch, criterion)
     else
       output = EOS_vector
     end
+    if self.adaptive_softmax_cutoff then
+      self.models.generator.adaptive_softmax:setTarget(output)
+    end
+
+    local genOutputs = self.models.generator:forward(context:select(2, t))
+
     -- Same format with and without features.
     if torch.type(output) ~= 'table' then output = { output } end
     loss = loss + criterion:forward(genOutputs, output)
@@ -100,7 +116,8 @@ end
 
 function LM:buildCriterion(dataset)
   return onmt.Criterion.new(dataset.dicts.src.words:size(),
-                            dataset.dicts.src.features)
+                            dataset.dicts.src.features,
+                            self.adaptive_softmax_cutoff)
 end
 
 function LM:countTokens(batch)
@@ -118,10 +135,6 @@ function LM:trainNetwork(batch, criterion, doProfile)
   gradContexts = onmt.utils.Cuda.convert(gradContexts)
   -- for each word of the sentence, generate target
   for t = 1, batch.sourceLength do
-    if doProfile then _G.profiler:start("generator.fwd") end
-    local genOutputs = self.models.generator:forward(context:select(2,t))
-    if doProfile then _G.profiler:stop("generator.fwd") end
-
     -- LM is supposed to predict following word
     local output
     if t ~= batch.sourceLength then
@@ -129,6 +142,14 @@ function LM:trainNetwork(batch, criterion, doProfile)
     else
       output = self.EOS_vector_model:narrow(1, 1, batch.size)
     end
+    if self.adaptive_softmax_cutoff then
+      self.models.generator.adaptive_softmax:setTarget(output)
+    end
+
+    if doProfile then _G.profiler:start("generator.fwd") end
+    local genOutputs = self.models.generator:forward(context:select(2,t))
+    if doProfile then _G.profiler:stop("generator.fwd") end
+
     -- same format with and without features
     if torch.type(output) ~= 'table' then output = { output } end
 
@@ -140,9 +161,8 @@ function LM:trainNetwork(batch, criterion, doProfile)
     if doProfile then _G.profiler:start("criterion.bwd") end
     local genGradOutput = criterion:backward(genOutputs, output)
     if doProfile then _G.profiler:stop("criterion.bwd") end
-    for j = 1, #genGradOutput do
-      genGradOutput[j]:div(batch.totalSize)
-    end
+
+    onmt.utils.Table.div(genGradOutput, batch.totalSize)
 
     if doProfile then _G.profiler:start("generator.bwd") end
     gradContexts[{{}, t}]:copy(self.models.generator:backward(context:select(2, t), genGradOutput))

@@ -39,10 +39,21 @@ local function hasValue(tab, value)
   return false
 end
 
+--[[ Recursively div table of tensor by constant ]]
+local function div(tab, c)
+  for j = 1, #tab do
+    if type(tab[j]) == 'table' then
+      div(tab[j], c)
+    else
+      tab[j]:div(c)
+    end
+  end
+end
 
 return {
   reorder = reorder,
   append = append,
   merge = merge,
-  hasValue = hasValue
+  hasValue = hasValue,
+  div = div
 }

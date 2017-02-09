@@ -5,14 +5,20 @@ Simply implements $$softmax(W h + b)$$.
 local Generator, parent = torch.class('onmt.Generator', 'onmt.Network')
 
 
-function Generator:__init(rnnSize, outputSize)
-  parent.__init(self, self:_buildGenerator(rnnSize, outputSize))
+function Generator:__init(rnnSize, outputSize, adaptive_softmax_cutoff)
+  parent.__init(self, self:_buildGenerator(rnnSize, outputSize, adaptive_softmax_cutoff))
 end
 
-function Generator:_buildGenerator(rnnSize, outputSize)
-  return nn.Sequential()
-    :add(nn.Linear(rnnSize, outputSize))
-    :add(nn:LogSoftMax())
+function Generator:_buildGenerator(rnnSize, outputSize, adaptive_softmax_cutoff)
+  if not adaptive_softmax_cutoff then
+    local genModel = nn.Sequential()
+    genModel:add(nn.Linear(rnnSize, outputSize))
+    genModel:add(nn.LogSoftMax())
+    return genModel
+  else
+    self.adaptive_softmax = nn.AdaptiveSoftMax(rnnSize, adaptive_softmax_cutoff)
+    return self.adaptive_softmax
+  end
 end
 
 function Generator:updateOutput(input)

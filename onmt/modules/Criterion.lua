@@ -4,12 +4,17 @@
 local Criterion, parent = torch.class('onmt.Criterion', 'nn.ParallelCriterion')
 
 
-function Criterion:__init(vocabSize, features)
+function Criterion:__init(vocabSize, features, adaptive_softmax_cutoff)
   parent.__init(self, false)
-  self:_buildCriterion(vocabSize, features)
+  self:_buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
 end
 
-function Criterion:_buildCriterion(vocabSize, features)
+function Criterion:_buildCriterion(vocabSize, features, adaptive_softmax_cutoff)
+  if adaptive_softmax_cutoff then
+    self:add(nn.AdaptiveLoss( adaptive_softmax_cutoff ))
+    return criterion
+  end
+
   local function addNllCriterion(size)
     -- Ignores padding value.
     local w = torch.ones(size)
