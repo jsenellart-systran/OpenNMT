@@ -45,9 +45,7 @@ function LM:__init(args, dicts)
   if self.args.adaptive_softmax and self.args.adaptive_softmax ~= '' then
     self.adaptive_softmax_cutoff = loadstring(" return "..self.args.adaptive_softmax)()
     table.insert(self.adaptive_softmax_cutoff, dicts.src.words:size())
-    if verbose then
-      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(self.adaptive_softmax_cutoff,',').."}")
-    end
+    _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(self.adaptive_softmax_cutoff,',').."}")
   end
 
   if #dicts.src.features > 0 then
