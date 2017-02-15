@@ -34,6 +34,7 @@ function LM:__init(args, dicts)
   parent.__init(self, args)
   onmt.utils.Table.merge(self.args, onmt.ExtendedCmdLine.getModuleOpts(args, LM_options))
   self.args.adaptive_softmax = args.adaptive_softmax
+  self.args.adaptive_softmax_capacity_reduction = args.adaptive_softmax_capacity_reduction
 
   -- encoder word_vec_size is in src_word_vec_size
   self.args.src_word_vec_size = args.word_vec_size
@@ -45,7 +46,8 @@ function LM:__init(args, dicts)
   if self.args.adaptive_softmax and self.args.adaptive_softmax ~= '' then
     self.adaptive_softmax_cutoff = loadstring(" return "..self.args.adaptive_softmax)()
     table.insert(self.adaptive_softmax_cutoff, dicts.src.words:size())
-    _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(self.adaptive_softmax_cutoff,',').."}")
+    _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(self.adaptive_softmax_cutoff,',').."}"..
+                     ", capacity reduction: "..args.adaptive_softmax_capacity_reduction)
   end
 
   if #dicts.src.features > 0 then
@@ -53,7 +55,8 @@ function LM:__init(args, dicts)
                                                        dicts.src.words:size(),
                                                        dicts.src.features)
   else
-    self.models.generator = onmt.Generator.new(self.args.rnn_size, dicts.src.words:size(), self.adaptive_softmax_cutoff)
+    self.models.generator = onmt.Generator.new(self.args.rnn_size, dicts.src.words:size(),
+                                               self.adaptive_softmax_cutoff, self.args.adaptive_softmax_capacity_reduction)
   end
 
   self.EOS_vector_model = torch.LongTensor(args.max_batch_size):fill(onmt.Constants.EOS)

@@ -212,14 +212,15 @@ function Factory.buildWordDecoder(opt, dicts, verbose)
     adaptive_softmax_cutoff = loadstring(" return "..opt.adaptive_softmax)()
     table.insert(adaptive_softmax_cutoff, dicts.words:size())
     if verbose then
-      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(adaptive_softmax_cutoff,',').."}")
+      _G.logger:info(" * using adaptive_softmax_cutoff: {"..table.concat(adaptive_softmax_cutoff,',').."}"..
+                     ", capacity reduction: "..opt.adaptive_softmax_capacity_reduction)
     end
   end
 
   if #dicts.features > 0 then
     generator = onmt.FeaturesGenerator.new(opt.rnn_size, dicts.words:size(), dicts.features)
   else
-    generator = onmt.Generator.new(opt.rnn_size, dicts.words:size(), adaptive_softmax_cutoff)
+    generator = onmt.Generator.new(opt.rnn_size, dicts.words:size(), adaptive_softmax_cutoff, opt.adaptive_softmax_capacity_reduction)
   end
 
   return onmt.Factory.buildDecoder(opt, inputNetwork, generator, verbose)

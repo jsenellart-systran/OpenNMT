@@ -12,6 +12,8 @@ if ret1 and ret2 then
   function AdaptiveSoftMax.declareOpts(cmd)
     cmd:option('-adaptive_softmax', '', [[Use Adaptive SoftMax - need to be given a vocabulary frequence partition like {2000,1000}.
       If value is {} - works a NCE.]])
+    cmd:option('-adaptive_softmax_capacity_reduction', 4, [[Capacity reduction of cluster capacity.]],
+                    {valid=onmt.ExtendedCmdLine.floatRange(1)})
   end
 
 else
