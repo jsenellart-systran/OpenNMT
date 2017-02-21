@@ -210,7 +210,7 @@ function Translator:translateBatch(batch)
       self.models.decoder:maskPadding(sourceSizes, batch.sourceLength, self.opt.beam_size)
     end
 
-    decOut, decStates = self.models.decoder:forwardOne(inputs, decStates, context, decOut)
+    decOut, decStates = self.models.decoder:forwardOne(inputs, decStates, context, decOut, t)
 
     local out = self.models.decoder.generator:forward(decOut)
 
