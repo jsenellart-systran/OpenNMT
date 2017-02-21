@@ -40,6 +40,7 @@ function GlobalAttention:_buildModel(dim)
 
   local context = inputs[2] -- batchL x sourceTimesteps x dim
   local fixedAttn = inputs[3] -- batchL x sourceL
+  fixedAttn.name = 'softmaxAttn'
 
   local attn = nn.Replicate(1,2)(fixedAttn) -- batchL x 1 x sourceL
 
