@@ -192,6 +192,9 @@ function Decoder:maskPadding(sourceSizes, sourceLength, beamSize)
       mod:type(module._type)
       self.softmaxAttn = mod
       return mod
+    elseif module.name == 'fixedAttn' then
+      self.fixedAttn = module
+      return module
     else
       return module
     end

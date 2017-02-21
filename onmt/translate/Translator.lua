@@ -210,7 +210,7 @@ function Translator:translateBatch(batch)
       self.models.decoder:maskPadding(sourceSizes, batch.sourceLength, self.opt.beam_size)
     end
 
-    decOut, decStates = self.models.decoder:forwardOne(inputs, decStates, context, decOut, t)
+    decOut, decStates = self.models.decoder:forwardOne(inputs, decStates, context, decOut, i-1)
 
     local out = self.models.decoder.generator:forward(decOut)
 
@@ -219,7 +219,7 @@ function Translator:translateBatch(batch)
     end
     local wordLk = out[1]
 
-    local softmaxOut = self.models.decoder.softmaxAttn.output:view(self.opt.beam_size, remainingSents, -1)
+    local attnOut = self.models.decoder.fixedAttn.output:view(self.opt.beam_size, remainingSents, -1)
     local newRemainingSents = remainingSents
 
     for b = 1, batch.size do
@@ -231,7 +231,7 @@ function Translator:translateBatch(batch)
           table.insert(featsLk, out[j + 1][idx])
         end
 
-        if beam[b]:advance(wordLk[idx], featsLk, softmaxOut[{{}, idx}]) then
+        if beam[b]:advance(wordLk[idx], featsLk, attnOut[{{}, idx}]) then
           newRemainingSents = newRemainingSents - 1
           batchIdx[b] = 0
         end

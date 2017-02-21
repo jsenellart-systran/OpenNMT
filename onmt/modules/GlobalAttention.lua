@@ -36,11 +36,12 @@ function GlobalAttention:_buildModel(dim)
   local inputs = {}
   table.insert(inputs, nn.Identity()())
   table.insert(inputs, nn.Identity()())
-  table.insert(inputs, nn.Identity()())
+  local attn = nn.Identity()
+  attn.name = 'fixedAttn'
+  table.insert(inputs, attn())
 
   local context = inputs[2] -- batchL x sourceTimesteps x dim
   local fixedAttn = inputs[3] -- batchL x sourceL
-  fixedAttn.name = 'softmaxAttn'
 
   local attn = nn.Replicate(1,2)(fixedAttn) -- batchL x 1 x sourceL
 
