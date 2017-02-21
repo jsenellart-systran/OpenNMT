@@ -55,6 +55,18 @@ Parameters:
 Returns: a view on zero-tensor `t`.
 
 --]]
+--[[
+Reuse Tensor storage and avoid new allocation unless any dimension
+has a larger size.
+
+Parameters:
+
+  * `t` - the tensor to be reused
+  * `sizes` - a table or tensor of new sizes
+
+Returns: a view on zero-tensor `t`.
+
+--]]
 local function reuseTensor(t, sizes)
   assert(t ~= nil, 'tensor must not be nil for it to be reused')
 
@@ -62,35 +74,7 @@ local function reuseTensor(t, sizes)
     sizes = torch.LongStorage(sizes)
   end
 
-  -- Tensor was uninitialized, just resize it.
-  if t:dim() == 0 then
-    return t:resize(sizes):zero()
-  end
-
-  assert(#sizes == t:dim(), 'reused tensor must have the same number of dimensions')
-
-  -- Otherwise, prepare new tensor sizes.
-  local newSizes = t:size()
-
-  for d = 1, t:dim() do
-    -- Change size only if storage needs to expand.
-    if sizes[d] > t:size(d) then
-      newSizes[d] = sizes[d]
-    end
-  end
-
-  -- If one dimension size changed, resize the given tensor.
-  if torch.any(torch.ne(torch.Tensor(torch.totable(newSizes)),
-                        torch.Tensor(torch.totable(t:size())))) then
-    t:resize(newSizes)
-  end
-
-  -- In all cases, extract the given sizes.
-  for d = 1, t:dim() do
-    t = t:narrow(d, 1, sizes[d])
-  end
-
-  return t:zero()
+  return t:resize(sizes):zero()
 end
 
 --[[
