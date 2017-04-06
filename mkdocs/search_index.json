@@ -1,589 +1,564 @@
 {
     "docs": [
         {
-            "location": "/",
-            "text": "OpenNMT: Open-Source Neural Machine Translation\n\n\nOpenNMT\n is a full-featured,\nopen-source (MIT) neural machine translation system utilizing the\n\nTorch\n mathematical toolkit.\n\n\n\n\nThe system is designed to be simple to use and easy to extend , while\nmaintaining efficiency and state-of-the-art translation\naccuracy. Features include:\n\n\n\n\nSpeed and memory optimizations for high-performance GPU training.\n\n\nSimple general-purpose interface, only requires and source/target data files.\n\n\nC++ implementation of the translator\n for easy deployment.\n\n\nExtensions to allow other sequence generation tasks such as summarization and image captioning.\n\n\n\n\n\n\nInstallation\n\n\nOpenNMT only requires a vanilla Torch install with few dependencies. Alternatively there is a (CUDA) \nDocker container\n.\n\n\n\n\nDependencies\n\n\n\n\nnn\n\n\nnngraph\n\n\ntds\n\n\npenlight\n\n\n\n\nGPU training requires:\n\n\n\n\ncunn\n\n\ncutorch\n\n\n\n\nMulti-GPU training additionally requires:\n\n\n\n\nthreads\n\n\n\n\n\n\nQuickstart\n\n\nOpenNMT consists of three commands:\n\n\n1) Preprocess the data.\n\n\nth preprocess.lua -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo\n\n\n2) Train the model.\n\n\nth train.lua -data data/demo-train.t7 -save_model model\n\n\n3) Translate sentences.\n\n\nth translate.lua -model model_final.t7 -src data/src-test.txt -output pred.txt\n\n\nSee the \nguide\n for more details.\n\n\nDocumentation\n\n\n\n\nOptions and Features\n \n\n\nDocumentation\n \n\n\nExample Models\n\n\nForum\n\n\nLive Demo\n\n\nBibliography",
-            "title": "Home"
-        },
+            "location": "/", 
+            "text": "This portal provides a detailled documentation of the OpenNMT toolkit. It desribes how to use the Torch project and how it works.\n\n\nFor the PyTorch version, visit the project on \nGitHub\n.\n\n\nAdditional resources\n\n\nYou can find additional help or tutorials in the following resources:\n\n\n\n\nForum\n\n\nGitter channel\n\n\n\n\n\n\nNote\n\n\nIf you find an error in this documentation, please consider \nopening an issue\n or directly submitting a modification by clicking on the \nEdit on GitHub\n link.", 
+            "title": "Overview"
+        }, 
         {
-            "location": "/#opennmt-open-source-neural-machine-translation",
-            "text": "OpenNMT  is a full-featured,\nopen-source (MIT) neural machine translation system utilizing the Torch  mathematical toolkit.   The system is designed to be simple to use and easy to extend , while\nmaintaining efficiency and state-of-the-art translation\naccuracy. Features include:   Speed and memory optimizations for high-performance GPU training.  Simple general-purpose interface, only requires and source/target data files.  C++ implementation of the translator  for easy deployment.  Extensions to allow other sequence generation tasks such as summarization and image captioning.",
-            "title": "OpenNMT: Open-Source Neural Machine Translation"
-        },
+            "location": "/#additional-resources", 
+            "text": "You can find additional help or tutorials in the following resources:   Forum  Gitter channel    Note  If you find an error in this documentation, please consider  opening an issue  or directly submitting a modification by clicking on the  Edit on GitHub  link.", 
+            "title": "Additional resources"
+        }, 
         {
-            "location": "/#installation",
-            "text": "OpenNMT only requires a vanilla Torch install with few dependencies. Alternatively there is a (CUDA)  Docker container .",
-            "title": "Installation"
-        },
-        {
-            "location": "/#dependencies",
-            "text": "nn  nngraph  tds  penlight   GPU training requires:   cunn  cutorch   Multi-GPU training additionally requires:   threads",
-            "title": "Dependencies"
-        },
-        {
-            "location": "/#quickstart",
-            "text": "OpenNMT consists of three commands:  1) Preprocess the data.  th preprocess.lua -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo  2) Train the model.  th train.lua -data data/demo-train.t7 -save_model model  3) Translate sentences.  th translate.lua -model model_final.t7 -src data/src-test.txt -output pred.txt  See the  guide  for more details.",
+            "location": "/quickstart/", 
+            "text": "Step 1: Preprocess the data\n\n\nth preprocess.lua -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo\n\n\n\n\nWe will be working with some example data in \ndata/\n folder.\n\n\nThe data consists of parallel source (\nsrc\n) and target (\ntgt\n) data containing one sentence per line with tokens separated by a space:\n\n\n\n\nsrc-train.txt\n\n\ntgt-train.txt\n\n\nsrc-val.txt\n\n\ntgt-val.txt\n\n\n\n\nValidation files are required and used to evaluate the convergence of the training. It usually contains no more than 5000 sentences.\n\n\n$ head -n 3 data/src-train.txt\nIt is not acceptable that , with the help of the national bureaucracies , Parliament \napos;s legislative prerogative should be made null and void by means of implementing provisions whose content , purpose and extent are not laid down in advance .\nFederal Master Trainer and Senior Instructor of the Italian Federation of Aerobic Fitness , Group Fitness , Postural Gym , Stretching and Pilates; from 2004 , he has been collaborating with Antiche Terme as personal Trainer and Instructor of Stretching , Pilates and Postural Gym .\n\nquot; Two soldiers came up to me and told me that if I refuse to sleep with them , they will kill me . They beat me and ripped my clothes .\n\n\n\n\nAfter running the preprocessing, the following files are generated:\n\n\n\n\ndemo.src.dict\n: Dictionary of source vocab to index mappings.\n\n\ndemo.tgt.dict\n: Dictionary of target vocab to index mappings.\n\n\ndemo-train.t7\n: serialized Torch file containing vocabulary, training and validation data\n\n\n\n\nThe \n*.dict\n files are needed to check or reuse the vocabularies. These files are simple human-readable dictionaries.\n\n\n$ head -n 10 data/demo.src.dict\n\nblank\n 1\n\nunk\n 2\n\ns\n 3\n\n/s\n 4\nIt 5\nis 6\nnot 7\nacceptable 8\nthat 9\n, 10\nwith 11\n\n\n\n\nInternally the system never touches the words themselves, but uses these indices.\n\n\n\n\nNote\n\n\nIf the corpus is not tokenized, you can use \nOpenNMT's tokenizer\n.\n\n\n\n\nStep 2: Train the model\n\n\nth train.lua -data data/demo-train.t7 -save_model demo-model\n\n\n\n\nThe main train command is quite simple. Minimally it takes a data file\nand a save file.  This will run the default model, which consists of a\n2-layer LSTM with 500 hidden units on both the encoder/decoder. You\ncan also add \n-gpuid 1\n to use (say) GPU 1.\n\n\nStep 3: Translate\n\n\nth translate.lua -model demo-model_epochX_PPL.t7 -src data/src-test.txt -output pred.txt\n\n\n\n\nNow you have a model which you can use to predict on new data. We do this by running beam search. This will output predictions into \npred.txt\n.\n\n\n\n\nNote\n\n\nThe predictions are going to be quite terrible, as the demo dataset is small. Try running on some larger datasets! For example you can download millions of parallel sentences for \ntranslation\n or \nsummarization\n.", 
             "title": "Quickstart"
-        },
-        {
-            "location": "/#documentation",
-            "text": "Options and Features    Documentation    Example Models  Forum  Live Demo  Bibliography",
-            "title": "Documentation"
-        },
-        {
-            "location": "/code/data/",
-            "text": "",
-            "title": "Home"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/",
-            "text": "onmt.Batch\n\n\nA batch of sentences to translate and targets. Manages padding,\n  features, and batch alignment (for efficiency).\n\n\nUsed by the decoder and encoder objects.\n\n\n[src]\n\n\n\n\nonmt.Batch(src, srcFeatures, tgt, tgtFeatures)\n\n\nCreate a batch object.\n\n\nParameters:\n\n\n\n\nsrc\n - 2D table of source batch indices\n\n\nsrcFeatures\n - 2D table of source batch features (opt)\n\n\ntgt\n - 2D table of target batch indices\n\n\ntgtFeatures\n - 2D table of target batch features (opt)\n\n\n\n\n[src]\n\n\n\n\nonmt.Batch:setSourceInput(sourceInput)\n\n\nSet source input directly,\n\n\nParameters:\n\n\n\n\nsourceInput\n - a Tensor of size (sequence_length, batch_size, feature_dim)\n  ,or a sequence of size (sequence_length, batch_size). Be aware that sourceInput is not cloned here.\n\n\n\n\n[src]\n\n\n\n\nonmt.Batch:setTargetInput(targetInput)\n\n\nSet target input directly.\n\n\nParameters:\n\n\n\n\ntargetInput\n - a tensor of size (sequence_length, batch_size). Padded with onmt.Constants.PAD. Be aware that targetInput is not cloned here.\n\n\n\n\n[src]\n\n\n\n\nonmt.Batch:setTargetOutput(targetOutput)\n\n\nSet target output directly.\n\n\nParameters:\n\n\n\n\ntargetOutput\n - a tensor of size (sequence_length, batch_size). Padded with onmt.Constants.PAD.  Be aware that targetOutput is not cloned here.\n\n\n\n\n[src]\n\n\n\n\nonmt.Batch:getSourceInput(t)\n\n\nGet source input batch at timestep \nt\n. \n\n\n[src]\n\n\n\n\nonmt.Batch:getTargetInput(t)\n\n\nGet target input batch at timestep \nt\n. \n\n\n[src]\n\n\n\n\nonmt.Batch:getTargetOutput(t)\n\n\nGet target output batch at timestep \nt\n (values t+1).",
-            "title": "onmt+data+Batch"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatch",
-            "text": "A batch of sentences to translate and targets. Manages padding,\n  features, and batch alignment (for efficiency).  Used by the decoder and encoder objects.  [src]",
-            "title": "onmt.Batch"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchsrc-srcfeatures-tgt-tgtfeatures",
-            "text": "Create a batch object.  Parameters:   src  - 2D table of source batch indices  srcFeatures  - 2D table of source batch features (opt)  tgt  - 2D table of target batch indices  tgtFeatures  - 2D table of target batch features (opt)   [src]",
-            "title": "onmt.Batch(src, srcFeatures, tgt, tgtFeatures)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchsetsourceinputsourceinput",
-            "text": "Set source input directly,  Parameters:   sourceInput  - a Tensor of size (sequence_length, batch_size, feature_dim)\n  ,or a sequence of size (sequence_length, batch_size). Be aware that sourceInput is not cloned here.   [src]",
-            "title": "onmt.Batch:setSourceInput(sourceInput)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchsettargetinputtargetinput",
-            "text": "Set target input directly.  Parameters:   targetInput  - a tensor of size (sequence_length, batch_size). Padded with onmt.Constants.PAD. Be aware that targetInput is not cloned here.   [src]",
-            "title": "onmt.Batch:setTargetInput(targetInput)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchsettargetoutputtargetoutput",
-            "text": "Set target output directly.  Parameters:   targetOutput  - a tensor of size (sequence_length, batch_size). Padded with onmt.Constants.PAD.  Be aware that targetOutput is not cloned here.   [src]",
-            "title": "onmt.Batch:setTargetOutput(targetOutput)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchgetsourceinputt",
-            "text": "Get source input batch at timestep  t .   [src]",
-            "title": "onmt.Batch:getSourceInput(t)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchgettargetinputt",
-            "text": "Get target input batch at timestep  t .   [src]",
-            "title": "onmt.Batch:getTargetInput(t)"
-        },
-        {
-            "location": "/code/data/onmt+data+Batch/#onmtbatchgettargetoutputt",
-            "text": "Get target output batch at timestep  t  (values t+1).",
-            "title": "onmt.Batch:getTargetOutput(t)"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/",
-            "text": "onmt.Dataset\n\n\nData management and batch creation. Handles data created by \npreprocess.lua\n. \n\n\n[src]\n\n\n\n\nonmt.Dataset(srcData, tgtData)\n\n\nInitialize a data object given aligned tables of IntTensors \nsrcData\n\n  and \ntgtData\n.\n\n\n[src]\n\n\n\n\nonmt.Dataset:setBatchSize(maxBatchSize)\n\n\nSetup up the training data to respect \nmaxBatchSize\n. \n\n\n[src]\n\n\n\n\nonmt.Dataset:batchCount()\n\n\nReturn number of batches. \n\n\n[src]\n\n\n\n\nonmt.Dataset:getBatch(idx)\n\n\nGet \nBatch\n number \nidx\n. If nil make a batch of all the data.",
-            "title": "onmt+data+Dataset"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/#onmtdataset",
-            "text": "Data management and batch creation. Handles data created by  preprocess.lua .   [src]",
-            "title": "onmt.Dataset"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/#onmtdatasetsrcdata-tgtdata",
-            "text": "Initialize a data object given aligned tables of IntTensors  srcData \n  and  tgtData .  [src]",
-            "title": "onmt.Dataset(srcData, tgtData)"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/#onmtdatasetsetbatchsizemaxbatchsize",
-            "text": "Setup up the training data to respect  maxBatchSize .   [src]",
-            "title": "onmt.Dataset:setBatchSize(maxBatchSize)"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/#onmtdatasetbatchcount",
-            "text": "Return number of batches.   [src]",
-            "title": "onmt.Dataset:batchCount()"
-        },
-        {
-            "location": "/code/data/onmt+data+Dataset/#onmtdatasetgetbatchidx",
-            "text": "Get  Batch  number  idx . If nil make a batch of all the data.",
-            "title": "onmt.Dataset:getBatch(idx)"
-        },
-        {
-            "location": "/code/modules/",
-            "text": "",
-            "title": "Home"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/",
-            "text": "onmt.BiEncoder\n\n\nBiEncoder is a bidirectional Sequencer used for the source language.\n\n\nnetFwd\n\n\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n\n\n\n\nnetBwd\n\n\nh_1 \n= h_2 \n= h_3 \n= ... \n= h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 \n= h_2 \n= h_3 \n= ... \n= h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n\n\n\n\nInherits from \nonmt.Sequencer\n.\n\n\n[src]\n\n\n\n\nonmt.BiEncoder(input, rnn, merge)\n\n\nCreate a bi-encoder.\n\n\nParameters:\n\n\n\n\ninput\n - input neural network.\n\n\nrnn\n - recurrent template module.\n\n\nmerge\n - fwd/bwd merge operation {\"concat\", \"sum\"}\n\n\n\n\n[src]\n\n\n\n\nonmt.BiEncoder.load(pretrained)\n\n\nReturn a new BiEncoder using the serialized data \npretrained\n. \n\n\n[src]\n\n\n\n\nonmt.BiEncoder:serialize()\n\n\nReturn data to serialize. \n\n\nUndocumented methods\n\n\n\n * \nonmt.BiEncoder:resetPreallocation()\n\n\n\n * \nonmt.BiEncoder:maskPadding()\n\n\n\n * \nonmt.BiEncoder:forward(batch)\n\n\n\n * \nonmt.BiEncoder:backward(batch, gradStatesOutput, gradContextOutput)",
-            "title": "onmt+modules+BiEncoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/#onmtbiencoder",
-            "text": "BiEncoder is a bidirectional Sequencer used for the source language.  netFwd  h_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n  netBwd  h_1  = h_2  = h_3  = ...  = h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1  = h_2  = h_3  = ...  = h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n  Inherits from  onmt.Sequencer .  [src]",
-            "title": "onmt.BiEncoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/#onmtbiencoderinput-rnn-merge",
-            "text": "Create a bi-encoder.  Parameters:   input  - input neural network.  rnn  - recurrent template module.  merge  - fwd/bwd merge operation {\"concat\", \"sum\"}   [src]",
-            "title": "onmt.BiEncoder(input, rnn, merge)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/#onmtbiencoderloadpretrained",
-            "text": "Return a new BiEncoder using the serialized data  pretrained .   [src]",
-            "title": "onmt.BiEncoder.load(pretrained)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/#onmtbiencoderserialize",
-            "text": "Return data to serialize.",
-            "title": "onmt.BiEncoder:serialize()"
-        },
-        {
-            "location": "/code/modules/onmt+modules+BiEncoder/#undocumented-methods",
-            "text": "*  onmt.BiEncoder:resetPreallocation()  \n *  onmt.BiEncoder:maskPadding()  \n *  onmt.BiEncoder:forward(batch)  \n *  onmt.BiEncoder:backward(batch, gradStatesOutput, gradContextOutput)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/",
-            "text": "onmt.Decoder\n\n\nUnit to decode a sequence of output tokens.\n\n\n .      .      .             .\n |      |      |             |\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n\n\n\n\nInherits from \nonmt.Sequencer\n.\n\n\n[src]\n\n\n\n\nonmt.Decoder(inputNetwork, rnn, generator, inputFeed)\n\n\nConstruct a decoder layer.\n\n\nParameters:\n\n\n\n\ninputNetwork\n - input nn module.\n\n\nrnn\n - recurrent module, such as \nonmt.LSTM\n.\n\n\ngenerator\n - optional, an output \nonmt.Generator\n.\n\n\ninputFeed\n - bool, enable input feeding.\n\n\n\n\n[src]\n\n\n\n\nonmt.Decoder.load(pretrained)\n\n\nReturn a new Decoder using the serialized data \npretrained\n. \n\n\n[src]\n\n\n\n\nonmt.Decoder:serialize()\n\n\nReturn data to serialize. \n\n\n[src]\n\n\n\n\nonmt.Decoder:maskPadding(sourceSizes, sourceLength, beamSize)\n\n\nMask padding means that the attention-layer is constrained to\n  give zero-weight to padding. This is done by storing a reference\n  to the softmax attention-layer.\n\n\nParameters:\n\n\n\n\nSee  \nonmt.MaskedSoftmax\n.\n\n\n\n\n[src]\n\n\n\n\nonmt.Decoder:forwardOne(input, prevStates, context, prevOut, t)\n\n\nRun one step of the decoder.\n\n\nParameters:\n\n\n\n\ninput\n - input to be passed to inputNetwork.\n\n\nprevStates\n - stack of hidden states (batch x layers*model x rnnSize)\n\n\ncontext\n - encoder output (batch x n x rnnSize)\n\n\nprevOut\n - previous distribution (batch x #words)\n\n\nt\n - current timestep\n\n\n\n\nReturns:\n\n\n\n\nout\n - Top-layer hidden state.\n\n\nstates\n - All states.\n\n\n\n\n[src]\n\n\n\n\nonmt.Decoder:forward(batch, encoderStates, context)\n\n\nCompute all forward steps.\n\n\nParameters:\n\n\n\n\nbatch\n - a \nBatch\n object.\n\n\nencoderStates\n - a batch of initial decoder states (optional) [0]\n\n\ncontext\n - the context to apply attention to.\n\n\n\n\nReturns: Table of top hidden state for each timestep.\n\n\n[src]\n\n\n\n\nonmt.Decoder:backward(batch, outputs, criterion)\n\n\nCompute the backward update.\n\n\nParameters:\n\n\n\n\nbatch\n - a \nBatch\n object\n\n\noutputs\n - expected outputs\n\n\ncriterion\n - a single target criterion object\n\n\n\n\nNote: This code runs both the standard backward and criterion forward/backward.\n  It returns both the gradInputs and the loss.\n  -- \n\n\n[src]\n\n\n\n\nonmt.Decoder:computeLoss(batch, encoderStates, context, criterion)\n\n\nCompute the loss on a batch.\n\n\nParameters:\n\n\n\n\nbatch\n - a \nBatch\n to score.\n\n\nencoderStates\n - initialization of decoder.\n\n\ncontext\n - the attention context.\n\n\ncriterion\n - a pointwise criterion.\n\n\n\n\n[src]\n\n\n\n\nonmt.Decoder:computeScore(batch, encoderStates, context)\n\n\nCompute the score of a batch.\n\n\nParameters:\n\n\n\n\nbatch\n - a \nBatch\n to score.\n\n\nencoderStates\n - initialization of decoder.\n\n\ncontext\n - the attention context.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.Decoder:resetPreallocation()\n\n\n\n * \nonmt.Decoder:forwardAndApply(batch, encoderStates, context, func)",
-            "title": "onmt+modules+Decoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoder",
-            "text": "Unit to decode a sequence of output tokens.   .      .      .             .\n |      |      |             |\nh_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n  Inherits from  onmt.Sequencer .  [src]",
-            "title": "onmt.Decoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderinputnetwork-rnn-generator-inputfeed",
-            "text": "Construct a decoder layer.  Parameters:   inputNetwork  - input nn module.  rnn  - recurrent module, such as  onmt.LSTM .  generator  - optional, an output  onmt.Generator .  inputFeed  - bool, enable input feeding.   [src]",
-            "title": "onmt.Decoder(inputNetwork, rnn, generator, inputFeed)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderloadpretrained",
-            "text": "Return a new Decoder using the serialized data  pretrained .   [src]",
-            "title": "onmt.Decoder.load(pretrained)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderserialize",
-            "text": "Return data to serialize.   [src]",
-            "title": "onmt.Decoder:serialize()"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecodermaskpaddingsourcesizes-sourcelength-beamsize",
-            "text": "Mask padding means that the attention-layer is constrained to\n  give zero-weight to padding. This is done by storing a reference\n  to the softmax attention-layer.  Parameters:   See   onmt.MaskedSoftmax .   [src]",
-            "title": "onmt.Decoder:maskPadding(sourceSizes, sourceLength, beamSize)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderforwardoneinput-prevstates-context-prevout-t",
-            "text": "Run one step of the decoder.  Parameters:   input  - input to be passed to inputNetwork.  prevStates  - stack of hidden states (batch x layers*model x rnnSize)  context  - encoder output (batch x n x rnnSize)  prevOut  - previous distribution (batch x #words)  t  - current timestep   Returns:   out  - Top-layer hidden state.  states  - All states.   [src]",
-            "title": "onmt.Decoder:forwardOne(input, prevStates, context, prevOut, t)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderforwardbatch-encoderstates-context",
-            "text": "Compute all forward steps.  Parameters:   batch  - a  Batch  object.  encoderStates  - a batch of initial decoder states (optional) [0]  context  - the context to apply attention to.   Returns: Table of top hidden state for each timestep.  [src]",
-            "title": "onmt.Decoder:forward(batch, encoderStates, context)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecoderbackwardbatch-outputs-criterion",
-            "text": "Compute the backward update.  Parameters:   batch  - a  Batch  object  outputs  - expected outputs  criterion  - a single target criterion object   Note: This code runs both the standard backward and criterion forward/backward.\n  It returns both the gradInputs and the loss.\n  --   [src]",
-            "title": "onmt.Decoder:backward(batch, outputs, criterion)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecodercomputelossbatch-encoderstates-context-criterion",
-            "text": "Compute the loss on a batch.  Parameters:   batch  - a  Batch  to score.  encoderStates  - initialization of decoder.  context  - the attention context.  criterion  - a pointwise criterion.   [src]",
-            "title": "onmt.Decoder:computeLoss(batch, encoderStates, context, criterion)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#onmtdecodercomputescorebatch-encoderstates-context",
-            "text": "Compute the score of a batch.  Parameters:   batch  - a  Batch  to score.  encoderStates  - initialization of decoder.  context  - the attention context.",
-            "title": "onmt.Decoder:computeScore(batch, encoderStates, context)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Decoder/#undocumented-methods",
-            "text": "*  onmt.Decoder:resetPreallocation()  \n *  onmt.Decoder:forwardAndApply(batch, encoderStates, context, func)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/",
-            "text": "onmt.Encoder\n\n\nEncoder is a unidirectional Sequencer used for the source language.\n\n\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =\n h_2 =\n h_3 =\n ... =\n h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n\n\n\n\nInherits from \nonmt.Sequencer\n.\n\n\n[src]\n\n\n\n\nonmt.Encoder(inputNetwork, rnn)\n\n\nConstruct an encoder layer.\n\n\nParameters:\n\n\n\n\ninputNetwork\n - input module.\n\n\nrnn\n - recurrent module.\n\n\n\n\n[src]\n\n\n\n\nonmt.Encoder.load(pretrained)\n\n\nReturn a new Encoder using the serialized data \npretrained\n. \n\n\n[src]\n\n\n\n\nonmt.Encoder:serialize()\n\n\nReturn data to serialize. \n\n\n[src]\n\n\n\n\nonmt.Encoder:forward(batch)\n\n\nCompute the context representation of an input.\n\n\nParameters:\n\n\n\n\nbatch\n - as defined in batch.lua.\n\n\n\n\nReturns:\n\n\n\n\n\n\n\n\nfinal hidden states\n\n\n\n\n\n\n\n\n\n\ncontext matrix H\n\n\n\n\n\n\n\n\n[src]\n\n\n\n\nonmt.Encoder:backward(batch, gradStatesOutput, gradContextOutput)\n\n\nBackward pass (only called during training)\n\n\nParameters:\n\n\n\n\nbatch\n - must be same as for forward\n\n\ngradStatesOutput\n gradient of loss wrt last state\n\n\ngradContextOutput\n - gradient of loss wrt full context.\n\n\n\n\nReturns: \ngradInputs\n of input network.\n\n\nUndocumented methods\n\n\n\n * \nonmt.Encoder:resetPreallocation()\n\n\n\n * \nonmt.Encoder:maskPadding()",
-            "title": "onmt+modules+Encoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoder",
-            "text": "Encoder is a unidirectional Sequencer used for the source language.  h_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n .      .      .             .\n |      |      |             |\nh_1 =  h_2 =  h_3 =  ... =  h_n\n |      |      |             |\n |      |      |             |\nx_1    x_2    x_3           x_n  Inherits from  onmt.Sequencer .  [src]",
-            "title": "onmt.Encoder"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoderinputnetwork-rnn",
-            "text": "Construct an encoder layer.  Parameters:   inputNetwork  - input module.  rnn  - recurrent module.   [src]",
-            "title": "onmt.Encoder(inputNetwork, rnn)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoderloadpretrained",
-            "text": "Return a new Encoder using the serialized data  pretrained .   [src]",
-            "title": "onmt.Encoder.load(pretrained)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoderserialize",
-            "text": "Return data to serialize.   [src]",
-            "title": "onmt.Encoder:serialize()"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoderforwardbatch",
-            "text": "Compute the context representation of an input.  Parameters:   batch  - as defined in batch.lua.   Returns:     final hidden states      context matrix H     [src]",
-            "title": "onmt.Encoder:forward(batch)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#onmtencoderbackwardbatch-gradstatesoutput-gradcontextoutput",
-            "text": "Backward pass (only called during training)  Parameters:   batch  - must be same as for forward  gradStatesOutput  gradient of loss wrt last state  gradContextOutput  - gradient of loss wrt full context.   Returns:  gradInputs  of input network.",
-            "title": "onmt.Encoder:backward(batch, gradStatesOutput, gradContextOutput)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Encoder/#undocumented-methods",
-            "text": "*  onmt.Encoder:resetPreallocation()  \n *  onmt.Encoder:maskPadding()",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesEmbedding/",
-            "text": "onmt.FeaturesEmbedding\n\n\nA nngraph unit that maps features ids to embeddings. When using multiple\n  features this can be the concatenation or the sum of each individual embedding.\n\n\nUndocumented methods\n\n\n\n * \nonmt.FeaturesEmbedding(dicts, dimExponent, dim, merge)\n\n\n\n * \nonmt.FeaturesEmbedding:updateOutput(input)\n\n\n\n * \nonmt.FeaturesEmbedding:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.FeaturesEmbedding:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+FeaturesEmbedding"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesEmbedding/#onmtfeaturesembedding",
-            "text": "A nngraph unit that maps features ids to embeddings. When using multiple\n  features this can be the concatenation or the sum of each individual embedding.",
-            "title": "onmt.FeaturesEmbedding"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesEmbedding/#undocumented-methods",
-            "text": "*  onmt.FeaturesEmbedding(dicts, dimExponent, dim, merge)  \n *  onmt.FeaturesEmbedding:updateOutput(input)  \n *  onmt.FeaturesEmbedding:updateGradInput(input, gradOutput)  \n *  onmt.FeaturesEmbedding:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesGenerator/",
-            "text": "FeaturesGenerator.lua\n\n\nFeature decoder generator. Given RNN state, produce categorical distribution over\ntokens and features.\n\n\nImplements \n[softmax(W^1 h + b^1), softmax(W^2 h + b^2), ..., softmax(W^n h + b^n)] \n.\n\n\n\n\nonmt.FeaturesGenerator\n\n\n[src]\n\n\n\n\nonmt.FeaturesGenerator(rnnSize, outputSize, features)\n\n\nParameters:\n\n\n\n\nrnnSize\n - Input rnn size.\n\n\noutputSize\n - Output size (number of tokens).\n\n\nfeatures\n - table of feature sizes.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.FeaturesGenerator:updateOutput(input)\n\n\n\n * \nonmt.FeaturesGenerator:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.FeaturesGenerator:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+FeaturesGenerator"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesGenerator/#featuresgeneratorlua",
-            "text": "Feature decoder generator. Given RNN state, produce categorical distribution over\ntokens and features.  Implements  [softmax(W^1 h + b^1), softmax(W^2 h + b^2), ..., softmax(W^n h + b^n)]  .",
-            "title": "FeaturesGenerator.lua"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesGenerator/#onmtfeaturesgenerator",
-            "text": "[src]",
-            "title": "onmt.FeaturesGenerator"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesGenerator/#onmtfeaturesgeneratorrnnsize-outputsize-features",
-            "text": "Parameters:   rnnSize  - Input rnn size.  outputSize  - Output size (number of tokens).  features  - table of feature sizes.",
-            "title": "onmt.FeaturesGenerator(rnnSize, outputSize, features)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+FeaturesGenerator/#undocumented-methods",
-            "text": "*  onmt.FeaturesGenerator:updateOutput(input)  \n *  onmt.FeaturesGenerator:updateGradInput(input, gradOutput)  \n *  onmt.FeaturesGenerator:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Generator/",
-            "text": "onmt.Generator\n\n\nDefault decoder generator. Given RNN state, produce categorical distribution.\n\n\nSimply implements \nsoftmax(W h + b)\n.\n\n\nUndocumented methods\n\n\n\n * \nonmt.Generator(rnnSize, outputSize)\n\n\n\n * \nonmt.Generator:updateOutput(input)\n\n\n\n * \nonmt.Generator:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.Generator:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+Generator"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Generator/#onmtgenerator",
-            "text": "Default decoder generator. Given RNN state, produce categorical distribution.  Simply implements  softmax(W h + b) .",
-            "title": "onmt.Generator"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Generator/#undocumented-methods",
-            "text": "*  onmt.Generator(rnnSize, outputSize)  \n *  onmt.Generator:updateOutput(input)  \n *  onmt.Generator:updateGradInput(input, gradOutput)  \n *  onmt.Generator:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+GlobalAttention/",
-            "text": "onmt.GlobalAttention\n\n\nGlobal attention takes a matrix and a query vector. It\nthen computes a parameterized convex combination of the matrix\nbased on the input query.\n\n\nH_1 H_2 H_3 ... H_n\n q   q   q       q\n  |  |   |       |\n   \\ |   |      /\n       .....\n     \\   |  /\n         a\n\n\n\nConstructs a unit mapping:\n  \n(H_1 .. H_n, q) => (a)\n\n  Where H is of \nbatch x n x dim\n and q is of \nbatch x dim\n.\n\n\nThe full function is  \n\\tanh(W_2 [(softmax((W_1 q + b_1) H) H), q] + b_2)\n.\n\n\n[src]\n\n\n\n\nonmt.GlobalAttention(dim)\n\n\nA nn-style module computing attention.\n\n\nParameters:\n\n\n\n\ndim\n - dimension of the context vectors.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.GlobalAttention:updateOutput(input)\n\n\n\n * \nonmt.GlobalAttention:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.GlobalAttention:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+GlobalAttention"
-        },
-        {
-            "location": "/code/modules/onmt+modules+GlobalAttention/#onmtglobalattention",
-            "text": "Global attention takes a matrix and a query vector. It\nthen computes a parameterized convex combination of the matrix\nbased on the input query.  H_1 H_2 H_3 ... H_n\n q   q   q       q\n  |  |   |       |\n   \\ |   |      /\n       .....\n     \\   |  /\n         a  Constructs a unit mapping:\n   (H_1 .. H_n, q) => (a) \n  Where H is of  batch x n x dim  and q is of  batch x dim .  The full function is   \\tanh(W_2 [(softmax((W_1 q + b_1) H) H), q] + b_2) .  [src]",
-            "title": "onmt.GlobalAttention"
-        },
-        {
-            "location": "/code/modules/onmt+modules+GlobalAttention/#onmtglobalattentiondim",
-            "text": "A nn-style module computing attention.  Parameters:   dim  - dimension of the context vectors.",
-            "title": "onmt.GlobalAttention(dim)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+GlobalAttention/#undocumented-methods",
-            "text": "*  onmt.GlobalAttention:updateOutput(input)  \n *  onmt.GlobalAttention:updateGradInput(input, gradOutput)  \n *  onmt.GlobalAttention:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+LSTM/",
-            "text": "onmt.LSTM\n\n\nImplementation of a single stacked-LSTM step as\nan nn unit.\n\n\n  h^L_{t-1} --- h^L_t\n  c^L_{t-1} --- c^L_t\n             |\n\n\n             .\n             |\n         [dropout]\n             |\n  h^1_{t-1} --- h^1_t\n  c^1_{t-1} --- c^1_t\n             |\n             |\n            x_t\n\n\n\nComputes \n(c_{t-1}, h_{t-1}, x_t) => (c_{t}, h_{t})\n.\n\n\n[src]\n\n\n\n\nonmt.LSTM(layers, inputSize, hiddenSize, dropout, residual)\n\n\nParameters:\n\n\n\n\nlayers\n - Number of LSTM layers, L.\n\n\ninputSize\n - Size of input layer\n\n\nhiddenSize\n - Size of the hidden layers.\n\n\ndropout\n - Dropout rate to use.\n\n\nresidual\n - Residual connections between layers.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.LSTM:updateOutput(input)\n\n\n\n * \nonmt.LSTM:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.LSTM:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+LSTM"
-        },
-        {
-            "location": "/code/modules/onmt+modules+LSTM/#onmtlstm",
-            "text": "Implementation of a single stacked-LSTM step as\nan nn unit.    h^L_{t-1} --- h^L_t\n  c^L_{t-1} --- c^L_t\n             |\n\n\n             .\n             |\n         [dropout]\n             |\n  h^1_{t-1} --- h^1_t\n  c^1_{t-1} --- c^1_t\n             |\n             |\n            x_t  Computes  (c_{t-1}, h_{t-1}, x_t) => (c_{t}, h_{t}) .  [src]",
-            "title": "onmt.LSTM"
-        },
-        {
-            "location": "/code/modules/onmt+modules+LSTM/#onmtlstmlayers-inputsize-hiddensize-dropout-residual",
-            "text": "Parameters:   layers  - Number of LSTM layers, L.  inputSize  - Size of input layer  hiddenSize  - Size of the hidden layers.  dropout  - Dropout rate to use.  residual  - Residual connections between layers.",
-            "title": "onmt.LSTM(layers, inputSize, hiddenSize, dropout, residual)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+LSTM/#undocumented-methods",
-            "text": "*  onmt.LSTM:updateOutput(input)  \n *  onmt.LSTM:updateGradInput(input, gradOutput)  \n *  onmt.LSTM:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+MaskedSoftmax/",
-            "text": "onmt.MaskedSoftmax\n\n\nA batched-softmax wrapper to mask the probabilities of padding.\n\n\nFor instance there may be a batch of instances where A is padding.\n\n\nAXXXAA\nAXXAAA\nAXXXXX\n\n\n\nMaskedSoftmax ensures that no probability is given to the A's.\n\n\nFor this example, \nbeamSize\n is 3, \nsourceLength\n is {3, 2, 5}.\n\n\n[src]\n\n\n\n\nonmt.MaskedSoftmax(sourceSizes, sourceLength, beamSize)\n\n\nA nn-style module that applies a softmax on input that gives no weight to the left padding.\n\n\nParameters:\n\n\n\n\nsourceSizes\n -  the true lengths (with left padding).\n\n\nsourceLength\n - the max length in the batch \nbeamSize\n.\n\n\nbeamSize\n - the batch size.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.MaskedSoftmax:updateOutput(input)\n\n\n\n * \nonmt.MaskedSoftmax:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.MaskedSoftmax:accGradParameters(input, gradOutput, scale)",
-            "title": "onmt+modules+MaskedSoftmax"
-        },
-        {
-            "location": "/code/modules/onmt+modules+MaskedSoftmax/#onmtmaskedsoftmax",
-            "text": "A batched-softmax wrapper to mask the probabilities of padding.  For instance there may be a batch of instances where A is padding.  AXXXAA\nAXXAAA\nAXXXXX  MaskedSoftmax ensures that no probability is given to the A's.  For this example,  beamSize  is 3,  sourceLength  is {3, 2, 5}.  [src]",
-            "title": "onmt.MaskedSoftmax"
-        },
-        {
-            "location": "/code/modules/onmt+modules+MaskedSoftmax/#onmtmaskedsoftmaxsourcesizes-sourcelength-beamsize",
-            "text": "A nn-style module that applies a softmax on input that gives no weight to the left padding.  Parameters:   sourceSizes  -  the true lengths (with left padding).  sourceLength  - the max length in the batch  beamSize .  beamSize  - the batch size.",
-            "title": "onmt.MaskedSoftmax(sourceSizes, sourceLength, beamSize)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+MaskedSoftmax/#undocumented-methods",
-            "text": "*  onmt.MaskedSoftmax:updateOutput(input)  \n *  onmt.MaskedSoftmax:updateGradInput(input, gradOutput)  \n *  onmt.MaskedSoftmax:accGradParameters(input, gradOutput, scale)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/",
-            "text": "onmt.Sequencer\n\n\nSequencer is the base class for encoder and decoder models.\n  Main task is to manage \nself.net(t)\n, the unrolled network\n  used during training.\n\n\n :net(1) =\n :net(2) =\n ... =\n :net(n-1) =\n :net(n)\n\n\n\n[src]\n\n\n\n\nonmt.Sequencer(network)\n\n\nParameters:\n\n\n\n\nnetwork\n - recurrent step template.\n\n\n\n\n[src]\n\n\n\n\nonmt.Sequencer:net(t)\n\n\nGet access to the recurrent unit at a timestep.\n\n\nParameters:\n  * \nt\n - timestep.\n\n\nReturns: The raw network clone at timestep t.\n  When \nevaluate()\n has been called, cheat and return t=1.\n\n\n[src]\n\n\n\n\nonmt.Sequencer:training()\n\n\nMove the network to train mode. \n\n\n[src]\n\n\n\n\nonmt.Sequencer:evaluate()\n\n\nMove the network to evaluation mode.",
-            "title": "onmt+modules+Sequencer"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/#onmtsequencer",
-            "text": "Sequencer is the base class for encoder and decoder models.\n  Main task is to manage  self.net(t) , the unrolled network\n  used during training.   :net(1) =  :net(2) =  ... =  :net(n-1) =  :net(n)  [src]",
-            "title": "onmt.Sequencer"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/#onmtsequencernetwork",
-            "text": "Parameters:   network  - recurrent step template.   [src]",
-            "title": "onmt.Sequencer(network)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/#onmtsequencernett",
-            "text": "Get access to the recurrent unit at a timestep.  Parameters:\n  *  t  - timestep.  Returns: The raw network clone at timestep t.\n  When  evaluate()  has been called, cheat and return t=1.  [src]",
-            "title": "onmt.Sequencer:net(t)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/#onmtsequencertraining",
-            "text": "Move the network to train mode.   [src]",
-            "title": "onmt.Sequencer:training()"
-        },
-        {
-            "location": "/code/modules/onmt+modules+Sequencer/#onmtsequencerevaluate",
-            "text": "Move the network to evaluation mode.",
-            "title": "onmt.Sequencer:evaluate()"
-        },
-        {
-            "location": "/code/modules/onmt+modules+WordEmbedding/",
-            "text": "onmt.WordEmbedding\n\n\nnn unit. Maps from word ids to embeddings. Slim wrapper around\nnn.LookupTable to allow fixed and pretrained embeddings.\n\n\n[src]\n\n\n\n\nonmt.WordEmbedding(vocabSize, vecSize, preTrained, fix)\n\n\nParameters:\n\n\n\n\nvocabSize\n - size of the vocabulary\n\n\nvecSize\n - size of the embedding\n\n\npreTrainined\n - path to a pretrained vector file\n\n\nfix\n - keep the weights of the embeddings fixed.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.WordEmbedding:postParametersInitialization()\n\n\n\n * \nonmt.WordEmbedding:updateOutput(input)\n\n\n\n * \nonmt.WordEmbedding:updateGradInput(input, gradOutput)\n\n\n\n * \nonmt.WordEmbedding:accGradParameters(input, gradOutput, scale)\n\n\n\n * \nonmt.WordEmbedding:parameters()",
-            "title": "onmt+modules+WordEmbedding"
-        },
-        {
-            "location": "/code/modules/onmt+modules+WordEmbedding/#onmtwordembedding",
-            "text": "nn unit. Maps from word ids to embeddings. Slim wrapper around\nnn.LookupTable to allow fixed and pretrained embeddings.  [src]",
-            "title": "onmt.WordEmbedding"
-        },
-        {
-            "location": "/code/modules/onmt+modules+WordEmbedding/#onmtwordembeddingvocabsize-vecsize-pretrained-fix",
-            "text": "Parameters:   vocabSize  - size of the vocabulary  vecSize  - size of the embedding  preTrainined  - path to a pretrained vector file  fix  - keep the weights of the embeddings fixed.",
-            "title": "onmt.WordEmbedding(vocabSize, vecSize, preTrained, fix)"
-        },
-        {
-            "location": "/code/modules/onmt+modules+WordEmbedding/#undocumented-methods",
-            "text": "*  onmt.WordEmbedding:postParametersInitialization()  \n *  onmt.WordEmbedding:updateOutput(input)  \n *  onmt.WordEmbedding:updateGradInput(input, gradOutput)  \n *  onmt.WordEmbedding:accGradParameters(input, gradOutput, scale)  \n *  onmt.WordEmbedding:parameters()",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/train/",
-            "text": "",
-            "title": "Home"
-        },
-        {
-            "location": "/code/train/onmt+train+Checkpoint/",
-            "text": "onmt.Checkpoint\n\n\nClass for saving and loading models during training.\n\n\n[src]\n\n\n\n\nonmt.Checkpoint:saveIteration(iteration, epochState, batchOrder, verbose)\n\n\nSave the model and data in the middle of an epoch sorting the iteration. \n\n\nUndocumented methods\n\n\n\n * \nonmt.Checkpoint(options, model, optim, dataset)\n\n\n\n * \nonmt.Checkpoint:save(filePath, info)\n\n\n\n * \nonmt.Checkpoint:saveEpoch(validPpl, epochState, verbose)",
-            "title": "onmt+train+Checkpoint"
-        },
-        {
-            "location": "/code/train/onmt+train+Checkpoint/#onmtcheckpoint",
-            "text": "Class for saving and loading models during training.  [src]",
-            "title": "onmt.Checkpoint"
-        },
-        {
-            "location": "/code/train/onmt+train+Checkpoint/#onmtcheckpointsaveiterationiteration-epochstate-batchorder-verbose",
-            "text": "Save the model and data in the middle of an epoch sorting the iteration.",
-            "title": "onmt.Checkpoint:saveIteration(iteration, epochState, batchOrder, verbose)"
-        },
-        {
-            "location": "/code/train/onmt+train+Checkpoint/#undocumented-methods",
-            "text": "*  onmt.Checkpoint(options, model, optim, dataset)  \n *  onmt.Checkpoint:save(filePath, info)  \n *  onmt.Checkpoint:saveEpoch(validPpl, epochState, verbose)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/",
-            "text": "onmt.EpochState\n\n\nClass for managing the training process by logging and storing\n  the state of the current epoch.\n\n\n[src]\n\n\n\n\nonmt.EpochState(epoch, numIterations, learningRate, lastValidPpl, status)\n\n\nInitialize for epoch \nepoch\n and training \nstatus\n (current loss)\n\n\n[src]\n\n\n\n\nonmt.EpochState:update(batch, loss)\n\n\nUpdate training status. Takes \nbatch\n (described in data.lua) and last loss.\n\n\n[src]\n\n\n\n\nonmt.EpochState:log(batchIndex, json)\n\n\nLog to status stdout. \n\n\nUndocumented methods\n\n\n\n * \nonmt.EpochState:getTrainPpl()\n\n\n\n * \nonmt.EpochState:getTime()\n\n\n\n * \nonmt.EpochState:getStatus()\n\n\n\n * \nonmt.EpochState:getMinFreememory()",
-            "title": "onmt+train+EpochState"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/#onmtepochstate",
-            "text": "Class for managing the training process by logging and storing\n  the state of the current epoch.  [src]",
-            "title": "onmt.EpochState"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/#onmtepochstateepoch-numiterations-learningrate-lastvalidppl-status",
-            "text": "Initialize for epoch  epoch  and training  status  (current loss)  [src]",
-            "title": "onmt.EpochState(epoch, numIterations, learningRate, lastValidPpl, status)"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/#onmtepochstateupdatebatch-loss",
-            "text": "Update training status. Takes  batch  (described in data.lua) and last loss.  [src]",
-            "title": "onmt.EpochState:update(batch, loss)"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/#onmtepochstatelogbatchindex-json",
-            "text": "Log to status stdout.",
-            "title": "onmt.EpochState:log(batchIndex, json)"
-        },
-        {
-            "location": "/code/train/onmt+train+EpochState/#undocumented-methods",
-            "text": "*  onmt.EpochState:getTrainPpl()  \n *  onmt.EpochState:getTime()  \n *  onmt.EpochState:getStatus()  \n *  onmt.EpochState:getMinFreememory()",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/train/onmt+train+Optim/",
-            "text": "onmt.Optim\n\n\n[src]\n\n\n\n\nonmt.Optim:updateLearningRate(score, epoch)\n\n\ndecay learning rate if val perf does not improve or we hit the startDecayAt limit\n\n\nUndocumented methods\n\n\n\n * \nonmt.Optim(args)\n\n\n\n * \nonmt.Optim:zeroGrad(gradParams)\n\n\n\n * \nonmt.Optim:prepareGrad(gradParams, maxGradNorm)\n\n\n\n * \nonmt.Optim:updateParams(params, gradParams)\n\n\n\n * \nonmt.Optim:getLearningRate()\n\n\n\n * \nonmt.Optim:getStates()",
-            "title": "onmt+train+Optim"
-        },
-        {
-            "location": "/code/train/onmt+train+Optim/#onmtoptim",
-            "text": "[src]",
-            "title": "onmt.Optim"
-        },
-        {
-            "location": "/code/train/onmt+train+Optim/#onmtoptimupdatelearningratescore-epoch",
-            "text": "decay learning rate if val perf does not improve or we hit the startDecayAt limit",
-            "title": "onmt.Optim:updateLearningRate(score, epoch)"
-        },
-        {
-            "location": "/code/train/onmt+train+Optim/#undocumented-methods",
-            "text": "*  onmt.Optim(args)  \n *  onmt.Optim:zeroGrad(gradParams)  \n *  onmt.Optim:prepareGrad(gradParams, maxGradNorm)  \n *  onmt.Optim:updateParams(params, gradParams)  \n *  onmt.Optim:getLearningRate()  \n *  onmt.Optim:getStates()",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/translate/",
-            "text": "",
-            "title": "Home"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/",
-            "text": "onmt.Beam\n\n\nClass for managing the internals of the beam search process.\n\n\nhyp1---hyp1---hyp1 -hyp1\n    \\             /\nhyp2 \\-hyp2 /-hyp2--hyp2\n           /      \\\nhyp3---hyp3---hyp3 -hyp3\n========================\n\n\n\nTakes care of beams, back pointers, and scores.\n\n\n[src]\n\n\n\n\nonmt.Beam(size, numFeatures)\n\n\nConstructor\n\n\nParameters:\n\n\n\n\nsize\n : The beam \nK\n.\n\n\nnumFeatures\n : Number of features, (optional)\n\n\n\n\n[src]\n\n\n\n\nonmt.Beam:getCurrentState()\n\n\nGet the outputs for the current timestep.\n\n\n[src]\n\n\n\n\nonmt.Beam:getCurrentOrigin()\n\n\nGet the backpointers for the current timestep.\n\n\n[src]\n\n\n\n\nonmt.Beam:advance(wordLk, featsLk, attnOut)\n\n\nGiven prob over words for every last beam \nwordLk\n and attention\n \nattnOut\n. Compute and update the beam search.\n\n\nParameters:\n\n\n\n\nwordLk\n- probs of advancing from the last step (K x words)\n\n\nfeatsLk\n- probs of features at the last step (K x numfeatures x featsize)\n\n\nattnOut\n- attention at the last step\n\n\n\n\nReturns: true if beam search is complete.\n\n\n[src]\n\n\n\n\nonmt.Beam:getBest()\n\n\nGet the score of the best in the beam. \n\n\n[src]\n\n\n\n\nonmt.Beam:getHyp(k)\n\n\nWalk back to construct the full hypothesis.\n\n\nParameters:\n\n\n\n\nk\n - the position in the beam to construct.\n\n\n\n\nReturns:\n\n\n\n\nThe hypothesis\n\n\nThe attention at each time step.\n\n\n\n\nUndocumented methods\n\n\n\n * \nonmt.Beam:sortBest()",
-            "title": "onmt+translate+Beam"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeam",
-            "text": "Class for managing the internals of the beam search process.  hyp1---hyp1---hyp1 -hyp1\n    \\             /\nhyp2 \\-hyp2 /-hyp2--hyp2\n           /      \\\nhyp3---hyp3---hyp3 -hyp3\n========================  Takes care of beams, back pointers, and scores.  [src]",
-            "title": "onmt.Beam"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamsize-numfeatures",
-            "text": "Constructor  Parameters:   size  : The beam  K .  numFeatures  : Number of features, (optional)   [src]",
-            "title": "onmt.Beam(size, numFeatures)"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamgetcurrentstate",
-            "text": "Get the outputs for the current timestep.  [src]",
-            "title": "onmt.Beam:getCurrentState()"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamgetcurrentorigin",
-            "text": "Get the backpointers for the current timestep.  [src]",
-            "title": "onmt.Beam:getCurrentOrigin()"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamadvancewordlk-featslk-attnout",
-            "text": "Given prob over words for every last beam  wordLk  and attention\n  attnOut . Compute and update the beam search.  Parameters:   wordLk - probs of advancing from the last step (K x words)  featsLk - probs of features at the last step (K x numfeatures x featsize)  attnOut - attention at the last step   Returns: true if beam search is complete.  [src]",
-            "title": "onmt.Beam:advance(wordLk, featsLk, attnOut)"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamgetbest",
-            "text": "Get the score of the best in the beam.   [src]",
-            "title": "onmt.Beam:getBest()"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#onmtbeamgethypk",
-            "text": "Walk back to construct the full hypothesis.  Parameters:   k  - the position in the beam to construct.   Returns:   The hypothesis  The attention at each time step.",
-            "title": "onmt.Beam:getHyp(k)"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Beam/#undocumented-methods",
-            "text": "*  onmt.Beam:sortBest()",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/translate/onmt+translate+PhraseTable/",
-            "text": "onmt.PhraseTable\n\n\nParse and lookup a words from a phrase table.\n\n\n[src]\n\n\n\n\nonmt.PhraseTable:lookup(word)\n\n\nReturn the phrase table match for \nword\n. \n\n\nUndocumented methods\n\n\n\n * \nonmt.PhraseTable(filePath)\n\n\n\n * \nonmt.PhraseTable:contains(word)",
-            "title": "onmt+translate+PhraseTable"
-        },
-        {
-            "location": "/code/translate/onmt+translate+PhraseTable/#onmtphrasetable",
-            "text": "Parse and lookup a words from a phrase table.  [src]",
-            "title": "onmt.PhraseTable"
-        },
-        {
-            "location": "/code/translate/onmt+translate+PhraseTable/#onmtphrasetablelookupword",
-            "text": "Return the phrase table match for  word .",
-            "title": "onmt.PhraseTable:lookup(word)"
-        },
-        {
-            "location": "/code/translate/onmt+translate+PhraseTable/#undocumented-methods",
-            "text": "*  onmt.PhraseTable(filePath)  \n *  onmt.PhraseTable:contains(word)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Translator/",
-            "text": "onmt.Translator\n\n\nUndocumented methods\n\n\n\n * \nonmt.Translator.declareOpts(cmd)\n\n\n\n * \nonmt.Translator(args)\n\n\n\n * \nonmt.Translator:buildData(srcBatch, srcFeaturesBatch, goldBatch, goldFeaturesBatch)\n\n\n\n * \nonmt.Translator:buildTargetTokens(pred, predFeats, src, attn)\n\n\n\n * \nonmt.Translator:translateBatch(batch)\n\n\n\n * \nonmt.Translator:translate(srcBatch, srcFeaturesBatch, goldBatch, goldFeaturesBatch)",
-            "title": "onmt+translate+Translator"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Translator/#onmttranslator",
-            "text": "",
-            "title": "onmt.Translator"
-        },
-        {
-            "location": "/code/translate/onmt+translate+Translator/#undocumented-methods",
-            "text": "*  onmt.Translator.declareOpts(cmd)  \n *  onmt.Translator(args)  \n *  onmt.Translator:buildData(srcBatch, srcFeaturesBatch, goldBatch, goldFeaturesBatch)  \n *  onmt.Translator:buildTargetTokens(pred, predFeats, src, attn)  \n *  onmt.Translator:translateBatch(batch)  \n *  onmt.Translator:translate(srcBatch, srcFeaturesBatch, goldBatch, goldFeaturesBatch)",
-            "title": "Undocumented methods"
-        },
-        {
-            "location": "/details/preprocess/",
-            "text": "Preprocess Options\n\n\n\n\nconfig\n\n\nRead options from this file []\n\n\ntrain_src\n\n\nPath to the training source data []\n\n\ntrain_tgt\n\n\nPath to the training target data []\n\n\nvalid_src\n\n\nPath to the validation source data []\n\n\nvalid_tgt\n\n\nPath to the validation target data []\n\n\nsave_data\n\n\nOutput file for the prepared data []\n\n\nsrc_vocab_size\n\n\nSize of the source vocabulary [50000]\n\n\ntgt_vocab_size\n\n\nSize of the target vocabulary [50000]\n\n\nsrc_vocab\n\n\nPath to an existing source vocabulary []\n\n\ntgt_vocab\n\n\nPath to an existing target vocabulary []\n\n\nfeatures_vocabs_prefix\n\n\nPath prefix to existing features vocabularies []\n\n\nsrc_seq_length\n\n\nMaximum source sequence length [50]\n\n\ntgt_seq_length\n\n\nMaximum target sequence length [50]\n\n\nshuffle\n\n\nShuffle data [1]\n\n\nseed\n\n\nRandom seed [3435]",
+        }, 
+        {
+            "location": "/quickstart/#step-1-preprocess-the-data", 
+            "text": "th preprocess.lua -train_src data/src-train.txt -train_tgt data/tgt-train.txt -valid_src data/src-val.txt -valid_tgt data/tgt-val.txt -save_data data/demo  We will be working with some example data in  data/  folder.  The data consists of parallel source ( src ) and target ( tgt ) data containing one sentence per line with tokens separated by a space:   src-train.txt  tgt-train.txt  src-val.txt  tgt-val.txt   Validation files are required and used to evaluate the convergence of the training. It usually contains no more than 5000 sentences.  $ head -n 3 data/src-train.txt\nIt is not acceptable that , with the help of the national bureaucracies , Parliament  apos;s legislative prerogative should be made null and void by means of implementing provisions whose content , purpose and extent are not laid down in advance .\nFederal Master Trainer and Senior Instructor of the Italian Federation of Aerobic Fitness , Group Fitness , Postural Gym , Stretching and Pilates; from 2004 , he has been collaborating with Antiche Terme as personal Trainer and Instructor of Stretching , Pilates and Postural Gym . quot; Two soldiers came up to me and told me that if I refuse to sleep with them , they will kill me . They beat me and ripped my clothes .  After running the preprocessing, the following files are generated:   demo.src.dict : Dictionary of source vocab to index mappings.  demo.tgt.dict : Dictionary of target vocab to index mappings.  demo-train.t7 : serialized Torch file containing vocabulary, training and validation data   The  *.dict  files are needed to check or reuse the vocabularies. These files are simple human-readable dictionaries.  $ head -n 10 data/demo.src.dict blank  1 unk  2 s  3 /s  4\nIt 5\nis 6\nnot 7\nacceptable 8\nthat 9\n, 10\nwith 11  Internally the system never touches the words themselves, but uses these indices.   Note  If the corpus is not tokenized, you can use  OpenNMT's tokenizer .", 
+            "title": "Step 1: Preprocess the data"
+        }, 
+        {
+            "location": "/quickstart/#step-2-train-the-model", 
+            "text": "th train.lua -data data/demo-train.t7 -save_model demo-model  The main train command is quite simple. Minimally it takes a data file\nand a save file.  This will run the default model, which consists of a\n2-layer LSTM with 500 hidden units on both the encoder/decoder. You\ncan also add  -gpuid 1  to use (say) GPU 1.", 
+            "title": "Step 2: Train the model"
+        }, 
+        {
+            "location": "/quickstart/#step-3-translate", 
+            "text": "th translate.lua -model demo-model_epochX_PPL.t7 -src data/src-test.txt -output pred.txt  Now you have a model which you can use to predict on new data. We do this by running beam search. This will output predictions into  pred.txt .   Note  The predictions are going to be quite terrible, as the demo dataset is small. Try running on some larger datasets! For example you can download millions of parallel sentences for  translation  or  summarization .", 
+            "title": "Step 3: Translate"
+        }, 
+        {
+            "location": "/data/preparation/", 
+            "text": "The data prepration (or preprocessing) passes over the data to generate word vocabularies and sequences of indices used by the training.\n\n\nDelimiters\n\n\nTraining data are expected to follow the following format:\n\n\n\n\nsentences are newline-separated\n\n\ntokens are space-separated\n\n\n\n\nVocabularies\n\n\nThe main goal of the preprocessing is to build the word vocabularies and assign each word to an index within these dictionaries. By default, word vocabularies are limited to 50,000. You can change this value with the \n-src_vocab_size\n and \n-tgt_vocab_size\n. Alternatively, you can prune the vocabulary size by setting the minimum frequency of words with the \n-src_words_min_frequency\n and \n-tgt_words_min_frequency\n options. The preprocessing script will generate \n*.dict\n files containing the vocabularies.\n\n\nThese files are optional for the rest of the workflow. However, it is common to reuse vocabularies across dataset using the \n-src_vocab\n and \n-tgt_vocab\n options. This is particularly needed when retraining a model on new data: the vocabulary has to be the same.\n\n\nVocabularies can be generated beforhand with the \ntools/build_vocab.lua\n script.\n\n\n\n\nNote\n\n\nWhen pruning vocabularies to 50,000, the preprocessing will actually report a vocabulary size of 50,004 because of 4 special tokens that are automatically added.\n\n\n\n\nShuffling and sorting\n\n\nBy default, OpenNMT both shuffles and sorts the data before the training. This process comes from 2 constraints of batch training:\n\n\n\n\nshuffling\n: sentences within a batch should come from different parts of the corpus\n\n\nsorting\n: sentences within a batch should have the same source length (i.e. without padding to maximize efficiency)\n\n\n\n\n\n\nNote\n\n\nDuring the training, batches are also randomly selected unless the \n-curriculum\n option is used.", 
+            "title": "Preparation"
+        }, 
+        {
+            "location": "/data/preparation/#delimiters", 
+            "text": "Training data are expected to follow the following format:   sentences are newline-separated  tokens are space-separated", 
+            "title": "Delimiters"
+        }, 
+        {
+            "location": "/data/preparation/#vocabularies", 
+            "text": "The main goal of the preprocessing is to build the word vocabularies and assign each word to an index within these dictionaries. By default, word vocabularies are limited to 50,000. You can change this value with the  -src_vocab_size  and  -tgt_vocab_size . Alternatively, you can prune the vocabulary size by setting the minimum frequency of words with the  -src_words_min_frequency  and  -tgt_words_min_frequency  options. The preprocessing script will generate  *.dict  files containing the vocabularies.  These files are optional for the rest of the workflow. However, it is common to reuse vocabularies across dataset using the  -src_vocab  and  -tgt_vocab  options. This is particularly needed when retraining a model on new data: the vocabulary has to be the same.  Vocabularies can be generated beforhand with the  tools/build_vocab.lua  script.   Note  When pruning vocabularies to 50,000, the preprocessing will actually report a vocabulary size of 50,004 because of 4 special tokens that are automatically added.", 
+            "title": "Vocabularies"
+        }, 
+        {
+            "location": "/data/preparation/#shuffling-and-sorting", 
+            "text": "By default, OpenNMT both shuffles and sorts the data before the training. This process comes from 2 constraints of batch training:   shuffling : sentences within a batch should come from different parts of the corpus  sorting : sentences within a batch should have the same source length (i.e. without padding to maximize efficiency)    Note  During the training, batches are also randomly selected unless the  -curriculum  option is used.", 
+            "title": "Shuffling and sorting"
+        }, 
+        {
+            "location": "/data/word_features/", 
+            "text": "OpenNMT supports additional features on source and target words in the form of \ndiscrete labels\n.\n\n\n\n\nOn the source side, these features act as \nadditional information\n to the encoder. An\nembedding will be optimized for each label and then fed as additional source input\nalongside the word it annotates.\n\n\nOn the target side, these features will be \npredicted\n by the network. The\ndecoder is then able to decode a sentence and annotate each word.\n\n\n\n\nTo use additional features, directly modify your data by appending labels to each word with\nthe special character \n\uffe8\n (unicode character FFE8). There can be an \narbitrary number\n of additional\nfeatures in the form \nword\uffe8feat1\uffe8feat2\uffe8...\uffe8featN\n but each word must have the same number of\nfeatures and in the same order. Source and target data can have a different number of additional features.\n\n\nAs an example, see \ndata/src-train-case.txt\n which uses a separate feature\nto represent the case of each word. Using case as a feature is a way to optimize the word\ndictionary (no duplicated words like \"the\" and \"The\") and gives the system an additional\ninformation that can be useful to optimize its objective function.\n\n\nit\uffe8C is\uffe8l not\uffe8l acceptable\uffe8l that\uffe8l ,\uffe8n with\uffe8l the\uffe8l help\uffe8l of\uffe8l the\uffe8l national\uffe8l bureaucracies\uffe8l ,\uffe8n parliament\uffe8C \napos;s\uffe8l legislative\uffe8l prerogative\uffe8l should\uffe8l be\uffe8l made\uffe8l null\uffe8l and\uffe8l void\uffe8l by\uffe8l means\uffe8l of\uffe8l implementing\uffe8l provisions\uffe8l whose\uffe8l content\uffe8l ,\uffe8n purpose\uffe8l and\uffe8l extent\uffe8l are\uffe8l not\uffe8l laid\uffe8l down\uffe8l in\uffe8l advance\uffe8l .\uffe8n\n\n\n\n\nYou can generate this case feature with OpenNMT's tokenization script and the \n-case_feature\n flag.\n\n\nTime-shifting\n\n\nBy default, word features on the target side are automatically shifted compared to the words so that their prediction directly depends on the word they annotate. More precisely at timestep \nt\n:\n\n\n\n\nthe inputs are \nwords^{(t)}\n and \nfeatures^{(t-1)}\n\n\n\n\nthe outputs are \nwords^{(t+1)}\n and \nfeatures^{(t)}\n\n\n\n\n\n\nVocabularies\n\n\nBy default, features vocabulary size is unlimited. Depending on the type of features you are using, you may want to limit their vocabulary during the preprocessing with the \n-src_vocab_size\n and \n-tgt_vocab_size\n options in the format \nword_vocab_size[,feat1_vocab_size[,feat2_vocab_size[...]]]\n. For example:\n\n\n# unlimited source features vocabulary size\n-src_vocab_size 50000\n\n# first feature vocabulary is limited to 60, others are unlimited\n-src_vocab_size 50000,60\n\n# second feature vocabulary is limited to 100, others are unlimited\n-src_vocab_size 50000,0,100\n\n# limit vocabulary size of the first and second feature\n-src_vocab_size 50000,60,100\n\n\n\n\nYou can similarly use \n-src_words_min_frequency\n and \n-tgt_words_min_frequency\n to limit vocabulary by frequency instead of absolute size.\n\n\nLike words, word features vocabularies can be reused across datasets with the \n-features_vocabs_prefix\n. For example, if the processing generates theses features dictionaries:\n\n\n\n\ndata/mydicts.source_feature_1.dict\n\n\ndata/mydicts.source_feature_2.dict\n\n\ndata/mydicts.source_feature_3.dict\n\n\n\n\nyou have to set \n-features_vocabs_prefix data/mydicts\n as command line option.\n\n\nEmbeddings\n\n\nThe feature embedding size is automatically computed based on the number of values the feature takes. The default size reduction works well for features with few values like the case or POS. For other features, you may want to manually choose the embedding size with the \n-src_word_vec_size\n and \n-tgt_word_vec_size\n options. They behave similarly to \n-src_vocab_size\n with a comma-separated list of embedding size: \nword_vec_size[,feat1_vec_size[,feat2_vec_size[...]]]\n.\n\n\nBy default each embedding is concatenated. You can choose to sum them by setting \n-feat_merge sum\n.\n\n\n\n\nWarning\n\n\nIn the \nsum\n case, each feature embedding must have the same dimension. You can set the common embedding size with \n-feat_vec_size\n.\n\n\n\n\nBeam search\n\n\nDuring decoding, the beam search is only applied on the target words space and not on the word features. When the beam path is complete, the associated features are selected along this path.", 
+            "title": "Word features"
+        }, 
+        {
+            "location": "/data/word_features/#time-shifting", 
+            "text": "By default, word features on the target side are automatically shifted compared to the words so that their prediction directly depends on the word they annotate. More precisely at timestep  t :   the inputs are  words^{(t)}  and  features^{(t-1)}   the outputs are  words^{(t+1)}  and  features^{(t)}", 
+            "title": "Time-shifting"
+        }, 
+        {
+            "location": "/data/word_features/#vocabularies", 
+            "text": "By default, features vocabulary size is unlimited. Depending on the type of features you are using, you may want to limit their vocabulary during the preprocessing with the  -src_vocab_size  and  -tgt_vocab_size  options in the format  word_vocab_size[,feat1_vocab_size[,feat2_vocab_size[...]]] . For example:  # unlimited source features vocabulary size\n-src_vocab_size 50000\n\n# first feature vocabulary is limited to 60, others are unlimited\n-src_vocab_size 50000,60\n\n# second feature vocabulary is limited to 100, others are unlimited\n-src_vocab_size 50000,0,100\n\n# limit vocabulary size of the first and second feature\n-src_vocab_size 50000,60,100  You can similarly use  -src_words_min_frequency  and  -tgt_words_min_frequency  to limit vocabulary by frequency instead of absolute size.  Like words, word features vocabularies can be reused across datasets with the  -features_vocabs_prefix . For example, if the processing generates theses features dictionaries:   data/mydicts.source_feature_1.dict  data/mydicts.source_feature_2.dict  data/mydicts.source_feature_3.dict   you have to set  -features_vocabs_prefix data/mydicts  as command line option.", 
+            "title": "Vocabularies"
+        }, 
+        {
+            "location": "/data/word_features/#embeddings", 
+            "text": "The feature embedding size is automatically computed based on the number of values the feature takes. The default size reduction works well for features with few values like the case or POS. For other features, you may want to manually choose the embedding size with the  -src_word_vec_size  and  -tgt_word_vec_size  options. They behave similarly to  -src_vocab_size  with a comma-separated list of embedding size:  word_vec_size[,feat1_vec_size[,feat2_vec_size[...]]] .  By default each embedding is concatenated. You can choose to sum them by setting  -feat_merge sum .   Warning  In the  sum  case, each feature embedding must have the same dimension. You can set the common embedding size with  -feat_vec_size .", 
+            "title": "Embeddings"
+        }, 
+        {
+            "location": "/data/word_features/#beam-search", 
+            "text": "During decoding, the beam search is only applied on the target words space and not on the word features. When the beam path is complete, the associated features are selected along this path.", 
+            "title": "Beam search"
+        }, 
+        {
+            "location": "/training/models/", 
+            "text": "In addition to standard dimension settings like the number of layers, the hidden dimension size, etc., OpenNMT also provides various model architecture.\n\n\nEncoders\n\n\nDefault encoder\n\n\nThe default encoder is a simple recurrent neural network (LSTM or GRU).\n\n\nBidirectional encoder\n\n\nThe bidirectional encoder (\n-brnn\n) consists of two independent encoders: one encoding the normal sequence and the other the reversed sequence. The output and final states are concatenated or summed depending on the \n-brnn_merge\n option.\n\n\n\n\nDeep bidirectional encoder\n\n\nThe deep bidirectional encoder (\n-dbrnn\n) is an alternative bidirectional encoder where the output of \nevery\n layers are summed (or concatenated) prior feeding to the next layer.\n\n\n\n\nPyramidal deep bidirectional encoder\n\n\nThe pyramidal deep bidirectional encoder (\n-pdbrnn\n) is an alternative deep bidirectional encoder that reduces the time dimension at each layer based on \n-pdbrnn_reduction\n.\n\n\n\n\nDecoders\n\n\nDefault decoder\n\n\nThe default decoder applies attention over the source sequence and implements input feeding by default.\n\n\nInput feeding is an approach to feed attentional vectors \"\nas inputs to the next time steps to inform the model about past alignment decisions\n\" (\nLuong et al. (2015)\n). This can be disabled by setting \n-input_feed 0\n.\n\n\n\n\nResidual connections\n\n\nWith residual connections the input of a layer is element-wise added to the output before feeding to the next layer. This approach proved to be useful for the gradient flow with deep RNN stacks (more than 4 layers).\n\n\n\n\nThe following components support residual connections with the \n-residual\n flag:\n\n\n\n\ndefault encoder\n\n\nbidirectional encoder\n\n\ndefault decoder\n\n\n\n\nAttention Model\n\n\nDefault attention model implemented is \"Global Attention Model (general)\" from: \nLuong (2015)\n.\n\n\n\n\nwhere:\n\n\n\n\na_t(s) = \\frac{exp(score(h_t,\\bar{h}_s))}{\\sum_{s'} exp(score(h_t,\\bar{h}_s)}\n\n\n\n\nand\n\n\n\n\nscore(h_t,\\bar{h}_s)=h_t^TW_a\\bar{h}_s", 
+            "title": "Models"
+        }, 
+        {
+            "location": "/training/models/#encoders", 
+            "text": "", 
+            "title": "Encoders"
+        }, 
+        {
+            "location": "/training/models/#default-encoder", 
+            "text": "The default encoder is a simple recurrent neural network (LSTM or GRU).", 
+            "title": "Default encoder"
+        }, 
+        {
+            "location": "/training/models/#bidirectional-encoder", 
+            "text": "The bidirectional encoder ( -brnn ) consists of two independent encoders: one encoding the normal sequence and the other the reversed sequence. The output and final states are concatenated or summed depending on the  -brnn_merge  option.", 
+            "title": "Bidirectional encoder"
+        }, 
+        {
+            "location": "/training/models/#deep-bidirectional-encoder", 
+            "text": "The deep bidirectional encoder ( -dbrnn ) is an alternative bidirectional encoder where the output of  every  layers are summed (or concatenated) prior feeding to the next layer.", 
+            "title": "Deep bidirectional encoder"
+        }, 
+        {
+            "location": "/training/models/#pyramidal-deep-bidirectional-encoder", 
+            "text": "The pyramidal deep bidirectional encoder ( -pdbrnn ) is an alternative deep bidirectional encoder that reduces the time dimension at each layer based on  -pdbrnn_reduction .", 
+            "title": "Pyramidal deep bidirectional encoder"
+        }, 
+        {
+            "location": "/training/models/#decoders", 
+            "text": "", 
+            "title": "Decoders"
+        }, 
+        {
+            "location": "/training/models/#default-decoder", 
+            "text": "The default decoder applies attention over the source sequence and implements input feeding by default.  Input feeding is an approach to feed attentional vectors \" as inputs to the next time steps to inform the model about past alignment decisions \" ( Luong et al. (2015) ). This can be disabled by setting  -input_feed 0 .", 
+            "title": "Default decoder"
+        }, 
+        {
+            "location": "/training/models/#residual-connections", 
+            "text": "With residual connections the input of a layer is element-wise added to the output before feeding to the next layer. This approach proved to be useful for the gradient flow with deep RNN stacks (more than 4 layers).   The following components support residual connections with the  -residual  flag:   default encoder  bidirectional encoder  default decoder", 
+            "title": "Residual connections"
+        }, 
+        {
+            "location": "/training/models/#attention-model", 
+            "text": "Default attention model implemented is \"Global Attention Model (general)\" from:  Luong (2015) .   where:   a_t(s) = \\frac{exp(score(h_t,\\bar{h}_s))}{\\sum_{s'} exp(score(h_t,\\bar{h}_s)}   and   score(h_t,\\bar{h}_s)=h_t^TW_a\\bar{h}_s", 
+            "title": "Attention Model"
+        }, 
+        {
+            "location": "/training/embeddings/", 
+            "text": "Word embeddings are learned using a lookup table. Each word is assigned to a random vector within this table that is simply updated with the gradients coming from the network.\n\n\nPretrained\n\n\nWhen training with small amounts of data, performance can be improved by starting with pretrained embeddings. The arguments \n-pre_word_vecs_dec\n and \n-pre_word_vecs_enc\n can be used to specify these files.\n\n\nThe pretrained embeddings must be manually constructed Torch serialized tensors that correspond to the source and target dictionary files. For example:\n\n\nlocal vocab_size = 50004\nlocal embedding_size = 500\n\nlocal embeddings = torch.Tensor(vocab_size, embedding_size):uniform()\n\ntorch.save('enc_embeddings.t7', embeddings)\n\n\n\n\nwhere \nembeddings[i]\n is the embedding of the \ni\n-th word in the vocabulary.\n\n\nFixed\n\n\nBy default these embeddings will be updated during training, but they can be held fixed using \n-fix_word_vecs_enc\n and \n-fix_word_vecs_dec\n options. These options can be enabled or disabled during a retraining.\n\n\nExtraction\n\n\nThe \ntools/extract_embeddings.lua\n script can be used to extract the model word embeddings into text files. They can then be easily transformed into another format for visualization or processing.", 
+            "title": "Embeddings"
+        }, 
+        {
+            "location": "/training/embeddings/#pretrained", 
+            "text": "When training with small amounts of data, performance can be improved by starting with pretrained embeddings. The arguments  -pre_word_vecs_dec  and  -pre_word_vecs_enc  can be used to specify these files.  The pretrained embeddings must be manually constructed Torch serialized tensors that correspond to the source and target dictionary files. For example:  local vocab_size = 50004\nlocal embedding_size = 500\n\nlocal embeddings = torch.Tensor(vocab_size, embedding_size):uniform()\n\ntorch.save('enc_embeddings.t7', embeddings)  where  embeddings[i]  is the embedding of the  i -th word in the vocabulary.", 
+            "title": "Pretrained"
+        }, 
+        {
+            "location": "/training/embeddings/#fixed", 
+            "text": "By default these embeddings will be updated during training, but they can be held fixed using  -fix_word_vecs_enc  and  -fix_word_vecs_dec  options. These options can be enabled or disabled during a retraining.", 
+            "title": "Fixed"
+        }, 
+        {
+            "location": "/training/embeddings/#extraction", 
+            "text": "The  tools/extract_embeddings.lua  script can be used to extract the model word embeddings into text files. They can then be easily transformed into another format for visualization or processing.", 
+            "title": "Extraction"
+        }, 
+        {
+            "location": "/training/multi_gpu/", 
+            "text": "OpenNMT can make use of multiple GPU during the training by implementing \ndata parallelism\n. This technique trains batches in parallel on different network replicas. To use data parellelism, assign a list of comma-separated GPU identifiers to the \n-gpuid\n option. For example:\n\n\nth train.lua -data data/demo-train.t7 -save_model demo -gpuid 1,2,4\n\n\n\n\nwill use the first, the second and the fourth GPU of the machine as returned by the CUDA API.\n\n\n\n\nNote\n\n\nnvidia-smi\n enumerates devices based on the driver API which can be in a different order than the CUDA API.\n\n\n\n\nSynchronous\n\n\nIn this default mode, each replica processes in parallel a different batch at each iteration. The gradients from each replica are accumulated, and parameters updated and synchronized.\n\n\n\n\nWarning\n\n\nWhen using \nN\n GPU(s), the actual batch size is \nN \\times\n\n\n-max_batch_size\n.\n\n\n\n\nAsynchronous\n\n\n(Also known as asynchronous SGD or downpour SGD.)\n\n\nIn this mode enabled with the \n-async_parallel\n flag, the different replicas are independently\ncalculating their own gradients, updating a master copy of the parameters and getting updated values\nof the parameters. To enable convergence at the beginning of the training, only one replica is working for the first \n-async_parallel_minbatch\n iterations to prepare a better initialization for the asynchronous part.\n\n\n\n\nWarning\n\n\nA GPU core is dedicated to store the master copy of the parameters and is not used for training.\n\n\n\n\n\n\nNote\n\n\nAs training logs and saving require synchronization, consider using higher \n-report_every\n and \n-save_every\n values.", 
+            "title": "Mutli GPU"
+        }, 
+        {
+            "location": "/training/multi_gpu/#synchronous", 
+            "text": "In this default mode, each replica processes in parallel a different batch at each iteration. The gradients from each replica are accumulated, and parameters updated and synchronized.   Warning  When using  N  GPU(s), the actual batch size is  N \\times  -max_batch_size .", 
+            "title": "Synchronous"
+        }, 
+        {
+            "location": "/training/multi_gpu/#asynchronous", 
+            "text": "(Also known as asynchronous SGD or downpour SGD.)  In this mode enabled with the  -async_parallel  flag, the different replicas are independently\ncalculating their own gradients, updating a master copy of the parameters and getting updated values\nof the parameters. To enable convergence at the beginning of the training, only one replica is working for the first  -async_parallel_minbatch  iterations to prepare a better initialization for the asynchronous part.   Warning  A GPU core is dedicated to store the master copy of the parameters and is not used for training.    Note  As training logs and saving require synchronization, consider using higher  -report_every  and  -save_every  values.", 
+            "title": "Asynchronous"
+        }, 
+        {
+            "location": "/training/retraining/", 
+            "text": "By default, OpenNMT saves a checkpoint every 5000 iterations and at the end of each epoch. For more frequent or infrequent saves, you can use the \n-save_every\n option which defines the number of iterations after which the training saves a checkpoint.\n\n\nThere are several reasons one may want to train from a saved model with the \n-train_from\n option:\n\n\n\n\ncontinuing a stopped training\n\n\ncontinuing the training with a smaller batch size\n\n\ntraining a model on new data (incremental adaptation)\n\n\nstarting a training from pre-trained parameters\n\n\netc.\n\n\n\n\nConsiderations\n\n\nWhen training from an existing model, some settings can not be changed:\n\n\n\n\nthe model topology (layers, hidden size, etc.)\n\n\nthe vocabularies\n\n\n\n\n\n\nExceptions\n\n\ndropout\n, \nfix_word_vecs_enc\n and \nfix_word_vecs_dec\n are model options that can be changed for a retraining.\n\n\n\n\nResuming a stopped training\n\n\nIt is common that a training stops: crash, server reboot, user action, etc. In this case, you may want to continue the training for more epochs by using using the \n-continue\n flag. For example:\n\n\n# start the initial training\nth train.lua -gpuid 1 -data data/demo-train.t7 -save_model demo -save_every 50\n\n# train for several epochs...\n\n# need to reboot the server!\n\n# continue the training from the last checkpoint\nth train.lua -gpuid 1 -data data/demo-train.t7 -save_model demo -save_every 50 -train_from demo_checkpoint.t7 -continue\n\n\n\n\nThe \n-continue\n flag ensures that the training continues with the same configuration and optimization states. In particular, the following options are set to their last known value:\n\n\n\n\n-curriculum\n\n\n-decay\n\n\n-learning_rate_decay\n\n\n-learning_rate\n\n\n-max_grad_norm\n\n\n-min_learning_rate\n\n\n-optim\n\n\n-start_decay_at\n\n\n-start_decay_ppl_delta\n\n\n-start_epoch\n\n\n-start_iteration\n\n\n\n\n\n\nNote\n\n\nThe \n-end_epoch\n value is not automatically set as the user may want to continue its training for more epochs past the end.\n\n\n\n\nAdditionally, the \n-continue\n flag retrieves from the previous training:\n\n\n\n\nthe non-SGD optimizers states\n\n\nthe random generator states\n\n\nthe batch order (when continuing from an intermediate checkpoint)\n\n\n\n\nTraining from pre-trained parameters\n\n\nAnother use case it to use a base model and train it further with new training options (in particular the optimization method and the learning rate). Using \n-train_from\n without \n-continue\n will start a new training with parameters initialized from a pre-trained model.", 
+            "title": "Retraining"
+        }, 
+        {
+            "location": "/training/retraining/#considerations", 
+            "text": "When training from an existing model, some settings can not be changed:   the model topology (layers, hidden size, etc.)  the vocabularies    Exceptions  dropout ,  fix_word_vecs_enc  and  fix_word_vecs_dec  are model options that can be changed for a retraining.", 
+            "title": "Considerations"
+        }, 
+        {
+            "location": "/training/retraining/#resuming-a-stopped-training", 
+            "text": "It is common that a training stops: crash, server reboot, user action, etc. In this case, you may want to continue the training for more epochs by using using the  -continue  flag. For example:  # start the initial training\nth train.lua -gpuid 1 -data data/demo-train.t7 -save_model demo -save_every 50\n\n# train for several epochs...\n\n# need to reboot the server!\n\n# continue the training from the last checkpoint\nth train.lua -gpuid 1 -data data/demo-train.t7 -save_model demo -save_every 50 -train_from demo_checkpoint.t7 -continue  The  -continue  flag ensures that the training continues with the same configuration and optimization states. In particular, the following options are set to their last known value:   -curriculum  -decay  -learning_rate_decay  -learning_rate  -max_grad_norm  -min_learning_rate  -optim  -start_decay_at  -start_decay_ppl_delta  -start_epoch  -start_iteration    Note  The  -end_epoch  value is not automatically set as the user may want to continue its training for more epochs past the end.   Additionally, the  -continue  flag retrieves from the previous training:   the non-SGD optimizers states  the random generator states  the batch order (when continuing from an intermediate checkpoint)", 
+            "title": "Resuming a stopped training"
+        }, 
+        {
+            "location": "/training/retraining/#training-from-pre-trained-parameters", 
+            "text": "Another use case it to use a base model and train it further with new training options (in particular the optimization method and the learning rate). Using  -train_from  without  -continue  will start a new training with parameters initialized from a pre-trained model.", 
+            "title": "Training from pre-trained parameters"
+        }, 
+        {
+            "location": "/training/decay/", 
+            "text": "OpenNMT's training implements empirical learning rate decay strategies. Experiences showed that using stochastic gradient descent (SGD) and a decay strategy yield better performance than optimization methods with adaptive learning rates.\n\n\nLearning rate updates are always computed at the end of an epoch. When a decay condition is met, the following update rule is applied:\n\n\n\n\nlr^{(t+1)} = lr^{(t)} \\times decay\n\n\n\n\nwhere \nlr^{(0)}=\n\n\n-learning_rate\n and \ndecay=\n\n\n-learning_rate_decay\n.\n\n\nIf an epoch is a too large unit for your particular use case, consider using \ndata sampling\n. Additionally, it may be useful to set a minimum learning rate with \n-min_learning_rate\n to stop the training earlier when the learning rate is too small to make a difference.\n\n\nDefault\n\n\nBy default, the decay strategy is binary. There is either no decay or the decay is applied after each epoch until the end of the training. The switch happens when one of the following condition is met first:\n\n\n\n\nThe validation perplexity is not improving more than \n-start_decay_ppl_delta\n.\n\n\nThe current epoch is past \n-start_decay_at\n.\n\n\n\n\nPerplexity-based\n\n\nWith the \n-decay perplexity_only\n option, learning rate is only decayed when the condition is met on the validation perplexity:\n\n\n\n\nThe validation perplexity is not improving more than \n-start_decay_ppl_delta\n.", 
+            "title": "Decay strategies"
+        }, 
+        {
+            "location": "/training/decay/#default", 
+            "text": "By default, the decay strategy is binary. There is either no decay or the decay is applied after each epoch until the end of the training. The switch happens when one of the following condition is met first:   The validation perplexity is not improving more than  -start_decay_ppl_delta .  The current epoch is past  -start_decay_at .", 
+            "title": "Default"
+        }, 
+        {
+            "location": "/training/decay/#perplexity-based", 
+            "text": "With the  -decay perplexity_only  option, learning rate is only decayed when the condition is met on the validation perplexity:   The validation perplexity is not improving more than  -start_decay_ppl_delta .", 
+            "title": "Perplexity-based"
+        }, 
+        {
+            "location": "/training/sampling/", 
+            "text": "Data sampling is a technique to select a subset of the training set at each epoch. This could be a way to make the epoch unit smaller or select relevant training sequences at each epoch.\n\n\nUniform\n\n\nThe simplest data sampling is to uniformly select a subset of the training data. Using the \n-sample N\n option, the training will randomly choose \nN\n training sequences at each epoch.\n\n\nA typical use case is to reduce the length of the epochs for more frequent learning rate updates and validation perplexity computation.\n\n\nPerplexity-based\n\n\nThis approach is an attempt to feed relevant training data at each epoch. When using the flag \n-sample_w_ppl\n, the perplexity of each sequence is used to generate a multinomial probability distribution over the training sequences. The higher the perplexity, the more likely the sequence is selected.\n\n\nAlternatively, perplexity-based sampling can be enabled when an average training perplexity is met with the \n-sample_w_ppl_init\n option.\n\n\n\n\nWarning\n\n\nThis perplexity-based approach is experimental and effects are to be experimented. This also results in a ~10% slowdown as the perplexity of \neach\n sequence has to be independently computed.", 
+            "title": "Data sampling"
+        }, 
+        {
+            "location": "/training/sampling/#uniform", 
+            "text": "The simplest data sampling is to uniformly select a subset of the training data. Using the  -sample N  option, the training will randomly choose  N  training sequences at each epoch.  A typical use case is to reduce the length of the epochs for more frequent learning rate updates and validation perplexity computation.", 
+            "title": "Uniform"
+        }, 
+        {
+            "location": "/training/sampling/#perplexity-based", 
+            "text": "This approach is an attempt to feed relevant training data at each epoch. When using the flag  -sample_w_ppl , the perplexity of each sequence is used to generate a multinomial probability distribution over the training sequences. The higher the perplexity, the more likely the sequence is selected.  Alternatively, perplexity-based sampling can be enabled when an average training perplexity is met with the  -sample_w_ppl_init  option.   Warning  This perplexity-based approach is experimental and effects are to be experimented. This also results in a ~10% slowdown as the perplexity of  each  sequence has to be independently computed.", 
+            "title": "Perplexity-based"
+        }, 
+        {
+            "location": "/translation/inference/", 
+            "text": "Release models\n\n\nAfter training a model, you may want to release it for inference only by using the \ntools/release_model.lua\n script. A released model takes less space on disk and is compatible with both CPU and GPU translation.\n\n\nth tools/release_model.lua -model model.t7 -gpuid 1\n\n\n\n\nBy default, it will create a \nmodel_release.t7\n file. See \nth tools/release_model.lua -h\n for advanced options.\n\n\n\n\nWarning\n\n\nA GPU is required to load non released models and released models can no longer be used for training.\n\n\n\n\nInference engine\n\n\nCTranslate is a C++ implementation of \ntranslate.lua\n for integration in existing products. Take a look at the \nGitHub project\n for more information.", 
+            "title": "Inference"
+        }, 
+        {
+            "location": "/translation/inference/#release-models", 
+            "text": "After training a model, you may want to release it for inference only by using the  tools/release_model.lua  script. A released model takes less space on disk and is compatible with both CPU and GPU translation.  th tools/release_model.lua -model model.t7 -gpuid 1  By default, it will create a  model_release.t7  file. See  th tools/release_model.lua -h  for advanced options.   Warning  A GPU is required to load non released models and released models can no longer be used for training.", 
+            "title": "Release models"
+        }, 
+        {
+            "location": "/translation/inference/#inference-engine", 
+            "text": "CTranslate is a C++ implementation of  translate.lua  for integration in existing products. Take a look at the  GitHub project  for more information.", 
+            "title": "Inference engine"
+        }, 
+        {
+            "location": "/translation/beam_search/", 
+            "text": "By default, translation is done using beam search. The \n-beam_size\n option can be used to trade-off translation time and search accuracy, with \n-beam_size 1\n giving greedy search. The small default beam size is often enough in practice.\n\n\nBeam search can also be used to provide an approximate n-best list of translations by setting \n-n_best\n greater than 1. For analysis, the translation command also takes an oracle/gold \n-tgt\n file and will output a comparison of scores.\n\n\nHypotheses filtering\n\n\nThe beam search provides a built-in filter based on unknown words: \n-max_num_unks\n. Hypotheses with for more unkown words than this value are dropped.\n\n\n\n\nNote\n\n\nAs dropped hypotheses temporarily reduce the beam size, the \n-pre_filter_factor\n is a way to increase the number of considered hypotheses before applying filters.\n\n\n\n\nNormalization\n\n\nThe beam search also supports various normalization techniques that are disabled by default and can be used to biased the scores generated by the model:\n\n\n\n\ns(Y,X)=\\frac{\\log P(Y|X)}{lp(Y)}+cp(X,Y)\n\n\n\n\nwhere \nX\n is the source, \nY\n is the current target, and the functions as defined below. An additional penalty on end of sentence tokens can also be added to prioritize longer sentences.\n\n\nLength normalization\n\n\nScores are normalized by the following formula as defined in \nWu et al. (2016)\n:\n\n\n\n\nlp(Y) = \\frac{(5+|Y|)^\\alpha}{(5+1)^\\alpha}\n\n\n\n\nwhere \n|Y|\n is the current target length and \n\\alpha\n is the length normalization coefficient \n-length_norm\n.\n\n\nCoverage normalization\n\n\nScores are penalized by the following formula as defined in \nWu et al. (2016)\n:\n\n\n\n\ncp(X,Y) = \\beta\\sum_{i=1}^{|X|}\\log(\\min(\\sum_{j=1}^{|Y|}p_{i,j},1.0))\n\n\n\n\nwhere \np_{i,j}\n is the attention probability of the \nj\n-th target word \ny_j\n on the \ni\n-th source word \nx_i\n, \n|X|\n is the source length, \n|Y|\n is the current target length and \n\\beta\n is the coverage normalization coefficient \n-coverage_norm\n.\n\n\nEnd of sentence normalization\n\n\nThe score of the end of sentence token is penalized by the following formula:\n\n\n\n\nep(X,Y)=\\gamma\\frac{|X|}{|Y|}\n\n\n\n\nwhere \n|X|\n is the source length, \n|Y|\n is the current target length and \n\\gamma\n is the coverage normalization coefficient \n-eos_norm\n.", 
+            "title": "Beam search"
+        }, 
+        {
+            "location": "/translation/beam_search/#hypotheses-filtering", 
+            "text": "The beam search provides a built-in filter based on unknown words:  -max_num_unks . Hypotheses with for more unkown words than this value are dropped.   Note  As dropped hypotheses temporarily reduce the beam size, the  -pre_filter_factor  is a way to increase the number of considered hypotheses before applying filters.", 
+            "title": "Hypotheses filtering"
+        }, 
+        {
+            "location": "/translation/beam_search/#normalization", 
+            "text": "The beam search also supports various normalization techniques that are disabled by default and can be used to biased the scores generated by the model:   s(Y,X)=\\frac{\\log P(Y|X)}{lp(Y)}+cp(X,Y)   where  X  is the source,  Y  is the current target, and the functions as defined below. An additional penalty on end of sentence tokens can also be added to prioritize longer sentences.", 
+            "title": "Normalization"
+        }, 
+        {
+            "location": "/translation/beam_search/#length-normalization", 
+            "text": "Scores are normalized by the following formula as defined in  Wu et al. (2016) :   lp(Y) = \\frac{(5+|Y|)^\\alpha}{(5+1)^\\alpha}   where  |Y|  is the current target length and  \\alpha  is the length normalization coefficient  -length_norm .", 
+            "title": "Length normalization"
+        }, 
+        {
+            "location": "/translation/beam_search/#coverage-normalization", 
+            "text": "Scores are penalized by the following formula as defined in  Wu et al. (2016) :   cp(X,Y) = \\beta\\sum_{i=1}^{|X|}\\log(\\min(\\sum_{j=1}^{|Y|}p_{i,j},1.0))   where  p_{i,j}  is the attention probability of the  j -th target word  y_j  on the  i -th source word  x_i ,  |X|  is the source length,  |Y|  is the current target length and  \\beta  is the coverage normalization coefficient  -coverage_norm .", 
+            "title": "Coverage normalization"
+        }, 
+        {
+            "location": "/translation/beam_search/#end-of-sentence-normalization", 
+            "text": "The score of the end of sentence token is penalized by the following formula:   ep(X,Y)=\\gamma\\frac{|X|}{|Y|}   where  |X|  is the source length,  |Y|  is the current target length and  \\gamma  is the coverage normalization coefficient  -eos_norm .", 
+            "title": "End of sentence normalization"
+        }, 
+        {
+            "location": "/translation/unknowns/", 
+            "text": "The default translation mode allows the model to produce the \nunk\n symbol when it is not sure of the specific target word.\n\n\nOften times \nunk\n symbols will correspond to proper names that can be directly transposed between languages. The \n-replace_unk\n option will substitute \nunk\n with source words that have the highest attention weight.\n\n\nPhrase table\n\n\nAlternatively, advanced users may prefer to provide a preconstructed phrase table from an external aligner (such as \nfast_align\n) using the \n-phrase_table\n option to allow for non-identity replacement.\n\n\nInstead of copying the source token with the highest attention, it will lookup in the phrase table for a possible translation. If a valid replacement is not found only then the source token will be copied.\n\n\nThe phrase table is a file with one translation per line in the format:\n\n\nsource|||target\n\n\n\n\nWhere \nsource\n and \ntarget\n are \ncase sensitive\n and \nsingle\n tokens.\n\n\nWorkarounds\n\n\nSeveral techniques exist to minimize the out-of-vocabulary issue:\n\n\n\n\nsubtokenization like BPE or wordpiece to simulate \nopen\n vocabularies\n\n\nmixed word/characters model as desribed in \nWu et al. (2016)", 
+            "title": "Unkown words"
+        }, 
+        {
+            "location": "/translation/unknowns/#phrase-table", 
+            "text": "Alternatively, advanced users may prefer to provide a preconstructed phrase table from an external aligner (such as  fast_align ) using the  -phrase_table  option to allow for non-identity replacement.  Instead of copying the source token with the highest attention, it will lookup in the phrase table for a possible translation. If a valid replacement is not found only then the source token will be copied.  The phrase table is a file with one translation per line in the format:  source|||target  Where  source  and  target  are  case sensitive  and  single  tokens.", 
+            "title": "Phrase table"
+        }, 
+        {
+            "location": "/translation/unknowns/#workarounds", 
+            "text": "Several techniques exist to minimize the out-of-vocabulary issue:   subtokenization like BPE or wordpiece to simulate  open  vocabularies  mixed word/characters model as desribed in  Wu et al. (2016)", 
+            "title": "Workarounds"
+        }, 
+        {
+            "location": "/tools/tokenization/", 
+            "text": "OpenNMT provides generic tokenization utilities to quickly process new training data.\n\n\n\n\nNote\n\n\nFor LuaJIT users, tokenization tools require the \nbit32\n package.\n\n\n\n\nTokenization\n\n\nTo tokenize a corpus:\n\n\nth tools/tokenize.lua OPTIONS \n file \n file.tok\n\n\n\n\nDetokenization\n\n\nIf you activate \n-joiner_annotate\n marker, the tokenization is reversible. Just use:\n\n\nth tools/detokenize.lua OPTIONS \n file.tok \n file.detok\n\n\n\n\nSpecial characters\n\n\n\n\n\uffe8\n is the feature separator symbol. If such character is used in source text, it is replaced by its non presentation form \n\u2502\n.\n\n\n\uffed\n is the default joiner marker (generated in \n-joiner_annotate marker\n mode). If such character is used in source text, it is replaced by its non presentation form \n\u25a0\n\n\n\n\nBPE\n\n\nOpenNMT's BPE module fully supports the \noriginal BPE\n as default mode:\n\n\ntools/learn_bpe.lua -s 30000 -save_bpe codes \n input\ntools/tokenize.lua -bpe_model codes \n input\n\n\n\n\nwith two additional features:\n\n\n1. Add support for different modes of handling prefixes and/or suffixes: \n-bpe_mode\n\n\n\n\nsuffix\n: BPE merge operations are learnt to distinguish sub-tokens like \"ent\" in the middle of a word and \"ent\n\\w\n\" at the end of a word. \"\n\\w\n\" is an artificial marker appended to the end of each token input and treated as a single unit before doing statistics on bigrams. This is the default mode which is useful for most of the languages.\n\n\nprefix\n: BPE merge operations are learnt to distinguish sub-tokens like \"ent\" in the middle of a word and \"\nw>ent\" at the begining of a word. \"\nw>\" is an artificial marker appended to the beginning of each token input and treated as a single unit before doing statistics on bigrams.\n\n\nboth\n: \nsuffix\n + \nprefix\n\n\nnone\n: No artificial marker is appended to input tokens, a sub-token is treated equally whether it is in the middle or at the beginning or at the end of a token.\n\n\n\n\n2. Add support for BPE in addition to the case feature: \n-bpe_case_insensitive\n\n\nOpenNMT's tokenization flow first applies BPE then add the case feature for each input token. With the standard BPE, \"Constitution\" and \"constitution\" may result in the different sequences of sub-tokens:\n\n\nConstitution --\n con\uffe8C sti\uffe8l tu\uffe8l tion\uffe8l\nconstitution --\n consti\uffe8l tu\uffe8l tion\uffe8l\n\n\n\n\nIf you want a \ncaseless\n split so that you can take the best from using case feature, and you can achieve that with the following command lines:\n\n\n# We don't need BPE to care about case\ntools/learn_bpe.lua -s 30000 -save_bpe codes_lc \n input_lowercased\n\n# The case information is preserved in the true case input\ntools/tokenize.lua -bpe_model codes_lc -bpe_case_insensitive \n input\n\n\n\n\nThe output of the previous example would be:\n\n\nConstitution --\n con\uffe8C sti\uffe8l tu\uffe8l tion\uffe8l\nconstitution --\n con|l sti\uffe8l tu\uffe8l tion\uffe8l", 
+            "title": "Tokenization"
+        }, 
+        {
+            "location": "/tools/tokenization/#tokenization", 
+            "text": "To tokenize a corpus:  th tools/tokenize.lua OPTIONS   file   file.tok", 
+            "title": "Tokenization"
+        }, 
+        {
+            "location": "/tools/tokenization/#detokenization", 
+            "text": "If you activate  -joiner_annotate  marker, the tokenization is reversible. Just use:  th tools/detokenize.lua OPTIONS   file.tok   file.detok", 
+            "title": "Detokenization"
+        }, 
+        {
+            "location": "/tools/tokenization/#special-characters", 
+            "text": "\uffe8  is the feature separator symbol. If such character is used in source text, it is replaced by its non presentation form  \u2502 .  \uffed  is the default joiner marker (generated in  -joiner_annotate marker  mode). If such character is used in source text, it is replaced by its non presentation form  \u25a0", 
+            "title": "Special characters"
+        }, 
+        {
+            "location": "/tools/tokenization/#bpe", 
+            "text": "OpenNMT's BPE module fully supports the  original BPE  as default mode:  tools/learn_bpe.lua -s 30000 -save_bpe codes   input\ntools/tokenize.lua -bpe_model codes   input  with two additional features:  1. Add support for different modes of handling prefixes and/or suffixes:  -bpe_mode   suffix : BPE merge operations are learnt to distinguish sub-tokens like \"ent\" in the middle of a word and \"ent \\w \" at the end of a word. \" \\w \" is an artificial marker appended to the end of each token input and treated as a single unit before doing statistics on bigrams. This is the default mode which is useful for most of the languages.  prefix : BPE merge operations are learnt to distinguish sub-tokens like \"ent\" in the middle of a word and \" w>ent\" at the begining of a word. \" w>\" is an artificial marker appended to the beginning of each token input and treated as a single unit before doing statistics on bigrams.  both :  suffix  +  prefix  none : No artificial marker is appended to input tokens, a sub-token is treated equally whether it is in the middle or at the beginning or at the end of a token.   2. Add support for BPE in addition to the case feature:  -bpe_case_insensitive  OpenNMT's tokenization flow first applies BPE then add the case feature for each input token. With the standard BPE, \"Constitution\" and \"constitution\" may result in the different sequences of sub-tokens:  Constitution --  con\uffe8C sti\uffe8l tu\uffe8l tion\uffe8l\nconstitution --  consti\uffe8l tu\uffe8l tion\uffe8l  If you want a  caseless  split so that you can take the best from using case feature, and you can achieve that with the following command lines:  # We don't need BPE to care about case\ntools/learn_bpe.lua -s 30000 -save_bpe codes_lc   input_lowercased\n\n# The case information is preserved in the true case input\ntools/tokenize.lua -bpe_model codes_lc -bpe_case_insensitive   input  The output of the previous example would be:  Constitution --  con\uffe8C sti\uffe8l tu\uffe8l tion\uffe8l\nconstitution --  con|l sti\uffe8l tu\uffe8l tion\uffe8l", 
+            "title": "BPE"
+        }, 
+        {
+            "location": "/tools/servers/", 
+            "text": "OpenNMT provides simple translation servers to easily showcase your results remotely.\n\n\nREST\n\n\nYou can use an easy REST syntax to simply send plain text. Sentences will be tokenized, translated and then detokenized using OpenNMT tools.\n\n\nThe server uses the \nrestserver-xavante\n dependency, you need to install it by running:\n\n\nluarocks install restserver-xavante\n\n\n\n\nThe translation server can be run using any of the arguments from \ntokenize.lua\n or \ntranslate.lua\n.\n\n\nth tools/rest_translation_server.lua -model ../Recipes/baseline-1M-enfr/exp/model-baseline-1M-enfr_epoch13_3.44.t7 -gpuid 1 -host ... -port -case_feature -bpe_model ...\n\n\n\n\n\n\nNote\n\n\nThe default host is set to \n127.0.0.1\n and default port to \n7784\n.\n\n\n\n\nYou can test it with a \ncurl\n command locally or from any other client:\n\n\ncurl -v -H \nContent-Type: application/json\n -X POST -d '[{ \nsrc\n : \nHello World }]' http://IP_address:7784/translator/translate\n\n\n\n\nAnswer will be embeeded in a JSON format, translated sentence in the \ntgt\n section. Additionnally you can get the attention matrix with the \n-withAttn\n option in the server command line.\n\n\nZeroMQ\n\n\nThe server uses the 0MQ for RPC. You can install 0MQ and the Lua bindings on Ubuntu by running:\n\n\nsudo apt-get install libzmq-dev\nluarocks install dkjson\nluarocks install lua-zmq ZEROMQ_LIBDIR=/usr/lib/x86_64-linux-gnu/ ZEROMQ_INCDIR=/usr/include\n\n\n\n\nThe translation server can be run using any of the arguments from \ntranslate.lua\n.\n\n\nth tools/translation_server.lua -host ... -port ... -model ...\n\n\n\n\n\n\nNote\n\n\nThe default host is set to \n127.0.0.1\n which only allows local access. If you want to support remote access, use \n0.0.0.0\n instead.\n\n\n\n\nIt runs as a message queue that takes in a JSON batch of src sentences. For example the following 5 lines of Python\ncode can be used to send a single sentence for translation.\n\n\nimport zmq, sys, json\nsock = zmq.Context().socket(zmq.REQ)\nsock.connect(\ntcp://127.0.0.1:5556\n)\nsock.send(json.dumps([{\nsrc\n: \n \n.join(sys.argv[1:])}]))\nprint sock.recv()\n\n\n\n\nFor a longer example, see our \nPython/Flask server\n in development.", 
+            "title": "Servers"
+        }, 
+        {
+            "location": "/tools/servers/#rest", 
+            "text": "You can use an easy REST syntax to simply send plain text. Sentences will be tokenized, translated and then detokenized using OpenNMT tools.  The server uses the  restserver-xavante  dependency, you need to install it by running:  luarocks install restserver-xavante  The translation server can be run using any of the arguments from  tokenize.lua  or  translate.lua .  th tools/rest_translation_server.lua -model ../Recipes/baseline-1M-enfr/exp/model-baseline-1M-enfr_epoch13_3.44.t7 -gpuid 1 -host ... -port -case_feature -bpe_model ...   Note  The default host is set to  127.0.0.1  and default port to  7784 .   You can test it with a  curl  command locally or from any other client:  curl -v -H  Content-Type: application/json  -X POST -d '[{  src  :  Hello World }]' http://IP_address:7784/translator/translate  Answer will be embeeded in a JSON format, translated sentence in the  tgt  section. Additionnally you can get the attention matrix with the  -withAttn  option in the server command line.", 
+            "title": "REST"
+        }, 
+        {
+            "location": "/tools/servers/#zeromq", 
+            "text": "The server uses the 0MQ for RPC. You can install 0MQ and the Lua bindings on Ubuntu by running:  sudo apt-get install libzmq-dev\nluarocks install dkjson\nluarocks install lua-zmq ZEROMQ_LIBDIR=/usr/lib/x86_64-linux-gnu/ ZEROMQ_INCDIR=/usr/include  The translation server can be run using any of the arguments from  translate.lua .  th tools/translation_server.lua -host ... -port ... -model ...   Note  The default host is set to  127.0.0.1  which only allows local access. If you want to support remote access, use  0.0.0.0  instead.   It runs as a message queue that takes in a JSON batch of src sentences. For example the following 5 lines of Python\ncode can be used to send a single sentence for translation.  import zmq, sys, json\nsock = zmq.Context().socket(zmq.REQ)\nsock.connect( tcp://127.0.0.1:5556 )\nsock.send(json.dumps([{ src :    .join(sys.argv[1:])}]))\nprint sock.recv()  For a longer example, see our  Python/Flask server  in development.", 
+            "title": "ZeroMQ"
+        }, 
+        {
+            "location": "/options/usage/", 
+            "text": "By default, OpenNMT's scripts can only be called from the root of OpenNMT's directory. If calling the scripts from any directory is more convenient to you, you need to extend the \nLUA_PATH\n:\n\n\nexport LUA_PATH=\n$LUA_PATH;/path/to/OpenNMT/?.lua\n\n\n\n\n\nConfiguration files\n\n\nYou can pass options using a configuration file. The file has a simple key-value syntax with one \noption = value\n per line. Here is an example:\n\n\n$ cat generic.txt\nrnn_size = 600\nlayers = 4\nbrnn = true\nsave_model = generic\n\n\n\n\nIt handles empty lines and ignores lines prefixed with \n#\n.\n\n\nYou can then pass this file along other options on the command line:\n\n\nth train.lua -config generic.txt -data data/demo-train.t7 -gpuid 1\n\n\n\n\nIf an option appears both in the file and on the command line, the file takes priority.\n\n\nBoolean flags\n\n\nFlags are options that do not take arguments. For example the option \n-brnn\n enables bidirectional encoder when added to the command line.\n\n\nHowever, flags that are enabled by default can take \n0\n as argument to disable them. For example, input feeding is disabled with \n-input_feed 0\n.\n\n\nMultiple arguments\n\n\nSome options can take multiple arguments. Unless otherwise noted, they accept a list of comma-separated values without spaces:\n\n\n-option_name value1,value2,value3", 
+            "title": "Scripts usage"
+        }, 
+        {
+            "location": "/options/usage/#configuration-files", 
+            "text": "You can pass options using a configuration file. The file has a simple key-value syntax with one  option = value  per line. Here is an example:  $ cat generic.txt\nrnn_size = 600\nlayers = 4\nbrnn = true\nsave_model = generic  It handles empty lines and ignores lines prefixed with  # .  You can then pass this file along other options on the command line:  th train.lua -config generic.txt -data data/demo-train.t7 -gpuid 1  If an option appears both in the file and on the command line, the file takes priority.", 
+            "title": "Configuration files"
+        }, 
+        {
+            "location": "/options/usage/#boolean-flags", 
+            "text": "Flags are options that do not take arguments. For example the option  -brnn  enables bidirectional encoder when added to the command line.  However, flags that are enabled by default can take  0  as argument to disable them. For example, input feeding is disabled with  -input_feed 0 .", 
+            "title": "Boolean flags"
+        }, 
+        {
+            "location": "/options/usage/#multiple-arguments", 
+            "text": "Some options can take multiple arguments. Unless otherwise noted, they accept a list of comma-separated values without spaces:  -option_name value1,value2,value3", 
+            "title": "Multiple arguments"
+        }, 
+        {
+            "location": "/options/preprocess/", 
+            "text": "preprocess.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nPreprocess options\n\n\n\n\n-data_type \nstring\n (accepted: \nbitext\n, \nmonotext\n; default: \nbitext\n)\nType of data to preprocess. Use 'monotext' for monolingual data. This option impacts all options choices.\n\n\n-save_data \nstring\nOutput file for the prepared data.\n\n\n\n\nData options\n\n\n\n\n-train_src \nstring\nPath to the training source data.\n\n\n-train_tgt \nstring\nPath to the training target data.\n\n\n-valid_src \nstring\nPath to the validation source data.\n\n\n-valid_tgt \nstring\nPath to the validation target data.\n\n\n-src_vocab \nstring\nPath to an existing source vocabulary.\n\n\n-tgt_vocab \nstring\nPath to an existing target vocabulary.\n\n\n-src_vocab_size \nstring\n (default: \n50000\n)\nComma-separated list of source vocabularies size: \nword[,feat1,feat2,...]\n. If = 0, vocabularies are not pruned.\n\n\n-tgt_vocab_size \nstring\n (default: \n50000\n)\nComma-separated list of target vocabularies size: \nword[,feat1,feat2,...]\n. If = 0, vocabularies are not pruned.\n\n\n-src_words_min_frequency \nstring\n (default: \n0\n)\nComma-separated list of source words min frequency: \nword[,feat1,feat2,...]\n. If = 0, vocabularies are pruned by size.\n\n\n-tgt_words_min_frequency \nstring\n (default: \n0\n)\nComma-separated list of target words min frequency: \nword[,feat1,feat2,...]\n. If = 0, vocabularies are pruned by size.\n\n\n-src_seq_length \nnumber\n (default: \n50\n)\nMaximum source sequence length.\n\n\n-tgt_seq_length \nnumber\n (default: \n50\n)\nMaximum target sequence length.\n\n\n-features_vocabs_prefix \nstring\nPath prefix to existing features vocabularies.\n\n\n-time_shift_feature \nnumber\n (default: \n1\n)\nTime shift features on the decoder side.\n\n\n-sort \nnumber\n (default: \n1\n)\nIf = 1, sort the sentences by size to build batches without source padding.\n\n\n-shuffle \nnumber\n (default: \n1\n)\nIf = 1, shuffle data (prior sorting).\n\n\n\n\nLogger options\n\n\n\n\n-log_file \nstring\nOutput logs to a file under this path instead of stdout.\n\n\n-disable_logs\nIf set, output nothing.\n\n\n-log_level \nstring\n (accepted: \nDEBUG\n, \nINFO\n, \nWARNING\n, \nERROR\n; default: \nINFO\n)\nOutput logs at this level and above.\n\n\n\n\nOther options\n\n\n\n\n-seed \nnumber\n (default: \n3425\n)\nRandom seed.\n\n\n-report_every \nnumber\n (default: \n100000\n)\nReport status every this many sentences.", 
             "title": "Preprocess"
-        },
+        }, 
         {
-            "location": "/details/train/",
-            "text": "train.lua\n\n\n\n\nconfig\n\n\nRead options from this file []\n\n\n\n\nData options\n\n\n\n\ndata\n\n\nPath to the training *-train.t7 file from preprocess.lua []\n\n\nsave_model\n\n\nModel filename (the model will be saved as\n_epochN_PPL.t7 where PPL is the validation perplexity []\n\n\ntrain_from\n\n\nIf training from a checkpoint then this is the path to the pretrained model. []\n\n\ncontinue\n\n\nIf training from a checkpoint, whether to continue the training in the same configuration or not. [false]\n\n\n\n\nModel options\n\n\n\n\nlayers\n\n\nNumber of layers in the LSTM encoder/decoder [2]\n\n\nrnn_size\n\n\nSize of LSTM hidden states [500]\n\n\nword_vec_size\n\n\nWord embedding sizes [500]\n\n\nfeat_merge\n\n\nMerge action for the features embeddings: concat or sum [concat]\n\n\nfeat_vec_exponent\n\n\nWhen using concatenation, if the feature takes N valuesthen the embedding dimension will be set to N^exponent [0.7]\n\n\nfeat_vec_size\n\n\nWhen using sum, the common embedding size of the features [20]\n\n\ninput_feed\n\n\nFeed the context vector at each time step as additional input (via concatenation with the word embeddings) to the decoder. [1]\n\n\nresidual\n\n\nAdd residual connections between RNN layers. [false]\n\n\nbrnn\n\n\nUse a bidirectional encoder [false]\n\n\nbrnn_merge\n\n\nMerge action for the bidirectional hidden states: concat or sum [sum]\n\n\n\n\nOptimization options\n\n\n\n\nmax_batch_size\n\n\nMaximum batch size [64]\n\n\nepochs\n\n\nNumber of training epochs [13]\n\n\nstart_epoch\n\n\nIf loading from a checkpoint, the epoch from which to start [1]\n\n\nstart_iteration\n\n\nIf loading from a checkpoint, the iteration from which to start [1]\n\n\nparam_init\n\n\nParameters are initialized over uniform distribution with support (-param_init, param_init) [0.1]\n\n\noptim\n\n\nOptimization method. Possible options are: sgd, adagrad, adadelta, adam [sgd]\n\n\nlearning_rate\n\n\nStarting learning rate. If adagrad/adadelta/adam is used,then this is the global learning rate. Recommended settings are: sgd = 1,adagrad = 0.1, adadelta = 1, adam = 0.0002 [1]\n\n\nmax_grad_norm\n\n\nIf the norm of the gradient vector exceeds this renormalize it to have the norm equal to max_grad_norm [5]\n\n\ndropout\n\n\nDropout probability. Dropout is applied between vertical LSTM stacks. [0.3]\n\n\nlearning_rate_decay\n\n\nDecay learning rate by this much if (i) perplexity does not decreaseon the validation set or (ii) epoch has gone past the start_decay_at_limit [0.5]\n\n\nstart_decay_at\n\n\nStart decay after this epoch [9]\n\n\ncurriculum\n\n\nFor this many epochs, order the minibatches based on sourcesequence length. Sometimes setting this to 1 will increase convergence speed. [0]\n\n\npre_word_vecs_enc\n\n\nIf a valid path is specified, then this will loadpretrained word embeddings on the encoder side.See README for specific formatting instructions. []\n\n\npre_word_vecs_dec\n\n\nIf a valid path is specified, then this will loadpretrained word embeddings on the decoder side.See README for specific formatting instructions. []\n\n\nfix_word_vecs_enc\n\n\nFix word embeddings on the encoder side [false]\n\n\nfix_word_vecs_dec\n\n\nFix word embeddings on the decoder side [false]\n\n\n\n\nOther options\n\n\n\n\ngpuid\n\n\n1-based identifier of the GPU to use. CPU is used when the option is \n 1 [0]\n\n\nnparallel\n\n\nWhen using GPUs, how many batches to execute in parallel.Note: this will technically change the final batch size to max_batch_size*nparallel. [1]\n\n\nasync_parallel\n\n\nUse asynchronous parallelism training. [false]\n\n\nasync_parallel_minbatch\n\n\nFor async parallel computing, minimal number of batches before being parallel. [1000]\n\n\nno_nccl\n\n\nDisable usage of nccl in parallel mode. [false]\n\n\ndisable_mem_optimization\n\n\nDisable sharing internal of internal buffers between clones - which is in general safe,except if you want to look inside clones for visualization purpose for instance. [false]\n\n\nsave_every\n\n\nSave intermediate models every this many iterations within an epoch.If = 0, will not save models within an epoch.  [0]\n\n\nreport_every\n\n\nPrint stats every this many iterations within an epoch. [50]\n\n\nseed\n\n\nSeed for random initialization [3435]",
+            "location": "/options/preprocess/#preprocess-options", 
+            "text": "-data_type  string  (accepted:  bitext ,  monotext ; default:  bitext ) Type of data to preprocess. Use 'monotext' for monolingual data. This option impacts all options choices.  -save_data  string Output file for the prepared data.", 
+            "title": "Preprocess options"
+        }, 
+        {
+            "location": "/options/preprocess/#data-options", 
+            "text": "-train_src  string Path to the training source data.  -train_tgt  string Path to the training target data.  -valid_src  string Path to the validation source data.  -valid_tgt  string Path to the validation target data.  -src_vocab  string Path to an existing source vocabulary.  -tgt_vocab  string Path to an existing target vocabulary.  -src_vocab_size  string  (default:  50000 ) Comma-separated list of source vocabularies size:  word[,feat1,feat2,...] . If = 0, vocabularies are not pruned.  -tgt_vocab_size  string  (default:  50000 ) Comma-separated list of target vocabularies size:  word[,feat1,feat2,...] . If = 0, vocabularies are not pruned.  -src_words_min_frequency  string  (default:  0 ) Comma-separated list of source words min frequency:  word[,feat1,feat2,...] . If = 0, vocabularies are pruned by size.  -tgt_words_min_frequency  string  (default:  0 ) Comma-separated list of target words min frequency:  word[,feat1,feat2,...] . If = 0, vocabularies are pruned by size.  -src_seq_length  number  (default:  50 ) Maximum source sequence length.  -tgt_seq_length  number  (default:  50 ) Maximum target sequence length.  -features_vocabs_prefix  string Path prefix to existing features vocabularies.  -time_shift_feature  number  (default:  1 ) Time shift features on the decoder side.  -sort  number  (default:  1 ) If = 1, sort the sentences by size to build batches without source padding.  -shuffle  number  (default:  1 ) If = 1, shuffle data (prior sorting).", 
+            "title": "Data options"
+        }, 
+        {
+            "location": "/options/preprocess/#logger-options", 
+            "text": "-log_file  string Output logs to a file under this path instead of stdout.  -disable_logs If set, output nothing.  -log_level  string  (accepted:  DEBUG ,  INFO ,  WARNING ,  ERROR ; default:  INFO ) Output logs at this level and above.", 
+            "title": "Logger options"
+        }, 
+        {
+            "location": "/options/preprocess/#other-options", 
+            "text": "-seed  number  (default:  3425 ) Random seed.  -report_every  number  (default:  100000 ) Report status every this many sentences.", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/options/train/", 
+            "text": "train.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nData options\n\n\n\n\n-data \nstring\nPath to the data package \n*-train.t7\n generated by the preprocessing step.\n\n\n-save_model \nstring\nModel filename (the model will be saved as \nsave_model\n_epochN_PPL.t7\n where \nPPL\n is the validation perplexity.\n\n\n\n\nSampled dataset options\n\n\n\n\n-sample \nnumber\n (default: \n0\n)\nNumber of instances to sample from train data in each epoch.\n\n\n-sample_w_ppl\nIf set, ese perplexity as a probability distribution when sampling.\n\n\n-sample_w_ppl_init \nnumber\n (default: \n15\n)\nStart perplexity-based sampling when average train perplexity per batch falls below this value.\n\n\n-sample_w_ppl_max \nnumber\n (default: \n-1.5\n)\nWhen greater than 0, instances with perplexity above this value will be considered as noise and ignored; when less than 0, mode + \n-sample_w_ppl_max\n * stdev will be used as threshold.\n\n\n\n\nModel options\n\n\n\n\n-model_type \nstring\n (accepted: \nlm\n, \nseq2seq\n, \nseqtagger\n; default: \nseq2seq\n)\nType of model to train. This option impacts all options choices.\n\n\n-param_init \nnumber\n (default: \n0.1\n)\nParameters are initialized over uniform distribution with support (-\nparam_init\n, \nparam_init\n).\n\n\n\n\nSequence to Sequence with Attention options\n\n\n\n\n-word_vec_size \nnumber\n (default: \n0\n)\nShared word embedding size. If set, this overrides \n-src_word_vec_size\n and \n-tgt_word_vec_size\n.\n\n\n-src_word_vec_size \nstring\n (default: \n500\n)\nComma-separated list of source embedding sizes: \nword[,feat1,feat2,...]\n.\n\n\n-tgt_word_vec_size \nstring\n (default: \n500\n)\nComma-separated list of target embedding sizes: \nword[,feat1,feat2,...]\n.\n\n\n-pre_word_vecs_enc \nstring\nPath to pretrained word embeddings on the encoder side serialized as a Torch tensor.\n\n\n-pre_word_vecs_dec \nstring\nPath to pretrained word embeddings on the decoder side serialized as a Torch tensor.\n\n\n-fix_word_vecs_enc \nnumber\n (accepted: \n0\n, \n1\n; default: \n0\n)\nFix word embeddings on the encoder side.\n\n\n-fix_word_vecs_dec \nnumber\n (accepted: \n0\n, \n1\n; default: \n0\n)\nFix word embeddings on the decoder side.\n\n\n-feat_merge \nstring\n (accepted: \nconcat\n, \nsum\n; default: \nconcat\n)\nMerge action for the features embeddings.\n\n\n-feat_vec_exponent \nnumber\n (default: \n0.7\n)\nWhen features embedding sizes are not set and using \n-feat_merge concat\n, their dimension will be set to \nN^feat_vec_exponent\n where \nN\n is the number of values the feature takes.\n\n\n-feat_vec_size \nnumber\n (default: \n20\n)\nWhen features embedding sizes are not set and using \n-feat_merge sum\n, this is the common embedding size of the features\n\n\n-input_feed \nnumber\n (accepted: \n0\n, \n1\n; default: \n1\n)\nFeed the context vector at each time step as additional input (via concatenation with the word embeddings) to the decoder.\n\n\n-layers \nnumber\n (default: \n2\n)\nNumber of recurrent layers of the encoder and decoder.\n\n\n-rnn_size \nnumber\n (default: \n500\n)\nHidden size of the recurrent unit.\n\n\n-rnn_type \nstring\n (accepted: \nLSTM\n, \nGRU\n; default: \nLSTM\n)\nType of recurrent cell.\n\n\n-dropout \nnumber\n (default: \n0.3\n)\nDropout probability applied between recurrent layers.\n\n\n-dropout_input\nAlso apply dropout to the input of the recurrent module.\n\n\n-residual\nAdd residual connections between recurrent layers.\n\n\n-brnn\nUse a bidirectional encoder.\n\n\n-dbrnn\nUse a deep bidirectional encoder.\n\n\n-pdbrnn\nUse a pyramidal deep bidirectional encoder.\n\n\n-brnn_merge \nstring\n (accepted: \nconcat\n, \nsum\n; default: \nsum\n)\nMerge action for the bidirectional states.\n\n\n-pdbrnn_reduction \nnumber\n (default: \n2\n)\nTime-reduction factor at each layer.\n\n\n\n\nOptimization options\n\n\n\n\n-max_batch_size \nnumber\n (default: \n64\n)\nMaximum batch size.\n\n\n-uneven_batches\nIf set, batches are filled up to max_batch_size even if source lengths are different. Slower but needed for some tasks.\n\n\n-optim \nstring\n (accepted: \nsgd\n, \nadagrad\n, \nadadelta\n, \nadam\n; default: \nsgd\n)\nOptimization method.\n\n\n-learning_rate \nnumber\n (default: \n1\n)\nStarting learning rate. If adagrad or adam is used, then this is the global learning rate. Recommended settings are: sgd = 1, adagrad = 0.1, adam = 0.0002.\n\n\n-min_learning_rate \nnumber\n (default: \n0\n)\nDo not continue the training past this learning rate value.\n\n\n-max_grad_norm \nnumber\n (default: \n5\n)\nClip the gradients norm to this value.\n\n\n-learning_rate_decay \nnumber\n (default: \n0.7\n)\nLearning rate decay factor: \nlearning_rate = learning_rate * learning_rate_decay\n.\n\n\n-start_decay_at \nnumber\n (default: \n9\n)\nIn \"default\" decay mode, start decay after this epoch.\n\n\n-start_decay_ppl_delta \nnumber\n (default: \n0\n)\nStart decay when validation perplexity improvement is lower than this value.\n\n\n-decay \nstring\n (accepted: \ndefault\n, \nperplexity_only\n; default: \ndefault\n)\nWhen to apply learning rate decay. \ndefault\n: decay after each epoch past \n-start_decay_at\n or as soon as the validation perplexity is not improving more than \n-start_decay_ppl_delta\n, \nperplexity_only\n: only decay when validation perplexity is not improving more than \n-start_decay_ppl_delta\n.\n\n\n\n\nTrainer options\n\n\n\n\n-save_every \nnumber\n (default: \n5000\n)\nSave intermediate models every this many iterations within an epoch. If = 0, will not save intermediate models.\n\n\n-report_every \nnumber\n (default: \n50\n)\nReport progress every this many iterations within an epoch.\n\n\n-async_parallel\nWhen training on multiple GPUs, update parameters asynchronously.\n\n\n-async_parallel_minbatch \nnumber\n (default: \n1000\n)\nIn asynchronous training, minimal number of sequential batches before being parallel.\n\n\n-start_iteration \nnumber\n (default: \n1\n)\nIf loading from a checkpoint, the iteration from which to start.\n\n\n-start_epoch \nnumber\n (default: \n1\n)\nIf loading from a checkpoint, the epoch from which to start.\n\n\n-end_epoch \nnumber\n (default: \n13\n)\nThe final epoch of the training.\n\n\n-curriculum \nnumber\n (default: \n0\n)\nFor this many epochs, order the minibatches based on source length (from smaller to longer). Sometimes setting this to 1 will increase convergence speed.\n\n\n\n\nCheckpoint options\n\n\n\n\n-train_from \nstring\nPath to a checkpoint.\n\n\n-continue\nIf set, continue the training where it left off.\n\n\n\n\nCrayon options\n\n\n\n\n-exp_host \nstring\n (default: \n127.0.0.1\n)\nCrayon server IP.\n\n\n-exp_port \nstring\n (default: \n8889\n)\nCrayon server port.\n\n\n-exp \nstring\nCrayon experiment name.\n\n\n\n\nCuda options\n\n\n\n\n-gpuid \nstring\n (default: \n0\n)\nList of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.\n\n\n-fallback_to_cpu\nIf GPU can't be used, rollback on the CPU.\n\n\n-fp16\nUse half-precision float on GPU.\n\n\n-no_nccl\nDisable usage of nccl in parallel mode.\n\n\n\n\nLogger options\n\n\n\n\n-log_file \nstring\nOutput logs to a file under this path instead of stdout.\n\n\n-disable_logs\nIf set, output nothing.\n\n\n-log_level \nstring\n (accepted: \nDEBUG\n, \nINFO\n, \nWARNING\n, \nERROR\n; default: \nINFO\n)\nOutput logs at this level and above.\n\n\n\n\nOther options\n\n\n\n\n-disable_mem_optimization\nDisable sharing of internal buffers between clones for visualization or development.\n\n\n-profiler\nGenerate profiling logs.\n\n\n-seed \nnumber\n (default: \n3435\n)\nRandom seed.", 
             "title": "Train"
-        },
+        }, 
         {
-            "location": "/details/translate/",
-            "text": "onmt.translate.lua\n\n\n\n\nconfig\n\n\nRead options from this file []\n\n\n\n\nData options\n\n\n\n\nsrc\n\n\nSource sequence to decode (one line per sequence) []\n\n\ntgt\n\n\nTrue target sequence (optional) []\n\n\noutput\n\n\nPath to output the predictions (each line will be the decoded sequence [pred.txt]\n\n\nmodel\n\n\nPath to model .t7 file []\n\n\n\n\nBeam Search options\n\n\n\n\nbeam_size\n\n\nBeam size [5]\n\n\nbatch_size\n\n\nBatch size [30]\n\n\nmax_sent_length\n\n\nMaximum sentence length. If any sequences in srcfile are longer than this then it will error out [250]\n\n\nreplace_unk\n\n\nReplace the generated UNK tokens with the source token thathad the highest attention weight. If phrase_table is provided,it will lookup the identified source token and give the correspondingtarget token. If it is not provided (or the identified source tokendoes not exist in the table) then it will copy the source token [false]\n\n\nphrase_table\n\n\nPath to source-target dictionary to replace UNKtokens. See README.md for the format this file should be in []\n\n\nn_best\n\n\nIf \n 1, it will also output an n_best list of decoded sentences [1]\n\n\n\n\nOther options\n\n\n\n\ngpuid\n\n\n1-based identifier of the GPU to use. CPU is used when the option is \n 1 [0]\n\n\nfallback_to_cpu\n\n\nIf = true, fallback to CPU if no GPU available [false]",
+            "location": "/options/train/#data-options", 
+            "text": "-data  string Path to the data package  *-train.t7  generated by the preprocessing step.  -save_model  string Model filename (the model will be saved as  save_model _epochN_PPL.t7  where  PPL  is the validation perplexity.", 
+            "title": "Data options"
+        }, 
+        {
+            "location": "/options/train/#sampled-dataset-options", 
+            "text": "-sample  number  (default:  0 ) Number of instances to sample from train data in each epoch.  -sample_w_ppl If set, ese perplexity as a probability distribution when sampling.  -sample_w_ppl_init  number  (default:  15 ) Start perplexity-based sampling when average train perplexity per batch falls below this value.  -sample_w_ppl_max  number  (default:  -1.5 ) When greater than 0, instances with perplexity above this value will be considered as noise and ignored; when less than 0, mode +  -sample_w_ppl_max  * stdev will be used as threshold.", 
+            "title": "Sampled dataset options"
+        }, 
+        {
+            "location": "/options/train/#model-options", 
+            "text": "-model_type  string  (accepted:  lm ,  seq2seq ,  seqtagger ; default:  seq2seq ) Type of model to train. This option impacts all options choices.  -param_init  number  (default:  0.1 ) Parameters are initialized over uniform distribution with support (- param_init ,  param_init ).", 
+            "title": "Model options"
+        }, 
+        {
+            "location": "/options/train/#sequence-to-sequence-with-attention-options", 
+            "text": "-word_vec_size  number  (default:  0 ) Shared word embedding size. If set, this overrides  -src_word_vec_size  and  -tgt_word_vec_size .  -src_word_vec_size  string  (default:  500 ) Comma-separated list of source embedding sizes:  word[,feat1,feat2,...] .  -tgt_word_vec_size  string  (default:  500 ) Comma-separated list of target embedding sizes:  word[,feat1,feat2,...] .  -pre_word_vecs_enc  string Path to pretrained word embeddings on the encoder side serialized as a Torch tensor.  -pre_word_vecs_dec  string Path to pretrained word embeddings on the decoder side serialized as a Torch tensor.  -fix_word_vecs_enc  number  (accepted:  0 ,  1 ; default:  0 ) Fix word embeddings on the encoder side.  -fix_word_vecs_dec  number  (accepted:  0 ,  1 ; default:  0 ) Fix word embeddings on the decoder side.  -feat_merge  string  (accepted:  concat ,  sum ; default:  concat ) Merge action for the features embeddings.  -feat_vec_exponent  number  (default:  0.7 ) When features embedding sizes are not set and using  -feat_merge concat , their dimension will be set to  N^feat_vec_exponent  where  N  is the number of values the feature takes.  -feat_vec_size  number  (default:  20 ) When features embedding sizes are not set and using  -feat_merge sum , this is the common embedding size of the features  -input_feed  number  (accepted:  0 ,  1 ; default:  1 ) Feed the context vector at each time step as additional input (via concatenation with the word embeddings) to the decoder.  -layers  number  (default:  2 ) Number of recurrent layers of the encoder and decoder.  -rnn_size  number  (default:  500 ) Hidden size of the recurrent unit.  -rnn_type  string  (accepted:  LSTM ,  GRU ; default:  LSTM ) Type of recurrent cell.  -dropout  number  (default:  0.3 ) Dropout probability applied between recurrent layers.  -dropout_input Also apply dropout to the input of the recurrent module.  -residual Add residual connections between recurrent layers.  -brnn Use a bidirectional encoder.  -dbrnn Use a deep bidirectional encoder.  -pdbrnn Use a pyramidal deep bidirectional encoder.  -brnn_merge  string  (accepted:  concat ,  sum ; default:  sum ) Merge action for the bidirectional states.  -pdbrnn_reduction  number  (default:  2 ) Time-reduction factor at each layer.", 
+            "title": "Sequence to Sequence with Attention options"
+        }, 
+        {
+            "location": "/options/train/#optimization-options", 
+            "text": "-max_batch_size  number  (default:  64 ) Maximum batch size.  -uneven_batches If set, batches are filled up to max_batch_size even if source lengths are different. Slower but needed for some tasks.  -optim  string  (accepted:  sgd ,  adagrad ,  adadelta ,  adam ; default:  sgd ) Optimization method.  -learning_rate  number  (default:  1 ) Starting learning rate. If adagrad or adam is used, then this is the global learning rate. Recommended settings are: sgd = 1, adagrad = 0.1, adam = 0.0002.  -min_learning_rate  number  (default:  0 ) Do not continue the training past this learning rate value.  -max_grad_norm  number  (default:  5 ) Clip the gradients norm to this value.  -learning_rate_decay  number  (default:  0.7 ) Learning rate decay factor:  learning_rate = learning_rate * learning_rate_decay .  -start_decay_at  number  (default:  9 ) In \"default\" decay mode, start decay after this epoch.  -start_decay_ppl_delta  number  (default:  0 ) Start decay when validation perplexity improvement is lower than this value.  -decay  string  (accepted:  default ,  perplexity_only ; default:  default ) When to apply learning rate decay.  default : decay after each epoch past  -start_decay_at  or as soon as the validation perplexity is not improving more than  -start_decay_ppl_delta ,  perplexity_only : only decay when validation perplexity is not improving more than  -start_decay_ppl_delta .", 
+            "title": "Optimization options"
+        }, 
+        {
+            "location": "/options/train/#trainer-options", 
+            "text": "-save_every  number  (default:  5000 ) Save intermediate models every this many iterations within an epoch. If = 0, will not save intermediate models.  -report_every  number  (default:  50 ) Report progress every this many iterations within an epoch.  -async_parallel When training on multiple GPUs, update parameters asynchronously.  -async_parallel_minbatch  number  (default:  1000 ) In asynchronous training, minimal number of sequential batches before being parallel.  -start_iteration  number  (default:  1 ) If loading from a checkpoint, the iteration from which to start.  -start_epoch  number  (default:  1 ) If loading from a checkpoint, the epoch from which to start.  -end_epoch  number  (default:  13 ) The final epoch of the training.  -curriculum  number  (default:  0 ) For this many epochs, order the minibatches based on source length (from smaller to longer). Sometimes setting this to 1 will increase convergence speed.", 
+            "title": "Trainer options"
+        }, 
+        {
+            "location": "/options/train/#checkpoint-options", 
+            "text": "-train_from  string Path to a checkpoint.  -continue If set, continue the training where it left off.", 
+            "title": "Checkpoint options"
+        }, 
+        {
+            "location": "/options/train/#crayon-options", 
+            "text": "-exp_host  string  (default:  127.0.0.1 ) Crayon server IP.  -exp_port  string  (default:  8889 ) Crayon server port.  -exp  string Crayon experiment name.", 
+            "title": "Crayon options"
+        }, 
+        {
+            "location": "/options/train/#cuda-options", 
+            "text": "-gpuid  string  (default:  0 ) List of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.  -fallback_to_cpu If GPU can't be used, rollback on the CPU.  -fp16 Use half-precision float on GPU.  -no_nccl Disable usage of nccl in parallel mode.", 
+            "title": "Cuda options"
+        }, 
+        {
+            "location": "/options/train/#logger-options", 
+            "text": "-log_file  string Output logs to a file under this path instead of stdout.  -disable_logs If set, output nothing.  -log_level  string  (accepted:  DEBUG ,  INFO ,  WARNING ,  ERROR ; default:  INFO ) Output logs at this level and above.", 
+            "title": "Logger options"
+        }, 
+        {
+            "location": "/options/train/#other-options", 
+            "text": "-disable_mem_optimization Disable sharing of internal buffers between clones for visualization or development.  -profiler Generate profiling logs.  -seed  number  (default:  3435 ) Random seed.", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/options/translate/", 
+            "text": "translate.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nData options\n\n\n\n\n-src \nstring\nSource sequences to translate.\n\n\n-tgt \nstring\nOptional true target sequences.\n\n\n-output \nstring\n (default: \npred.txt\n)\nOutput file.\n\n\n\n\nTranslator options\n\n\n\n\n-model \nstring\nPath to the serialized model file.\n\n\n-beam_size \nnumber\n (default: \n5\n)\nBeam size.\n\n\n-batch_size \nnumber\n (default: \n30\n)\nBatch size.\n\n\n-max_sent_length \nnumber\n (default: \n250\n)\nMaximum output sentence length.\n\n\n-replace_unk\nReplace the generated \n tokens with the source token that has the highest attention weight. If \n-phrase_table\n is provided, it will lookup the identified source token and give the corresponding target token. If it is not provided (or the identified source token does not exist in the table) then it will copy the source token\n\n\n-phrase_table \nstring\nPath to source-target dictionary to replace \nunk\n tokens.\n\n\n-n_best \nnumber\n (default: \n1\n)\nIf \n 1, it will also output an n-best list of decoded sentences.\n\n\n-max_num_unks \nnumber\n (default: \ninf\n)\nAll sequences with more \nunk\ns than this will be ignored during beam search.\n\n\n-pre_filter_factor \nnumber\n (default: \n1\n)\nOptional, set this only if filter is being used. Before applying filters, hypotheses with top \nbeamSize * preFilterFactor\n scores will be considered. If the returned hypotheses voilate filters, then set this to a larger value to consider more.\n\n\n-length_norm \nnumber\n (default: \n0\n)\nLength normalization coefficient (alpha). If set to 0, no length normalization.\n\n\n-coverage_norm \nnumber\n (default: \n0\n)\nCoverage normalization coefficient (beta). An extra coverage term multiplied by beta is added to hypotheses scores. If is set to 0, no coverage normalization.\n\n\n-eos_norm \nnumber\n (default: \n0\n)\nEnd of sentence normalization coefficient (gamma). If set to 0, no EOS normalization.\n\n\n-dump_input_encoding\nInstead of generating target tokens conditional on the source tokens, we print the representation (encoding/embedding) of the input.\n\n\n\n\nCuda options\n\n\n\n\n-gpuid \nstring\n (default: \n0\n)\nList of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.\n\n\n-fallback_to_cpu\nIf GPU can't be used, rollback on the CPU.\n\n\n-fp16\nUse half-precision float on GPU.\n\n\n-no_nccl\nDisable usage of nccl in parallel mode.\n\n\n\n\nLogger options\n\n\n\n\n-log_file \nstring\nOutput logs to a file under this path instead of stdout.\n\n\n-disable_logs\nIf set, output nothing.\n\n\n-log_level \nstring\n (accepted: \nDEBUG\n, \nINFO\n, \nWARNING\n, \nERROR\n; default: \nINFO\n)\nOutput logs at this level and above.\n\n\n\n\nOther options\n\n\n\n\n-time\nMeasure average translation time.", 
             "title": "Translate"
+        }, 
+        {
+            "location": "/options/translate/#data-options", 
+            "text": "-src  string Source sequences to translate.  -tgt  string Optional true target sequences.  -output  string  (default:  pred.txt ) Output file.", 
+            "title": "Data options"
+        }, 
+        {
+            "location": "/options/translate/#translator-options", 
+            "text": "-model  string Path to the serialized model file.  -beam_size  number  (default:  5 ) Beam size.  -batch_size  number  (default:  30 ) Batch size.  -max_sent_length  number  (default:  250 ) Maximum output sentence length.  -replace_unk Replace the generated   tokens with the source token that has the highest attention weight. If  -phrase_table  is provided, it will lookup the identified source token and give the corresponding target token. If it is not provided (or the identified source token does not exist in the table) then it will copy the source token  -phrase_table  string Path to source-target dictionary to replace  unk  tokens.  -n_best  number  (default:  1 ) If   1, it will also output an n-best list of decoded sentences.  -max_num_unks  number  (default:  inf ) All sequences with more  unk s than this will be ignored during beam search.  -pre_filter_factor  number  (default:  1 ) Optional, set this only if filter is being used. Before applying filters, hypotheses with top  beamSize * preFilterFactor  scores will be considered. If the returned hypotheses voilate filters, then set this to a larger value to consider more.  -length_norm  number  (default:  0 ) Length normalization coefficient (alpha). If set to 0, no length normalization.  -coverage_norm  number  (default:  0 ) Coverage normalization coefficient (beta). An extra coverage term multiplied by beta is added to hypotheses scores. If is set to 0, no coverage normalization.  -eos_norm  number  (default:  0 ) End of sentence normalization coefficient (gamma). If set to 0, no EOS normalization.  -dump_input_encoding Instead of generating target tokens conditional on the source tokens, we print the representation (encoding/embedding) of the input.", 
+            "title": "Translator options"
+        }, 
+        {
+            "location": "/options/translate/#cuda-options", 
+            "text": "-gpuid  string  (default:  0 ) List of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.  -fallback_to_cpu If GPU can't be used, rollback on the CPU.  -fp16 Use half-precision float on GPU.  -no_nccl Disable usage of nccl in parallel mode.", 
+            "title": "Cuda options"
+        }, 
+        {
+            "location": "/options/translate/#logger-options", 
+            "text": "-log_file  string Output logs to a file under this path instead of stdout.  -disable_logs If set, output nothing.  -log_level  string  (accepted:  DEBUG ,  INFO ,  WARNING ,  ERROR ; default:  INFO ) Output logs at this level and above.", 
+            "title": "Logger options"
+        }, 
+        {
+            "location": "/options/translate/#other-options", 
+            "text": "-time Measure average translation time.", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/options/tag/", 
+            "text": "tag.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nData options\n\n\n\n\n-src \nstring\nSource sequences to tag.\n\n\n-output \nstring\n (default: \npred.txt\n)\nOutput file.\n\n\n\n\nTagger options\n\n\n\n\n-model \nstring\nPath to the serialized model file.\n\n\n-batch_size \nnumber\n (default: \n30\n)\nBatch size.\n\n\n\n\nCuda options\n\n\n\n\n-gpuid \nstring\n (default: \n0\n)\nList of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.\n\n\n-fallback_to_cpu\nIf GPU can't be used, rollback on the CPU.\n\n\n-fp16\nUse half-precision float on GPU.\n\n\n-no_nccl\nDisable usage of nccl in parallel mode.\n\n\n\n\nLogger options\n\n\n\n\n-log_file \nstring\nOutput logs to a file under this path instead of stdout.\n\n\n-disable_logs\nIf set, output nothing.\n\n\n-log_level \nstring\n (accepted: \nDEBUG\n, \nINFO\n, \nWARNING\n, \nERROR\n; default: \nINFO\n)\nOutput logs at this level and above.\n\n\n\n\nOther options\n\n\n\n\n-time\nMeasure average translation time.", 
+            "title": "Tag"
+        }, 
+        {
+            "location": "/options/tag/#data-options", 
+            "text": "-src  string Source sequences to tag.  -output  string  (default:  pred.txt ) Output file.", 
+            "title": "Data options"
+        }, 
+        {
+            "location": "/options/tag/#tagger-options", 
+            "text": "-model  string Path to the serialized model file.  -batch_size  number  (default:  30 ) Batch size.", 
+            "title": "Tagger options"
+        }, 
+        {
+            "location": "/options/tag/#cuda-options", 
+            "text": "-gpuid  string  (default:  0 ) List of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.  -fallback_to_cpu If GPU can't be used, rollback on the CPU.  -fp16 Use half-precision float on GPU.  -no_nccl Disable usage of nccl in parallel mode.", 
+            "title": "Cuda options"
+        }, 
+        {
+            "location": "/options/tag/#logger-options", 
+            "text": "-log_file  string Output logs to a file under this path instead of stdout.  -disable_logs If set, output nothing.  -log_level  string  (accepted:  DEBUG ,  INFO ,  WARNING ,  ERROR ; default:  INFO ) Output logs at this level and above.", 
+            "title": "Logger options"
+        }, 
+        {
+            "location": "/options/tag/#other-options", 
+            "text": "-time Measure average translation time.", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/options/tokenize/", 
+            "text": "tokenize.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nTokenizer options\n\n\n\n\n-mode \nstring\n (accepted: \nconservative\n, \naggressive\n; default: \nconservative\n)\nDefine how aggressive should the tokenization be. \naggressive\n only keeps sequences of letters/numbers, \nconservative\n allows a mix of alphanumeric as in: \"2,000\", \"E65\", \"soft-landing\", etc.\n\n\n-joiner_annotate\nInclude joiner annotation using \n-joiner\n character.\n\n\n-joiner \nstring\n (default: \n\uffed\n)\nCharacter used to annotate joiners.\n\n\n-joiner_new\nIn \n-joiner_annotate\n mode, \n-joiner\n is an independent token.\n\n\n-case_feature\nGenerate case feature.\n\n\n-bpe_model \nstring\nApply Byte Pair Encoding if the BPE model path is given. If the option is used, \n-mode\n will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n.\n\n\n-EOT_marker \nstring\n (default: \n/w\n)\nMarker used to mark the end of token.\n\n\n-BOT_marker \nstring\n (default: \nw\n)\nMarker used to mark the beginning of token.\n\n\n-bpe_case_insensitive\nApply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n.\n\n\n-bpe_mode \nstring\n (accepted: \nsuffix\n, \nprefix\n, \nboth\n, \nnone\n; default: \nsuffix\n)\nDefine the BPE mode. This option will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n. \nprefix\n: append \n-BOT_marker\n to the begining of each word to learn prefix-oriented pair statistics; \nsuffix\n: append \n-EOT_marker\n to the end of each word to learn suffix-oriented pair statistics, as in the original Python script; \nboth\n: \nsuffix\n and \nprefix\n; \nnone\n: no \nsuffix\n nor \nprefix\n.\n\n\n\n\nOther options\n\n\n\n\n-nparallel \nnumber\n (default: \n1\n)\nNumber of parallel thread to run the tokenization\n\n\n-batchsize \nnumber\n (default: \n1000\n)\nSize of each parallel batch - you should not change except if low memory", 
+            "title": "Tokenize"
+        }, 
+        {
+            "location": "/options/tokenize/#tokenizer-options", 
+            "text": "-mode  string  (accepted:  conservative ,  aggressive ; default:  conservative ) Define how aggressive should the tokenization be.  aggressive  only keeps sequences of letters/numbers,  conservative  allows a mix of alphanumeric as in: \"2,000\", \"E65\", \"soft-landing\", etc.  -joiner_annotate Include joiner annotation using  -joiner  character.  -joiner  string  (default:  \uffed ) Character used to annotate joiners.  -joiner_new In  -joiner_annotate  mode,  -joiner  is an independent token.  -case_feature Generate case feature.  -bpe_model  string Apply Byte Pair Encoding if the BPE model path is given. If the option is used,  -mode  will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  -EOT_marker  string  (default:  /w ) Marker used to mark the end of token.  -BOT_marker  string  (default:  w ) Marker used to mark the beginning of token.  -bpe_case_insensitive Apply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  -bpe_mode  string  (accepted:  suffix ,  prefix ,  both ,  none ; default:  suffix ) Define the BPE mode. This option will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  prefix : append  -BOT_marker  to the begining of each word to learn prefix-oriented pair statistics;  suffix : append  -EOT_marker  to the end of each word to learn suffix-oriented pair statistics, as in the original Python script;  both :  suffix  and  prefix ;  none : no  suffix  nor  prefix .", 
+            "title": "Tokenizer options"
+        }, 
+        {
+            "location": "/options/tokenize/#other-options", 
+            "text": "-nparallel  number  (default:  1 ) Number of parallel thread to run the tokenization  -batchsize  number  (default:  1000 ) Size of each parallel batch - you should not change except if low memory", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/options/rest_server/", 
+            "text": "rest_translation_server.lua\n options:\n\n\n\n\n-h\nThis help.\n\n\n-md\nDump help in Markdown format.\n\n\n-config \nstring\nLoad options from this file.\n\n\n-save_config \nstring\nSave options to this file.\n\n\n\n\nServer options\n\n\n\n\n-port \nstring\n (default: \n7784\n)\nPort to run the server on.\n\n\n-withAttn\nIf set returns by default attn vector.\n\n\n\n\nTranslator options\n\n\n\n\n-model \nstring\nPath to the serialized model file.\n\n\n-beam_size \nnumber\n (default: \n5\n)\nBeam size.\n\n\n-batch_size \nnumber\n (default: \n30\n)\nBatch size.\n\n\n-max_sent_length \nnumber\n (default: \n250\n)\nMaximum output sentence length.\n\n\n-replace_unk\nReplace the generated \n tokens with the source token that has the highest attention weight. If \n-phrase_table\n is provided, it will lookup the identified source token and give the corresponding target token. If it is not provided (or the identified source token does not exist in the table) then it will copy the source token\n\n\n-phrase_table \nstring\nPath to source-target dictionary to replace \nunk\n tokens.\n\n\n-n_best \nnumber\n (default: \n1\n)\nIf \n 1, it will also output an n-best list of decoded sentences.\n\n\n-max_num_unks \nnumber\n (default: \ninf\n)\nAll sequences with more \nunk\ns than this will be ignored during beam search.\n\n\n-pre_filter_factor \nnumber\n (default: \n1\n)\nOptional, set this only if filter is being used. Before applying filters, hypotheses with top \nbeamSize * preFilterFactor\n scores will be considered. If the returned hypotheses voilate filters, then set this to a larger value to consider more.\n\n\n-length_norm \nnumber\n (default: \n0\n)\nLength normalization coefficient (alpha). If set to 0, no length normalization.\n\n\n-coverage_norm \nnumber\n (default: \n0\n)\nCoverage normalization coefficient (beta). An extra coverage term multiplied by beta is added to hypotheses scores. If is set to 0, no coverage normalization.\n\n\n-eos_norm \nnumber\n (default: \n0\n)\nEnd of sentence normalization coefficient (gamma). If set to 0, no EOS normalization.\n\n\n-dump_input_encoding\nInstead of generating target tokens conditional on the source tokens, we print the representation (encoding/embedding) of the input.\n\n\n\n\nCuda options\n\n\n\n\n-gpuid \nstring\n (default: \n0\n)\nList of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.\n\n\n-fallback_to_cpu\nIf GPU can't be used, rollback on the CPU.\n\n\n-fp16\nUse half-precision float on GPU.\n\n\n-no_nccl\nDisable usage of nccl in parallel mode.\n\n\n\n\nLogger options\n\n\n\n\n-log_file \nstring\nOutput logs to a file under this path instead of stdout.\n\n\n-disable_logs\nIf set, output nothing.\n\n\n-log_level \nstring\n (accepted: \nDEBUG\n, \nINFO\n, \nWARNING\n, \nERROR\n; default: \nINFO\n)\nOutput logs at this level and above.\n\n\n\n\nTokenizer options\n\n\n\n\n-mode \nstring\n (accepted: \nconservative\n, \naggressive\n; default: \nconservative\n)\nDefine how aggressive should the tokenization be. \naggressive\n only keeps sequences of letters/numbers, \nconservative\n allows a mix of alphanumeric as in: \"2,000\", \"E65\", \"soft-landing\", etc.\n\n\n-joiner_annotate\nInclude joiner annotation using \n-joiner\n character.\n\n\n-joiner \nstring\n (default: \n\uffed\n)\nCharacter used to annotate joiners.\n\n\n-joiner_new\nIn \n-joiner_annotate\n mode, \n-joiner\n is an independent token.\n\n\n-case_feature\nGenerate case feature.\n\n\n-bpe_model \nstring\nApply Byte Pair Encoding if the BPE model path is given. If the option is used, \n-mode\n will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n.\n\n\n-EOT_marker \nstring\n (default: \n/w\n)\nMarker used to mark the end of token.\n\n\n-BOT_marker \nstring\n (default: \nw\n)\nMarker used to mark the beginning of token.\n\n\n-bpe_case_insensitive\nApply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n.\n\n\n-bpe_mode \nstring\n (accepted: \nsuffix\n, \nprefix\n, \nboth\n, \nnone\n; default: \nsuffix\n)\nDefine the BPE mode. This option will be overridden/set automatically if the BPE model specified by \n-bpe_model\n is learnt using \nlearn_bpe.lua\n. \nprefix\n: append \n-BOT_marker\n to the begining of each word to learn prefix-oriented pair statistics; \nsuffix\n: append \n-EOT_marker\n to the end of each word to learn suffix-oriented pair statistics, as in the original Python script; \nboth\n: \nsuffix\n and \nprefix\n; \nnone\n: no \nsuffix\n nor \nprefix\n.\n\n\n\n\nOther options\n\n\n\n\n-batchsize \nnumber\n (default: \n1000\n)\nSize of each parallel batch - you should not change except if low memory.", 
+            "title": "REST server"
+        }, 
+        {
+            "location": "/options/rest_server/#server-options", 
+            "text": "-port  string  (default:  7784 ) Port to run the server on.  -withAttn If set returns by default attn vector.", 
+            "title": "Server options"
+        }, 
+        {
+            "location": "/options/rest_server/#translator-options", 
+            "text": "-model  string Path to the serialized model file.  -beam_size  number  (default:  5 ) Beam size.  -batch_size  number  (default:  30 ) Batch size.  -max_sent_length  number  (default:  250 ) Maximum output sentence length.  -replace_unk Replace the generated   tokens with the source token that has the highest attention weight. If  -phrase_table  is provided, it will lookup the identified source token and give the corresponding target token. If it is not provided (or the identified source token does not exist in the table) then it will copy the source token  -phrase_table  string Path to source-target dictionary to replace  unk  tokens.  -n_best  number  (default:  1 ) If   1, it will also output an n-best list of decoded sentences.  -max_num_unks  number  (default:  inf ) All sequences with more  unk s than this will be ignored during beam search.  -pre_filter_factor  number  (default:  1 ) Optional, set this only if filter is being used. Before applying filters, hypotheses with top  beamSize * preFilterFactor  scores will be considered. If the returned hypotheses voilate filters, then set this to a larger value to consider more.  -length_norm  number  (default:  0 ) Length normalization coefficient (alpha). If set to 0, no length normalization.  -coverage_norm  number  (default:  0 ) Coverage normalization coefficient (beta). An extra coverage term multiplied by beta is added to hypotheses scores. If is set to 0, no coverage normalization.  -eos_norm  number  (default:  0 ) End of sentence normalization coefficient (gamma). If set to 0, no EOS normalization.  -dump_input_encoding Instead of generating target tokens conditional on the source tokens, we print the representation (encoding/embedding) of the input.", 
+            "title": "Translator options"
+        }, 
+        {
+            "location": "/options/rest_server/#cuda-options", 
+            "text": "-gpuid  string  (default:  0 ) List of comma-separated GPU identifiers (1-indexed). CPU is used when set to 0.  -fallback_to_cpu If GPU can't be used, rollback on the CPU.  -fp16 Use half-precision float on GPU.  -no_nccl Disable usage of nccl in parallel mode.", 
+            "title": "Cuda options"
+        }, 
+        {
+            "location": "/options/rest_server/#logger-options", 
+            "text": "-log_file  string Output logs to a file under this path instead of stdout.  -disable_logs If set, output nothing.  -log_level  string  (accepted:  DEBUG ,  INFO ,  WARNING ,  ERROR ; default:  INFO ) Output logs at this level and above.", 
+            "title": "Logger options"
+        }, 
+        {
+            "location": "/options/rest_server/#tokenizer-options", 
+            "text": "-mode  string  (accepted:  conservative ,  aggressive ; default:  conservative ) Define how aggressive should the tokenization be.  aggressive  only keeps sequences of letters/numbers,  conservative  allows a mix of alphanumeric as in: \"2,000\", \"E65\", \"soft-landing\", etc.  -joiner_annotate Include joiner annotation using  -joiner  character.  -joiner  string  (default:  \uffed ) Character used to annotate joiners.  -joiner_new In  -joiner_annotate  mode,  -joiner  is an independent token.  -case_feature Generate case feature.  -bpe_model  string Apply Byte Pair Encoding if the BPE model path is given. If the option is used,  -mode  will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  -EOT_marker  string  (default:  /w ) Marker used to mark the end of token.  -BOT_marker  string  (default:  w ) Marker used to mark the beginning of token.  -bpe_case_insensitive Apply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  -bpe_mode  string  (accepted:  suffix ,  prefix ,  both ,  none ; default:  suffix ) Define the BPE mode. This option will be overridden/set automatically if the BPE model specified by  -bpe_model  is learnt using  learn_bpe.lua .  prefix : append  -BOT_marker  to the begining of each word to learn prefix-oriented pair statistics;  suffix : append  -EOT_marker  to the end of each word to learn suffix-oriented pair statistics, as in the original Python script;  both :  suffix  and  prefix ;  none : no  suffix  nor  prefix .", 
+            "title": "Tokenizer options"
+        }, 
+        {
+            "location": "/options/rest_server/#other-options", 
+            "text": "-batchsize  number  (default:  1000 ) Size of each parallel batch - you should not change except if low memory.", 
+            "title": "Other options"
+        }, 
+        {
+            "location": "/extensions/", 
+            "text": "OpenNMT is explicitly separated out into a library and application section. All modeling and training code can be directly used within other Torch applications.\n\n\nImage-to-Text\n\n\nAs an example use case we have released an extension for translating from images-to-text. This model replaces the source-side word embeddings with a convolutional image network. The full model is\navailable at \nOpenNMT/im2text\n.", 
+            "title": "Extensions"
+        }, 
+        {
+            "location": "/extensions/#image-to-text", 
+            "text": "As an example use case we have released an extension for translating from images-to-text. This model replaces the source-side word embeddings with a convolutional image network. The full model is\navailable at  OpenNMT/im2text .", 
+            "title": "Image-to-Text"
+        }, 
+        {
+            "location": "/references/", 
+            "text": "This is the list of papers, OpenNMT has been inspired on:\n\n\n\n\nLuong, M. T., Pham, H., \n Manning, C. D. (2015). \nEffective approaches to attention-based neural machine translation\n. arXiv preprint arXiv:1508.04025.\n\n\nSennrich, R., \n Haddow, B. (2016). \nLinguistic input features improve neural machine translation\n. arXiv preprint arXiv:1606.02892.\n\n\nSennrich, R., Haddow, B., \n Birch, A. (2015). \nNeural machine translation of rare words with subword units\n. arXiv preprint arXiv:1508.07909.", 
+            "title": "References"
+        }, 
+        {
+            "location": "/issues/", 
+            "text": "luajit: out of memory\n\n\nThis most likely happened when training a model with long sequences and the LuaJIT memory limit was reached. You will need to switch to Lua 5.2 instead.\n\n\nTHCudaCheck FAIL [...]: out of memory\n\n\nThis means your model was too large to fit on the available GPU memory.\n\n\nTo work around this error during training, follow these steps in order and stop when the training no more fails:\n\n\n\n\nPrefix your command line with \nTHC_CACHING_ALLOCATOR=0\n\n\nReduce the \n-max_batch_size\n value (64 by default)\n\n\nReduce the \n-src_seq_length\n and \n-tgt_seq_length\n values during the preprocessing\n\n\nReduce your model size (\n-layers\n, \n-rnn_size\n, etc.)\n\n\n\n\nunknown Torch class \ntorch.CudaTensor>\n\n\nThis means you wanted to load a GPU model but did not use the \n-gpuid\n option to define which GPU to use.", 
+            "title": "Common issues"
+        }, 
+        {
+            "location": "/issues/#luajit-out-of-memory", 
+            "text": "This most likely happened when training a model with long sequences and the LuaJIT memory limit was reached. You will need to switch to Lua 5.2 instead.", 
+            "title": "luajit: out of memory"
+        }, 
+        {
+            "location": "/issues/#thcudacheck-fail-out-of-memory", 
+            "text": "This means your model was too large to fit on the available GPU memory.  To work around this error during training, follow these steps in order and stop when the training no more fails:   Prefix your command line with  THC_CACHING_ALLOCATOR=0  Reduce the  -max_batch_size  value (64 by default)  Reduce the  -src_seq_length  and  -tgt_seq_length  values during the preprocessing  Reduce your model size ( -layers ,  -rnn_size , etc.)", 
+            "title": "THCudaCheck FAIL [...]: out of memory"
+        }, 
+        {
+            "location": "/issues/#unknown-torch-class-torchcudatensor62", 
+            "text": "This means you wanted to load a GPU model but did not use the  -gpuid  option to define which GPU to use.", 
+            "title": "unknown Torch class &lt;torch.CudaTensor>"
         }
     ]
 }
