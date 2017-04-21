@@ -15,7 +15,7 @@
     
     
       
-        <title>Scripts usage - OpenNMT</title>
+        <title>Logs - OpenNMT</title>
       
     
     
@@ -76,11 +76,11 @@
             
               
                 <span class="md-header-nav__parent">
-                  Reference: Options
+                  Training
                 </span>
               
             
-            Scripts usage
+            Logs
           
         </span>
       </div>
@@ -269,10 +269,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
     
     <label class="md-nav__link" for="nav-5">
       Training
@@ -290,7 +292,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/models/" title="Models" class="md-nav__link">
+    <a href="../models/" title="Models" class="md-nav__link">
       Models
     </a>
   </li>
@@ -302,7 +304,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/embeddings/" title="Embeddings" class="md-nav__link">
+    <a href="../embeddings/" title="Embeddings" class="md-nav__link">
       Embeddings
     </a>
   </li>
@@ -312,11 +314,50 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../training/logs/" title="Logs" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Logs
+      </label>
+    
+    <a href="./" title="Logs" class="md-nav__link md-nav__link--active">
       Logs
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#perplexity" title="Perplexity" class="md-nav__link">
+    Perplexity
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs-management" title="Logs management" class="md-nav__link">
+    Logs management
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -326,7 +367,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/multi_gpu/" title="Multi GPU" class="md-nav__link">
+    <a href="../multi_gpu/" title="Multi GPU" class="md-nav__link">
       Multi GPU
     </a>
   </li>
@@ -338,7 +379,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/retraining/" title="Retraining" class="md-nav__link">
+    <a href="../retraining/" title="Retraining" class="md-nav__link">
       Retraining
     </a>
   </li>
@@ -350,7 +391,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/decay/" title="Decay strategies" class="md-nav__link">
+    <a href="../decay/" title="Decay strategies" class="md-nav__link">
       Decay strategies
     </a>
   </li>
@@ -362,7 +403,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/sampling/" title="Data sampling" class="md-nav__link">
+    <a href="../sampling/" title="Data sampling" class="md-nav__link">
       Data sampling
     </a>
   </li>
@@ -485,12 +526,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
     
     <label class="md-nav__link" for="nav-8">
       Reference: Options
@@ -506,57 +545,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="toc">
-        Scripts usage
-      </label>
-    
-    <a href="./" title="Scripts usage" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../../options/usage/" title="Scripts usage" class="md-nav__link">
       Scripts usage
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-files" title="Configuration files" class="md-nav__link">
-    Configuration files
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#boolean-flags" title="Boolean flags" class="md-nav__link">
-    Boolean flags
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multiple-arguments" title="Multiple arguments" class="md-nav__link">
-    Multiple arguments
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -566,7 +559,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../preprocess/" title="preprocess.lua" class="md-nav__link">
+    <a href="../../options/preprocess/" title="preprocess.lua" class="md-nav__link">
       preprocess.lua
     </a>
   </li>
@@ -578,7 +571,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../train/" title="train.lua" class="md-nav__link">
+    <a href="../../options/train/" title="train.lua" class="md-nav__link">
       train.lua
     </a>
   </li>
@@ -590,7 +583,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../translate/" title="translate.lua" class="md-nav__link">
+    <a href="../../options/translate/" title="translate.lua" class="md-nav__link">
       translate.lua
     </a>
   </li>
@@ -602,7 +595,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../tag/" title="tag.lua" class="md-nav__link">
+    <a href="../../options/tag/" title="tag.lua" class="md-nav__link">
       tag.lua
     </a>
   </li>
@@ -614,7 +607,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../tokenize/" title="tools/tokenize.lua" class="md-nav__link">
+    <a href="../../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
   </li>
@@ -626,7 +619,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
+    <a href="../../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
     </a>
   </li>
@@ -638,7 +631,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
+    <a href="../../options/rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
       tools/rest_translation_server.lua
     </a>
   </li>
@@ -650,7 +643,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../embeddings/" title="tools/embeddings.lua" class="md-nav__link">
+    <a href="../../options/embeddings/" title="tools/embeddings.lua" class="md-nav__link">
       tools/embeddings.lua
     </a>
   </li>
@@ -716,22 +709,15 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-files" title="Configuration files" class="md-nav__link">
-    Configuration files
+  <a href="#perplexity" title="Perplexity" class="md-nav__link">
+    Perplexity
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#boolean-flags" title="Boolean flags" class="md-nav__link">
-    Boolean flags
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multiple-arguments" title="Multiple arguments" class="md-nav__link">
-    Multiple arguments
+  <a href="#logs-management" title="Logs management" class="md-nav__link">
+    Logs management
   </a>
   
 </li>
@@ -750,37 +736,29 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/usage.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/training/logs.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                  <h1>Scripts usage</h1>
+                  <h1>Logs</h1>
                 
-                <p>By default, OpenNMT's scripts can only be called from the root of OpenNMT's directory. If calling the scripts from any directory is more convenient to you, you need to extend the <code>LUA_PATH</code>:</p>
-<pre><code class="bash">export LUA_PATH=&quot;$LUA_PATH;/path/to/OpenNMT/?.lua&quot;
-</code></pre>
-
-<h2 id="configuration-files">Configuration files</h2>
-<p>You can pass options using a configuration file. The file has a simple key-value syntax with one <code>option = value</code> per line. Here is an example:</p>
-<pre><code class="text">$ cat generic.txt
-rnn_size = 600
-layers = 4
-brnn = true
-save_model = generic
-</code></pre>
-
-<p>It handles empty lines and ignores lines prefixed with <code>#</code>.</p>
-<p>You can then pass this file along other options on the command line:</p>
-<pre><code class="bash">th train.lua -config generic.txt -data data/demo-train.t7 -gpuid 1
-</code></pre>
-
-<p>If an option appears both in the file and on the command line, the file takes priority.</p>
-<h2 id="boolean-flags">Boolean flags</h2>
-<p>Flags are options that do not take arguments. For example the option <code>-brnn</code> enables bidirectional encoder when added to the command line.</p>
-<p>However, flags that are enabled by default can take <code>0</code> as argument to disable them. For example, input feeding is disabled with <code>-input_feed 0</code>.</p>
-<h2 id="multiple-arguments">Multiple arguments</h2>
-<p>Some options can take multiple arguments. Unless otherwise noted, they accept a list of comma-separated values without spaces:</p>
-<pre><code class="text">-option_name value1,value2,value3
-</code></pre>
+                <p>During the training, some information are displayed every <code>-report_every</code> iterations. These logs are usually needed to evaluate the training progress, efficiency and convergence.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Measurements are reported as an average since the previous print.</p>
+</div>
+<h2 id="perplexity">Perplexity</h2>
+<p>A key information is the <strong>training perplexity</strong> defined by:</p>
+<p>
+<script type="math/tex; mode=display">ppl(X,Y)=\exp(\frac{-\sum_{i=1}^{|Y|}\log P(y_i|y_{i-1},\dotsc,y_{1},X)}{|Y|})</script>
+</p>
+<p>with <script type="math/tex">X</script> being the source sequence, <script type="math/tex">Y</script> the true target sequence and <script type="math/tex">y_i</script> the <script type="math/tex">i</script>-th target word. The numerator is the negative log likelihood and the loss function value.</p>
+<p>You want the perplexity to go down and be low in which case it means your model fits well the training data. At the end of an epoch, the logs report the <strong>validation perplexity</strong> with the same formula but applied on the validation data. It shows how well your model fits unseen data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>During evaluation on the validation dataset, dropout is turned off.</p>
+</div>
+<h2 id="logs-management">Logs management</h2>
+<p>Some advanced options are available to manage your logs like using a file (<code>-log_file</code>), or disabling them entirely (<code>-disable_logs</code>). See the options of the script to learn about them.</p>
                 
                   
                 
@@ -799,7 +777,7 @@ save_model = generic
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../../tools/servers/" title="Servers" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../embeddings/" title="Embeddings" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -808,19 +786,19 @@ save_model = generic
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Servers
+                Embeddings
               </span>
             </div>
           </a>
         
         
-          <a href="../preprocess/" title="preprocess.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../multi_gpu/" title="Multi GPU" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                preprocess.lua
+                Multi GPU
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
