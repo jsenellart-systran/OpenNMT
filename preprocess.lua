@@ -12,7 +12,7 @@ local options = {
     [[Type of data to preprocess. Use 'monotext' for monolingual data.
       This option impacts all options choices.]],
     {
-      enum = {'bitext', 'monotext', 'feattext'}
+      enum = {'bitext', 'monotext', 'feattext', 'bitextval'}
     }
   },
   {
@@ -104,6 +104,10 @@ local function main()
                                                                    isValid)
     -- record the size of the input layer
     data.dicts.srcInputSize = data.train.src.vectors[1]:size(2)
+  elseif dataType == 'bitextval' then
+    data.train.src, data.train.tgt, data.train.value = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
+                                                                    data.dicts.src, data.dicts.tgt,
+                                                                    isValid)
   else
     data.train.src, data.train.tgt = Preprocessor:makeBilingualData(opt.train_src, opt.train_tgt,
                                                                     data.dicts.src, data.dicts.tgt,
@@ -119,6 +123,10 @@ local function main()
   elseif dataType == 'feattext' then
     data.valid.src, data.valid.tgt = Preprocessor:makeFeatTextData(opt.valid_src, opt.valid_tgt,
                                                                     data.dicts.tgt,
+                                                                    isValid)
+  elseif dataType == 'bitextval' then
+    data.valid.src, data.valid.tgt, data.valid.value = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
+                                                                    data.dicts.src, data.dicts.tgt,
                                                                     isValid)
   else
     data.valid.src, data.valid.tgt = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
