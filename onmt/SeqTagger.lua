@@ -23,31 +23,6 @@ local options = {
     {
       structural = 1
     }
-  },
-  {
-    '-feat_merge', 'concat',
-    [[Merge action for the features embeddings.]],
-    {
-      enum = {'concat', 'sum'},
-      structural = 0
-    }
-  },
-  {
-    '-feat_vec_exponent', 0.7,
-    [[When features embedding sizes are not set and using `-feat_merge concat`, their dimension
-      will be set to `N^feat_vec_exponent` where `N` is the number of values the feature takes.]],
-    {
-      structural = 0
-    }
-  },
-  {
-    '-feat_vec_size', 20,
-    [[When features embedding sizes are not set and using `-feat_merge sum`,
-      this is the common embedding size of the features]],
-    {
-      valid = onmt.utils.ExtendedCmdLine.isUInt(),
-      structural = 0
-    }
   }
 }
 
