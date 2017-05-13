@@ -230,7 +230,7 @@ local commonOptions = {
 function Preprocessor.declareOpts(cmd, mode)
   mode = mode or 'bitext'
   local options
-  if mode == 'bitext' then
+  if mode == 'bitext' or mode == 'bitextval' then
     options = bitextOptions
   elseif mode == 'monotext' then
     options = monotextOptions
@@ -493,7 +493,35 @@ function Preprocessor:makeBilingualData(srcFile, tgtFile, srcDicts, tgtDicts, is
                                 onmt.utils.Features.generateSource,
                                 onmt.utils.Features.generateTarget
                               })
-  return data[1], data[2]
+  return table.unpack(data)
+end
+
+function Preprocessor:makeBilingualValData(srcFile, tgtFile, srcDicts, tgtDicts, valFile, isValid)
+  local data = self:makeGenericData(
+                              { srcFile, tgtFile, valFile },
+                              { false, false, true },
+                              { srcDicts, tgtDicts, {} },
+                              { 'source', 'target', 'val' },
+                              {
+                                {
+                                  onmt.Constants.UNK_WORD
+                                },
+                                {
+                                  onmt.Constants.UNK_WORD
+                                }
+                              },
+                              function(tokens)
+                                return #tokens[1] > 0 and
+                                       isValid(tokens[1], self.args.src_seq_length) and
+                                       #tokens[2] > 0 and
+                                       isValid(tokens[2], self.args.tgt_seq_length)
+                              end,
+                              {
+                                onmt.utils.Features.generateSource,
+                                onmt.utils.Features.generateSource,
+                                false
+                              })
+  return table.unpack(data)
 end
 
 function Preprocessor:makeFeatTextData(srcFile, tgtFile, tgtDicts, isValid)
@@ -520,7 +548,7 @@ function Preprocessor:makeFeatTextData(srcFile, tgtFile, tgtDicts, isValid)
                                 false,
                                 onmt.utils.Features.generateTarget
                               })
-  return data[1], data[2]
+  return table.unpack(data)
 end
 
 function Preprocessor:makeMonolingualData(file, dicts, isValid)
@@ -540,7 +568,7 @@ function Preprocessor:makeMonolingualData(file, dicts, isValid)
                               {
                                 onmt.utils.Features.generateSource
                               })
-  return data[1]
+  return table.unpack(data)
 end
 
 return Preprocessor
