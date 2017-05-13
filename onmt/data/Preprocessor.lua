@@ -262,7 +262,11 @@ function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, 
       local hasNil = false
       for i = 1, n do
         hasNil = hasNil or maps[i][k] == nil
-        table.insert(tokens, maps[i][k])
+        if isInputVector[i] then
+          table.insert(tokens, torch.Tensor(maps[i][k]))
+        else
+          table.insert(tokens, maps[i][k])
+        end
       end
       if not hasNil then
         processSentence(tokens)
@@ -277,6 +281,9 @@ function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, 
       local allNil = true
       for i = 1, n do
         tokens[i] = readers[i]:next()
+        if isInputVector[i] and tokens[i] ~= nil then
+          tokens[i] = torch.Tensor(tokens[i])
+        end
         hasNil = hasNil or tokens[i] == nil
         allNil = allNil and tokens[i] == nil
       end
@@ -388,34 +395,6 @@ function Preprocessor:makeBilingualData(srcFile, tgtFile, srcDicts, tgtDicts, is
   return table.unpack(data)
 end
 
-function Preprocessor:makeBilingualValData(srcFile, tgtFile, srcDicts, tgtDicts, valFile, isValid)
-  local data = self:makeGenericData(
-                              { srcFile, tgtFile, valFile },
-                              { false, false, true },
-                              { srcDicts, tgtDicts, {} },
-                              { 'source', 'target', 'val' },
-                              {
-                                {
-                                  onmt.Constants.UNK_WORD
-                                },
-                                {
-                                  onmt.Constants.UNK_WORD
-                                }
-                              },
-                              function(tokens)
-                                return #tokens[1] > 0 and
-                                       isValid(tokens[1], self.args.src_seq_length) and
-                                       #tokens[2] > 0 and
-                                       isValid(tokens[2], self.args.tgt_seq_length)
-                              end,
-                              {
-                                onmt.utils.Features.generateSource,
-                                onmt.utils.Features.generateSource,
-                                false
-                              })
-  return table.unpack(data)
-end
-
 function Preprocessor:makeBitextFeatData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, isValid)
   local data = self:makeGenericData(
                               { src1File, src2File, tgtFile },
@@ -436,7 +415,7 @@ function Preprocessor:makeBitextFeatData(src1File, src2File, tgtFile, src1Dicts,
                                        isValid(tokens[1], self.args.src1_seq_length) and
                                        #tokens[2] > 0 and
                                        isValid(tokens[2], self.args.src2_seq_length) and
-                                       #tokens[3]:dim() > 0 and
+                                       tokens[3]:dim() > 0 and
                                        isValid(tokens[3], self.args.tgt_seq_length)
                               end,
                               {
