@@ -63,11 +63,17 @@ local function declareDataOptions(mode)
   end
   local datalist
   if mode == 'bitext' then
-    datalist = { {name="source",short="src",hasVocab=true} , {name="target",short="tgt",hasVocab=true} }
+    datalist = { {name="source", short="src", hasVocab=true},
+                 {name="target", short="tgt", hasVocab=true}}
+  elseif mode == 'bitextfeat' then
+    datalist = { {name="source1", short="src1", hasVocab=true},
+                 {name="source2", short="src2", hasVocab=true},
+                 {name="target", short="tgt", hasVocab=false}}
   elseif mode == 'monotext' then
     datalist = { {hasVocab=true} }
   else
-    datalist = { {name="source",short="src",hasVocab=false} , {name="target",short="tgt",hasVocab=true} }
+    datalist = { {name="source", short="src", hasVocab=false},
+                 {name="target", short="tgt", hasVocab=true}}
   end
   local options = {}
   for i = 1, #datalist do
@@ -401,6 +407,37 @@ function Preprocessor:makeBilingualValData(srcFile, tgtFile, srcDicts, tgtDicts,
                                        isValid(tokens[1], self.args.src_seq_length) and
                                        #tokens[2] > 0 and
                                        isValid(tokens[2], self.args.tgt_seq_length)
+                              end,
+                              {
+                                onmt.utils.Features.generateSource,
+                                onmt.utils.Features.generateSource,
+                                false
+                              })
+  return table.unpack(data)
+end
+
+function Preprocessor:makeBitextFeatData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, isValid)
+  local data = self:makeGenericData(
+                              { src1File, src2File, tgtFile },
+                              { false, false, true },
+                              { src1Dicts, src2Dicts, {} },
+                              { 'source1', 'source2', 'target' },
+                              {
+                                {
+                                  onmt.Constants.UNK_WORD
+                                },
+                                {
+                                  onmt.Constants.UNK_WORD
+                                },
+                                false
+                              },
+                              function(tokens)
+                                return #tokens[1] > 0 and
+                                       isValid(tokens[1], self.args.src1_seq_length) and
+                                       #tokens[2] > 0 and
+                                       isValid(tokens[2], self.args.src2_seq_length) and
+                                       #tokens[3]:dim() > 0 and
+                                       isValid(tokens[3], self.args.tgt_seq_length)
                               end,
                               {
                                 onmt.utils.Features.generateSource,

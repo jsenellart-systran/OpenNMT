@@ -12,7 +12,7 @@ local options = {
     [[Type of data to preprocess. Use 'monotext' for monolingual data.
       This option impacts all options choices.]],
     {
-      enum = {'bitext', 'monotext', 'feattext', 'bitextval'}
+      enum = {'bitext', 'monotext', 'feattext', 'bitextfeat'}
     }
   },
   {
@@ -66,25 +66,57 @@ local function main()
   data.dicts = {}
 
   _G.logger:info('Preparing vocabulary...')
-  if dataType ~= 'feattext' then
-    local src_file = opt.train_src
-    if dataType == 'monotext' then
-      src_file = opt.train
-    end
-    data.dicts.src = Vocabulary.init('source',
-                                     src_file,
-                                     opt.src_vocab or opt.vocab,
-                                     opt.src_vocab_size or opt.vocab_size,
-                                     opt.src_words_min_frequency or opt.words_min_frequency,
+  if dataType == 'bitextfeat' then
+    data.dicts.src1 = Vocabulary.init('source1',
+                                     opt.train_src1,
+                                     opt.src1_vocab,
+                                     opt.src1_vocab_size,
+                                     opt.src1_words_min_frequency,
                                      opt.features_vocabs_prefix,
-                                     function(s) return isValid(s, opt.src_seq_length or opt.seq_length) end,
+                                     function(s) return isValid(s, opt.src1_seq_length) end,
                                      opt.keep_frequency,
                                      opt.idx_files)
-  end
-  if dataType ~= 'monotext' then
-    local tgt_file = opt.train_tgt
+    data.dicts.src2 = Vocabulary.init('source2',
+                                     opt.train_src2,
+                                     opt.src2_vocab,
+                                     opt.src2_vocab_size,
+                                     opt.src2_words_min_frequency,
+                                     opt.features_vocabs_prefix,
+                                     function(s) return isValid(s, opt.src2_seq_length) end,
+                                     opt.keep_frequency,
+                                     opt.idx_files)
+  elseif dataType == 'bitext' then
+    data.dicts.src = Vocabulary.init('source',
+                                     opt.train_src,
+                                     opt.src_vocab,
+                                     opt.src_vocab_size,
+                                     opt.src_words_min_frequency,
+                                     opt.features_vocabs_prefix,
+                                     function(s) return isValid(s, opt.src_seq_length) end,
+                                     opt.keep_frequency,
+                                     opt.idx_files)
     data.dicts.tgt = Vocabulary.init('target',
-                                     tgt_file,
+                                     opt.train_tgt,
+                                     opt.tgt_vocab,
+                                     opt.tgt_vocab_size,
+                                     opt.tgt_words_min_frequency,
+                                     opt.features_vocabs_prefix,
+                                     function(s) return isValid(s, opt.tgt_seq_length) end,
+                                     opt.keep_frequency,
+                                     opt.idx_files)
+  elseif dataType == 'monotext' then
+    data.dicts.src = Vocabulary.init('source',
+                                     opt.train,
+                                     opt.vocab,
+                                     opt.vocab_size,
+                                     opt.words_min_frequency,
+                                     opt.features_vocabs_prefix,
+                                     function(s) return isValid(s, opt.seq_length) end,
+                                     opt.keep_frequency,
+                                     opt.idx_files)
+  else
+    data.dicts.tgt = Vocabulary.init('target',
+                                     opt.train_tgt,
                                      opt.tgt_vocab,
                                      opt.tgt_vocab_size,
                                      opt.tgt_words_min_frequency,
@@ -104,9 +136,9 @@ local function main()
                                                                    isValid)
     -- record the size of the input layer
     data.dicts.srcInputSize = data.train.src.vectors[1]:size(2)
-  elseif dataType == 'bitextval' then
-    data.train.src, data.train.tgt, data.train.value = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
-                                                                    data.dicts.src, data.dicts.tgt,
+  elseif dataType == 'bitextfeat' then
+    data.train.src1, data.train.src2, data.train.tgt = Preprocessor:makeBitextFeatData(opt.valid_src1, opt.valid_src2,
+                                                                    data.dicts.src1, data.dicts.src2,
                                                                     isValid)
   else
     data.train.src, data.train.tgt = Preprocessor:makeBilingualData(opt.train_src, opt.train_tgt,
@@ -124,9 +156,9 @@ local function main()
     data.valid.src, data.valid.tgt = Preprocessor:makeFeatTextData(opt.valid_src, opt.valid_tgt,
                                                                     data.dicts.tgt,
                                                                     isValid)
-  elseif dataType == 'bitextval' then
-    data.valid.src, data.valid.tgt, data.valid.value = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
-                                                                    data.dicts.src, data.dicts.tgt,
+  elseif dataType == 'bitextfeat' then
+    data.valid.src1, data.valid.src2, data.valid.tgt = Preprocessor:makeBitextFeatData(opt.valid_src1, opt.valid_src2,
+                                                                    data.dicts.src1, data.dicts.src2,
                                                                     isValid)
   else
     data.valid.src, data.valid.tgt = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
