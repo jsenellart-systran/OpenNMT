@@ -13,4 +13,14 @@ function manhattanDistanceTest.basic()
   end
 end
 
+function manhattanDistanceTest.expNorm()
+  local t=torch.Tensor(3,10):uniform(0.1)
+  local u=torch.Tensor(3,10):uniform(0.1)
+  local d = onmt.ManhattanDistance(1)
+  for i = 1, 3 do
+    tester:assertge(d:forward({t,u})[i], 0)
+    tester:assertlt(d:forward({t,u})[i], 1)
+  end
+end
+
 return manhattanDistanceTest
