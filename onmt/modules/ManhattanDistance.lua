@@ -12,7 +12,6 @@ end
 --]]
 function ManhattanDistance:_buildModel(expNorm)
   local inputs = {}
-  local states = {}
 
   local x = nn.Identity()()
   table.insert(inputs, x)
