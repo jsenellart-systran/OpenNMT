@@ -23,6 +23,8 @@ require('onmt.modules.GlobalAttention')
 
 require('onmt.modules.Generator')
 
+require('onmt.modules.ManhattanDistance')
+
 require('onmt.modules.JoinReplicateTable')
 require('onmt.modules.ParallelClassNLLCriterion')
 require('onmt.modules.RIndexLinear')
