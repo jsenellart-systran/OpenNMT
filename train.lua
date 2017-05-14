@@ -58,11 +58,11 @@ end
 local function buildData(opt, dataset)
   local trainData
   if opt.sample > 0 then
-     trainData = onmt.data.SampledDataset.new(opt, dataset.train.src, dataset.train.tgt)
+     trainData = onmt.data.SampledDataset.new(opt, dataset.train.src, dataset.train.tgt, dataset.train.src2)
   else
-     trainData = onmt.data.Dataset.new(dataset.train.src, dataset.train.tgt)
+     trainData = onmt.data.Dataset.new(dataset.train.src, dataset.train.tgt, dataset.train.src2)
   end
-  local validData = onmt.data.Dataset.new(dataset.valid.src, dataset.valid.tgt)
+  local validData = onmt.data.Dataset.new(dataset.valid.src, dataset.valid.tgt, dataset.train.src2)
 
   local nTrainBatch, batchUsage = trainData:setBatchSize(opt.max_batch_size, opt.uneven_batches)
   validData:setBatchSize(opt.max_batch_size, opt.uneven_batches)
@@ -73,6 +73,10 @@ local function buildData(opt, dataset)
     if dataset.dicts.src then
       srcVocSize = dataset.dicts.src.words:size()
       srcFeatSize = #dataset.dicts.src.features
+      if dataset.dicts.src2 then
+        srcVocSize = srcVocSize .. ' / ' .. dataset.dicts.src2.words:size()
+        srcFeatSize = srcFeatSize .. ' / ' .. #dataset.dicts.src2.features
+      end
     else
       srcVocSize = '*'..dataset.dicts.srcInputSize
     end
