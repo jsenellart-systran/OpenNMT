@@ -59,14 +59,20 @@ Parameters:
   * `srcFeatures` - 2D table of source batch features (opt)
   * `tgt` - 2D table of target batch indices
   * `tgtFeatures` - 2D table of target batch features (opt)
+  * `src2` - 2D table of second source batch indices (opt)
+  * `src2Features` - 2D table of second source batch features (opt)
 --]]
-function Batch:__init(src, srcFeatures, tgt, tgtFeatures)
+function Batch:__init(src, srcFeatures, tgt, tgtFeatures, src2, src2Features)
   src = src or {}
   srcFeatures = srcFeatures or {}
   tgtFeatures = tgtFeatures or {}
+  src2Features = src2Features or {}
 
   if tgt ~= nil then
     assert(#src == #tgt, "source and target must have the same batch size")
+  end
+  if src2 ~= nil then
+    assert(#src == #src2, "source and second source must have the same batch size")
   end
 
   self.size = #src
@@ -97,6 +103,36 @@ function Batch:__init(src, srcFeatures, tgt, tgtFeatures)
     for _ = 1, #srcFeatures[1] do
       table.insert(self.sourceInputFeatures, sourceSeq:clone())
       table.insert(self.sourceInputRevFeatures, sourceSeq:clone())
+    end
+  end
+
+  if src2 ~= nil then
+    self.sourceLength2, self.sourceSize2, self.uneven2 = getLength(src2)
+
+    -- if input vectors (speech for instance)
+    self.inputVectors2 = #src2 > 0 and src2[1]:dim() > 1
+
+    local sourceSeq2 = torch.LongTensor(self.sourceLength2, self.size):fill(onmt.Constants.PAD)
+
+    if not self.inputVectors2 then
+      self.sourceInput2 = sourceSeq2:clone()
+      self.sourceInputRev2 = sourceSeq2:clone()
+      -- will be used to return extra padded value
+      self.padTensor2 = torch.LongTensor(self.size):fill(onmt.Constants.PAD)
+    else
+      self.sourceInput2 = torch.Tensor(self.sourceLength2, self.size, src2[1]:size(2))
+      self.sourceInputRev2 = torch.Tensor(self.sourceLength2, self.size, src2[1]:size(2))
+      self.padTensor2 = torch.Tensor(self.size, src2[1]:size(2)):zero()
+    end
+
+    self.sourceInputFeatures2 = {}
+    self.sourceInputRevFeatures2 = {}
+
+    if #src2Features > 0 then
+      for _ = 1, #src2Features[1] do
+        table.insert(self.sourceInputFeatures2, sourceSeq:clone())
+        table.insert(self.sourceInputRevFeatures2, sourceSeq:clone())
+      end
     end
   end
 
@@ -139,10 +175,33 @@ function Batch:__init(src, srcFeatures, tgt, tgtFeatures)
       self.sourceInputRevFeatures[i][{{1, self.sourceSize[b]}, b}]:copy(sourceInputRevFeatures)
     end
 
+    if src2 ~= nil then
+      local sourceOffset2 = self.sourceLength2 - self.sourceSize2[b] + 1
+      local sourceInput2 = src2[b]
+      local sourceInputRev2 = src2[b]:index(1, torch.linspace(self.sourceSize2[b], 1, self.sourceSize2[b]):long())
+
+      -- Source input is left padded [PPPPPPABCDE] .
+      self.sourceInput2[{{sourceOffset, self.sourceLength2}, b}]:copy(sourceInput2)
+      self.sourceInputPadLeft2 = true
+
+      -- Rev source input is right padded [EDCBAPPPPPP] .
+      self.sourceInputRev2[{{1, self.sourceSize2[b]}, b}]:copy(sourceInputRev2)
+      self.sourceInputRevPadLeft2 = false
+
+      for i = 1, #self.sourceInputFeatures2 do
+        local sourceInputFeatures2 = src2Features[b][i]
+        local sourceInputRevFeatures2 = src2Features[b][i]:index(1, torch.linspace(self.sourceSize2[b], 1, self.sourceSize2[b]):long())
+
+        self.sourceInputFeatures2[i][{{sourceOffset2, self.sourceLength2}, b}]:copy(sourceInputFeatures2)
+        self.sourceInputRevFeatures2[i][{{1, self.sourceSize2[b]}, b}]:copy(sourceInputRevFeatures2)
+      end
+    end
+
     if tgt ~= nil then
       -- Input: [<s>ABCDE]
       -- Ouput: [ABCDE</s>]
       local targetLength = tgt[b]:size(1) - 1
+
       local targetInput = tgt[b]:narrow(1, 1, targetLength)
       local targetOutput = tgt[b]:narrow(1, 2, targetLength)
 
@@ -242,6 +301,25 @@ function Batch:getSourceInput(t)
   if #self.sourceInputFeatures > 0 then
     inputs = { inputs }
     addInputFeatures(inputs, self.sourceInputFeatures, t)
+  end
+
+  return inputs
+end
+
+--[[ Get source input batch at timestep `t`. --]]
+function Batch:getSourceInput2(t)
+  local inputs
+
+  -- If a regular input, return word id, otherwise a table with features.
+  if t > self.sourceInput2:size(1) then
+    inputs = self.padTensor2
+  else
+    inputs = self.sourceInput2[t]
+  end
+
+  if #self.sourceInputFeatures2 > 0 then
+    inputs = { inputs }
+    addInputFeatures(inputs, self.sourceInputFeatures2, t)
   end
 
   return inputs

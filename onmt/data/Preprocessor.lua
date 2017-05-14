@@ -65,10 +65,10 @@ local function declareDataOptions(mode)
   if mode == 'bitext' then
     datalist = { {name="source", short="src", hasVocab=true},
                  {name="target", short="tgt", hasVocab=true}}
-  elseif mode == 'bitextfeat' then
+  elseif mode == 'tritext' then
     datalist = { {name="source1", short="src1", hasVocab=true},
                  {name="source2", short="src2", hasVocab=true},
-                 {name="target", short="tgt", hasVocab=false}}
+                 {name="target", short="tgt", hasVocab=true}}
   elseif mode == 'monotext' then
     datalist = { {hasVocab=true} }
   else
@@ -199,6 +199,7 @@ function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, 
     end
 
     if isValid(tokens) then
+      local size
       for i = 1, n do
         local length = (type(tokens[i])=='table' and #tokens[i]) or (tokens[i]:dim()==0 and 0) or tokens[i]:size(1)
         avgLength[i] = avgLength[i] * (#vectors[i] / (#vectors[i] + 1)) + length / (#vectors[i] + 1)
@@ -219,9 +220,13 @@ function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, 
         end
 
         if i == 1 then
-          sizes:insert(length)
+          size = length
+        elseif i == 2 and n == 3 then
+          -- if dual source - sort that second sources are also of similar size
+          size = size + length/10000
         end
       end
+      sizes:insert(size)
     else
       ignored = ignored + 1
     end
@@ -395,11 +400,11 @@ function Preprocessor:makeBilingualData(srcFile, tgtFile, srcDicts, tgtDicts, is
   return table.unpack(data)
 end
 
-function Preprocessor:makeBitextFeatData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, isValid)
+function Preprocessor:makeTritextData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, tgtDicts, isValid)
   local data = self:makeGenericData(
                               { src1File, src2File, tgtFile },
-                              { false, false, true },
-                              { src1Dicts, src2Dicts, {} },
+                              { false, false, false },
+                              { src1Dicts, src2Dicts, tgtDicts },
                               { 'source1', 'source2', 'target' },
                               {
                                 {
@@ -408,20 +413,24 @@ function Preprocessor:makeBitextFeatData(src1File, src2File, tgtFile, src1Dicts,
                                 {
                                   onmt.Constants.UNK_WORD
                                 },
-                                false
+                                {
+                                  onmt.Constants.UNK_WORD,
+                                  onmt.Constants.BOS_WORD,
+                                  onmt.Constants.EOS_WORD
+                                }
                               },
                               function(tokens)
                                 return #tokens[1] > 0 and
                                        isValid(tokens[1], self.args.src1_seq_length) and
                                        #tokens[2] > 0 and
                                        isValid(tokens[2], self.args.src2_seq_length) and
-                                       tokens[3]:dim() > 0 and
+                                       #tokens[3] > 0 and
                                        isValid(tokens[3], self.args.tgt_seq_length)
                               end,
                               {
                                 onmt.utils.Features.generateSource,
                                 onmt.utils.Features.generateSource,
-                                false
+                                onmt.utils.Features.generateTarget
                               })
   return table.unpack(data)
 end

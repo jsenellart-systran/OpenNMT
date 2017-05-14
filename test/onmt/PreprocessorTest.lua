@@ -34,6 +34,15 @@ local function buildPreprocessor(mode)
       '-idx_files',
       '-src_seq_length', 100
     }
+  elseif mode == 'tritext' then
+    commandLine = {
+      '-train_src1', dataDir .. '/src-val-case.txt',
+      '-train_src2', dataDir .. '/src-val.txt',
+      '-train_tgt', dataDir .. '/tgt-val-case.txt',
+      '-valid_src1', dataDir .. '/src-test-case.txt',
+      '-valid_src2', dataDir .. '/src-test.txt',
+      '-valid_tgt', dataDir .. '/tgt-test-case.txt'
+      }
   end
 
   local opt = cmd:parse(commandLine)
@@ -104,6 +113,36 @@ function preprocessorTest.feattext()
   tester:eq(srcData.vectors[1]:size(2), 2)
   tester:eq(#srcData.vectors, 947)
   tester:eq(#tgtData.features, 0)
+end
+
+function preprocessorTest.tritext()
+  local preprocessor, opt = buildPreprocessor('tritext')
+
+  local src1Dicts = makeDicts('source1',opt.train_src1)
+  local src2Dicts = makeDicts('source2',opt.train_src2)
+  local tgtDicts = makeDicts('target',opt.train_tgt)
+
+  local src1Data,src2Data, tgtData = preprocessor:makeTritextData(opt.train_src1,
+                                                                   opt.train_src2,
+                                                                   opt.train_tgt,
+                                                                   src1Dicts,
+                                                                   src2Dicts,
+                                                                   tgtDicts,
+                                                                   isValid)
+
+  tester:eq(torch.typename(src1Data.words), 'tds.Vec')
+  tester:eq(torch.typename(src2Data.words), 'tds.Vec')
+  tester:eq(torch.typename(tgtData.words), 'tds.Vec')
+  tester:eq(torch.typename(src1Data.features), 'tds.Vec')
+  tester:eq(torch.typename(src2Data.features), 'tds.Vec')
+  tester:eq(torch.typename(tgtData.features), 'tds.Vec')
+
+  tester:eq(#src1Data.words, 3000, 200)
+  tester:eq(#src1Data.features, 3000, 200)
+  tester:eq(#src2Data.words, 3000, 200)
+  tester:eq(#src2Data.features, 0)
+  tester:eq(#tgtData.words, 3000, 200)
+  tester:eq(#tgtData.features, 3000, 200)
 end
 
 return preprocessorTest

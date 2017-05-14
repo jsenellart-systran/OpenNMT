@@ -12,7 +12,7 @@ local options = {
     [[Type of data to preprocess. Use 'monotext' for monolingual data.
       This option impacts all options choices.]],
     {
-      enum = {'bitext', 'monotext', 'feattext', 'bitextfeat'}
+      enum = {'bitext', 'monotext', 'feattext', 'tritext'}
     }
   },
   {
@@ -66,7 +66,7 @@ local function main()
   data.dicts = {}
 
   _G.logger:info('Preparing vocabulary...')
-  if dataType == 'bitextfeat' then
+  if dataType == 'tritext' then
     data.dicts.src1 = Vocabulary.init('source1',
                                      opt.train_src1,
                                      opt.src1_vocab,
@@ -85,7 +85,7 @@ local function main()
                                      function(s) return isValid(s, opt.src2_seq_length) end,
                                      opt.keep_frequency,
                                      opt.idx_files)
-  elseif dataType == 'bitext' then
+  elseif dataType == 'bitext' or dataType == 'monotext' then
     data.dicts.src = Vocabulary.init('source',
                                      opt.train_src,
                                      opt.src_vocab,
@@ -95,26 +95,8 @@ local function main()
                                      function(s) return isValid(s, opt.src_seq_length) end,
                                      opt.keep_frequency,
                                      opt.idx_files)
-    data.dicts.tgt = Vocabulary.init('target',
-                                     opt.train_tgt,
-                                     opt.tgt_vocab,
-                                     opt.tgt_vocab_size,
-                                     opt.tgt_words_min_frequency,
-                                     opt.features_vocabs_prefix,
-                                     function(s) return isValid(s, opt.tgt_seq_length) end,
-                                     opt.keep_frequency,
-                                     opt.idx_files)
-  elseif dataType == 'monotext' then
-    data.dicts.src = Vocabulary.init('source',
-                                     opt.train,
-                                     opt.vocab,
-                                     opt.vocab_size,
-                                     opt.words_min_frequency,
-                                     opt.features_vocabs_prefix,
-                                     function(s) return isValid(s, opt.seq_length) end,
-                                     opt.keep_frequency,
-                                     opt.idx_files)
-  else
+  end
+  if dataType ~= 'monotext' then
     data.dicts.tgt = Vocabulary.init('target',
                                      opt.train_tgt,
                                      opt.tgt_vocab,
@@ -136,9 +118,9 @@ local function main()
                                                                    isValid)
     -- record the size of the input layer
     data.dicts.srcInputSize = data.train.src.vectors[1]:size(2)
-  elseif dataType == 'bitextfeat' then
-    data.train.src1, data.train.src2, data.train.tgt = Preprocessor:makeBitextFeatData(opt.valid_src1, opt.valid_src2,
-                                                                    data.dicts.src1, data.dicts.src2,
+  elseif dataType == 'tritext' then
+    data.train.src1, data.train.src2, data.train.tgt = Preprocessor:makeTritextData(opt.train_src1, opt.train_src2, opt.train_tgt,
+                                                                    data.dicts.src1, data.dicts.src2, data.dicts.tgt,
                                                                     isValid)
   else
     data.train.src, data.train.tgt = Preprocessor:makeBilingualData(opt.train_src, opt.train_tgt,
@@ -156,9 +138,9 @@ local function main()
     data.valid.src, data.valid.tgt = Preprocessor:makeFeatTextData(opt.valid_src, opt.valid_tgt,
                                                                     data.dicts.tgt,
                                                                     isValid)
-  elseif dataType == 'bitextfeat' then
-    data.valid.src1, data.valid.src2, data.valid.tgt = Preprocessor:makeBitextFeatData(opt.valid_src1, opt.valid_src2,
-                                                                    data.dicts.src1, data.dicts.src2,
+  elseif dataType == 'tritext' then
+    data.valid.src, data.valid.src2, data.valid.tgt = Preprocessor:makeTritextData(opt.valid_src1, opt.valid_src2, opt.valid_tgt,
+                                                                    data.dicts.src1, data.dicts.src2, data.dicts.tgt,
                                                                     isValid)
   else
     data.valid.src, data.valid.tgt = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
@@ -182,11 +164,21 @@ local function main()
     if opt.features_vocabs_prefix:len() == 0 then
       Vocabulary.saveFeatures('target', data.dicts.tgt.features, opt.save_data)
     end
+  elseif dataType == 'tritext' then
+    if opt.src1_vocab:len() == 0 then
+      Vocabulary.save('source1', data.dicts.src1.words, opt.save_data .. '.src1.dict')
+    end
+    if opt.src2_vocab:len() == 0 then
+      Vocabulary.save('source2', data.dicts.src2.words, opt.save_data .. '.src2.dict')
+    end
+    if opt.features_vocabs_prefix:len() == 0 then
+      Vocabulary.saveFeatures('source1', data.dicts.src1.features, opt.save_data..'.source1')
+      Vocabulary.saveFeatures('source2', data.dicts.src2.features, opt.save_data..'.source2')
+    end
   else
     if opt.src_vocab:len() == 0 then
       Vocabulary.save('source', data.dicts.src.words, opt.save_data .. '.src.dict')
     end
-
     if opt.tgt_vocab:len() == 0 then
       Vocabulary.save('target', data.dicts.tgt.words, opt.save_data .. '.tgt.dict')
     end

@@ -4,8 +4,7 @@ local Dataset = torch.class("Dataset")
 --[[ Initialize a data object given aligned tables of IntTensors `srcData`
   and `tgtData`.
 --]]
-function Dataset:__init(srcData, tgtData)
-
+function Dataset:__init(srcData, tgtData, src2Data)
   self.src = srcData.words or srcData.vectors
   self.srcFeatures = srcData.features
 
@@ -13,6 +12,12 @@ function Dataset:__init(srcData, tgtData)
     self.tgt = tgtData.words or tgtData.vectors
     self.tgtFeatures = tgtData.features
   end
+
+  if src2Data ~= nil then
+    self.src2 = src2Data.words or src2Data.vectors
+    self.src2Features = src2Data.features
+  end
+
 end
 
 --[[ Setup up the training data to respect `maxBatchSize`.
@@ -36,8 +41,11 @@ function Dataset:setBatchSize(maxBatchSize, uneven_batches)
     -- Set up the offsets to make same source size batches of the
     -- correct size.
     local sourceLength = self.src[i]:size(1)
+    if self.src2 then
+      sourceLength = sourceLength + self.src[i]:size(1)/10000
+    end
     if batchSize == maxBatchSize or i == 1 or
-        (not(uneven_batches) and self.src[i]:size(1) ~= maxSourceLength) then
+        (not(uneven_batches) and sourceLength ~= maxSourceLength) then
       if i > 1 then
         batchesCapacity = batchesCapacity + batchSize * maxSourceLength
         table.insert(self.batchRange, { ["begin"] = offset, ["end"] = i - 1 })
@@ -92,27 +100,42 @@ function Dataset:getBatch(idx)
   end
 
   if idx == nil or self.batchRange == nil then
-    return onmt.data.Batch.new(self.src, self.srcFeatures, self.tgt, self.tgtFeatures)
+    return onmt.data.Batch.new(self.src, self.srcFeatures, self.tgt, self.tgtFeatures, self.src2, self.src2Features)
   end
 
   local rangeStart = self.batchRange[idx]["begin"]
   local rangeEnd = self.batchRange[idx]["end"]
 
   local src = {}
+  local srcFeatures = {}
+  local src2
+  local src2Features
   local tgt
+  local tgtFeatures
+
+  if self.src2 ~= nil then
+    src2 = {}
+    src2Features = {}
+  end
 
   if self.tgt ~= nil then
     tgt = {}
+    tgtFeatures = {}
   end
-
-  local srcFeatures = {}
-  local tgtFeatures = {}
 
   for i = rangeStart, rangeEnd do
     table.insert(src, self.src[i])
 
     if self.srcFeatures[i] then
       table.insert(srcFeatures, self.srcFeatures[i])
+    end
+
+    if self.src2 ~= nil then
+      table.insert(src2, self.src2[i])
+
+      if self.src2Features[i] then
+        table.insert(src2Features, self.src2Features[i])
+      end
     end
 
     if self.tgt ~= nil then
@@ -124,7 +147,7 @@ function Dataset:getBatch(idx)
     end
   end
 
-  return onmt.data.Batch.new(src, srcFeatures, tgt, tgtFeatures)
+  return onmt.data.Batch.new(src, srcFeatures, tgt, tgtFeatures, src2, src2Features)
 end
 
 return Dataset

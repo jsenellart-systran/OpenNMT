@@ -18,7 +18,7 @@ function datasetTest.trainingDataset()
       torch.IntTensor(4),
       torch.IntTensor(4),
       torch.IntTensor(4),
-      torch.IntTensor(5),
+      torch.IntTensor(5)
     }
   }
 
@@ -35,7 +35,7 @@ function datasetTest.trainingDataset()
       torch.IntTensor(7),
       torch.IntTensor(6),
       torch.IntTensor(5),
-      torch.IntTensor(8),
+      torch.IntTensor(8)
     }
   }
 
@@ -66,6 +66,105 @@ function datasetTest.trainingDataset()
   tester:eq(batch.size, 2)
 end
 
+function datasetTest.trainingDatasetVectorSource()
+  local tgtData = {
+    features = {},
+    words = {
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(3),
+      torch.IntTensor(3),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(5)
+    }
+  }
+
+  local srcData = {
+    features = {},
+    words = {
+      torch.Tensor(2,10),
+      torch.Tensor(2,10),
+      torch.Tensor(3,10),
+      torch.Tensor(3,10),
+      torch.Tensor(3,10),
+      torch.Tensor(6,10),
+      torch.Tensor(6,10),
+      torch.Tensor(7,10),
+      torch.Tensor(8,10),
+      torch.Tensor(8,10),
+      torch.Tensor(9,10)
+    }
+  }
+
+  local dataset = onmt.data.Dataset.new(srcData, tgtData)
+
+  local batch = dataset:getBatch(1)
+  tester:eq(batch.size, 11)
+end
+
+function datasetTest.trainingDatasetDualSource()
+  local srcData = {
+    features = {},
+    words = {
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(3),
+      torch.IntTensor(3),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(5)
+    }
+  }
+
+  local src2Data = {
+    features = {},
+    words = {
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(2),
+      torch.IntTensor(3),
+      torch.IntTensor(3),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(4),
+      torch.IntTensor(5)
+    }
+  }
+
+  local tgtData = {
+    features = {},
+    vectors = {
+      torch.IntTensor(4),
+      torch.IntTensor(6),
+      torch.IntTensor(5),
+      torch.IntTensor(8),
+      torch.IntTensor(5),
+      torch.IntTensor(9),
+      torch.IntTensor(9),
+      torch.IntTensor(7),
+      torch.IntTensor(6),
+      torch.IntTensor(5),
+      torch.IntTensor(8)
+    }
+  }
+
+  local dataset = onmt.data.Dataset.new(srcData, tgtData, src2Data)
+
+  local batch = dataset:getBatch(1)
+  tester:eq(batch.size, 11)
+end
+
 function datasetTest.inferenceDataset()
   local srcData = {
     features = {},
@@ -80,7 +179,7 @@ function datasetTest.inferenceDataset()
       torch.IntTensor(4),
       torch.IntTensor(4),
       torch.IntTensor(4),
-      torch.IntTensor(5),
+      torch.IntTensor(5)
     }
   }
 
