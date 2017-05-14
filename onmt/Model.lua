@@ -6,7 +6,7 @@ local options = {
     '-model_type', 'seq2seq',
     [[Type of model to train. This option impacts all options choices.]],
     {
-      enum = {'lm', 'seq2seq', 'seqtagger'},
+      enum = {'lm', 'seq2seq', 'seqtagger', 'siamese'},
       structural = 0
     }
   },

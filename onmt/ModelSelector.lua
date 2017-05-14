@@ -5,6 +5,8 @@ return function(modelType)
     return onmt.LanguageModel
   elseif modelType == 'seqtagger' then
     return onmt.SeqTagger
+  elseif modelType == 'siamese' then
+    return onmt.SiameseRNN
   else
     error('invalid model type ' .. modelType)
   end

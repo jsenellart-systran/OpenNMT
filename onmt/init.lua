@@ -17,6 +17,8 @@ onmt.Model = require('onmt.Model')
 onmt.Seq2Seq = require('onmt.Seq2Seq')
 onmt.LanguageModel = require('onmt.LanguageModel')
 onmt.SeqTagger = require('onmt.SeqTagger')
+onmt.SiameseRNN = require('onmt.SiameseRNN')
+
 onmt.ModelSelector = require('onmt.ModelSelector')
 
 return onmt
