@@ -52,7 +52,8 @@ function SiameseRNN.load(args, models, _)
   parent.__init(self, args)
   onmt.utils.Table.merge(self.args, onmt.utils.ExtendedCmdLine.getModuleOpts(args, options))
 
-  self.models.encoder = onmt.Factory.loadEncoder(models.encoder)
+  self.models.encoder1 = onmt.Factory.loadEncoder(models.encoder1)
+  self.models.encoder2 = onmt.Factory.loadEncoder(models.encoder2)
   self.models.comparator = onmt.ManhattanDistance(true)
   self.criterion = nn.MSECriterion()
   self.criterion.sizeAverage = false
@@ -77,29 +78,15 @@ function SiameseRNN:enableProfiling()
   _G.profiler.addHook(self.criterion, 'criterion')
 end
 
-local function switchInput(batch)
-  batch.sourceInput, batch.sourceInput2 = batch.sourceInput2, batch.sourceInput
-  batch.sourceInputRev, batch.sourceInputRev2 = batch.sourceInputRev2, batch.sourceInputRev
-  batch.sourceSize, batch.sourceSize2 = batch.sourceSize2, batch.sourceSize
-  batch.sourceLength, batch.sourceLength2 = batch.sourceLength2, batch.sourceLength
-  batch.uneven, batch.uneven2 = batch.uneven2, batch.uneven
-  batch.inputVectors, batch.inputVectors2 = batch.inputVectors2, batch.inputVectors
-  batch.sourceInputFeatures, batch.sourceInputFeatures2 = batch.sourceInputFeatures2, batch.sourceInputFeatures
-  batch.sourceInputRevFeatures, batch.sourceInputRevFeatures2 = batch.sourceInputRevFeatures2, batch.sourceInputRevFeatures
-  batch.padTensor, batch.padTensor2= batch.padTensor2, batch.padTensor
-  batch.sourceInputPadLeft, batch.sourceInputPadLeft2 = batch.sourceInputPadLeft2, batch.sourceInputPadLeft
-  batch.sourceInputRevPadLeft, batch.sourceInputRevPadLeft2 = batch.sourceInputRevPadLeft2, batch.sourceInputRevPadLeft
-end
-
 function SiameseRNN:getOutputLabelsCount(batch)
   return batch.size
 end
 
 function SiameseRNN:forwardComputeLoss(batch)
   local _, context1 = self.models.encoder1:forward(batch)
-  switchInput(batch)
+  batch:switchInput()
   local _, context2 = self.models.encoder2:forward(batch)
-  switchInput(batch)
+  batch:switchInput()
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local ref = (batch:getTargetInput(2)-5):float()
   return self.criterion:forward(diff, ref)
@@ -107,7 +94,7 @@ end
 
 function SiameseRNN:trainNetwork(batch)
   local _, context1 = self.models.encoder1:forward(batch)
-  switchInput(batch)
+  batch:switchInput()
   local _, context2 = self.models.encoder2:forward(batch)
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local ref = (batch:getTargetInput(2)-5):float()
@@ -117,7 +104,7 @@ function SiameseRNN:trainNetwork(batch)
   local decEncoderOut = self.models.comparator:backward({context1[{{},-1,{}}], context2[{{},-1,{}}]}, decComparatorOut)
   context2:zero()[{{},-1,{}}]:copy(decEncoderOut[2])
   self.models.encoder2:backward(batch, nil, context2)
-  switchInput(batch)
+  batch:switchInput()
   context1:zero()[{{},-1,{}}]:copy(decEncoderOut[1])
   self.models.encoder1:backward(batch, nil, context1)
   return loss

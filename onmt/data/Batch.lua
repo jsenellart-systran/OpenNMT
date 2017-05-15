@@ -350,4 +350,18 @@ function Batch:getTargetOutput(t)
   return outputs
 end
 
+function Batch:switchInput()
+  self.sourceInput, self.sourceInput2 = self.sourceInput2, self.sourceInput
+  self.sourceInputRev, self.sourceInputRev2 = self.sourceInputRev2, self.sourceInputRev
+  self.sourceSize, self.sourceSize2 = self.sourceSize2, self.sourceSize
+  self.sourceLength, self.sourceLength2 = self.sourceLength2, self.sourceLength
+  self.uneven, self.uneven2 = self.uneven2, self.uneven
+  self.inputVectors, self.inputVectors2 = self.inputVectors2, self.inputVectors
+  self.sourceInputFeatures, self.sourceInputFeatures2 = self.sourceInputFeatures2, self.sourceInputFeatures
+  self.sourceInputRevFeatures, self.sourceInputRevFeatures2 = self.sourceInputRevFeatures2, self.sourceInputRevFeatures
+  self.padTensor, self.padTensor2= self.padTensor2, self.padTensor
+  self.sourceInputPadLeft, self.sourceInputPadLeft2 = self.sourceInputPadLeft2, self.sourceInputPadLeft
+  self.sourceInputRevPadLeft, self.sourceInputRevPadLeft2 = self.sourceInputRevPadLeft2, self.sourceInputRevPadLeft
+end
+
 return Batch
