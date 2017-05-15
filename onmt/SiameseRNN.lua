@@ -44,7 +44,7 @@ function SiameseRNN:__init(args, dicts)
   self.criterion = nn.MSECriterion()
 end
 
-function SiameseRNN.load(args, models, dicts)
+function SiameseRNN.load(args, models, _)
   local self = torch.factory('SiameseRNN')()
 
   parent.__init(self, args)
@@ -78,20 +78,24 @@ local function switchInput(batch)
   batch.sourceInput, batch.sourceInput2 = batch.sourceInput2, batch.sourceInput
   batch.sourceInputRev, batch.sourceInputRev2 = batch.sourceInputRev2, batch.sourceInputRev
   batch.sourceSize, batch.sourceSize2 = batch.sourceSize2, batch.sourceSize
+  batch.sourceLength, batch.sourceLength2 = batch.sourceLength2, batch.sourceLength
+  batch.uneven, batch.uneven2 = batch.uneven2, batch.uneven
+  batch.inputVectors, batch.inputVectors2 = batch.inputVectors2, batch.inputVectors
   batch.sourceInputFeatures, batch.sourceInputFeatures2 = batch.sourceInputFeatures2, batch.sourceInputFeatures
   batch.sourceInputRevFeatures, batch.sourceInputRevFeatures2 = batch.sourceInputRevFeatures2, batch.sourceInputRevFeatures
+  batch.padTensor, batch.padTensor2= batch.padTensor2, batch.padTensor
   batch.sourceInputPadLeft, batch.sourceInputPadLeft2 = batch.sourceInputPadLeft2, batch.sourceInputPadLeft
-  batch.sourceInputRevPadLeft, batch.sourceInputRevPadLeft2 = batch.sourceInputRevPadLeft2, sourceInputRevPadLeft
+  batch.sourceInputRevPadLeft, batch.sourceInputRevPadLeft2 = batch.sourceInputRevPadLeft2, batch.sourceInputRevPadLeft
 end
 
-function Model:getOutputLabelsCount(batch)
+function SiameseRNN:getOutputLabelsCount(batch)
   return batch.size
 end
 
 function SiameseRNN:forwardComputeLoss(batch)
-  local encStates1, context1 = self.models.encoder1:forward(batch)
+  local _, context1 = self.models.encoder1:forward(batch)
   switchInput(batch)
-  local encStates2, context2 = self.models.encoder2:forward(batch)
+  local _, context2 = self.models.encoder2:forward(batch)
   switchInput(batch)
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local ref = (batch:getTargetInput(2)-5):float()
@@ -99,9 +103,9 @@ function SiameseRNN:forwardComputeLoss(batch)
 end
 
 function SiameseRNN:trainNetwork(batch)
-  local encStates1, context1 = self.models.encoder1:forward(batch)
+  local _, context1 = self.models.encoder1:forward(batch)
   switchInput(batch)
-  local encStates2, context2 = self.models.encoder2:forward(batch)
+  local _, context2 = self.models.encoder2:forward(batch)
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local ref = (batch:getTargetInput(2)-5):float()
   local loss = self.criterion:forward(diff, ref)
