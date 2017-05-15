@@ -74,14 +74,14 @@ function SiameseRNN:enableProfiling()
   _G.profiler.addHook(self.criterion, 'criterion')
 end
 
-function SiameseRNN:getOutput(batch)
-  return batch.sourceInput
-end
-
 local function switchInput(batch)
   batch.sourceInput, batch.sourceInput2 = batch.sourceInput2, batch.sourceInput2
   batch.sourceInputFeatures, batch.sourceInputFeatures2 = batch.sourceInputFeatures2, batch.sourceInputFeatures
   batch.sourceInputPadLeft, batch.sourceInputPadLeft2 = batch.sourceInputPadLeft2, batch.sourceInputPadLeft
+end
+
+function Model:getOutputLabelsCount(batch)
+  return batch.size
 end
 
 function SiameseRNN:forwardComputeLoss(batch)
