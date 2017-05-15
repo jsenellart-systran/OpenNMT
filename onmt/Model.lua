@@ -61,6 +61,8 @@ function Model:changeParameters(changes)
   for k, v in pairs(changes) do
     _G.logger:info(' * %s = ' .. tostring(v), k)
 
+    -- TODO change Parameters in clones too...
+
     for _, model in pairs(self.models) do
       model:apply(function(m)
         if k == 'dropout' and torch.typename(m) == 'nn.Dropout' then
@@ -90,11 +92,21 @@ function Model:evaluate()
   for _, m in pairs(self.models) do
     m:evaluate()
   end
+  if self.modelClones then
+    for _, m in pairs(self.modelClones) do
+      m:evaluate()
+    end
+  end
 end
 
 function Model:training()
   for _, m in pairs(self.models) do
     m:training()
+  end
+  if self.modelClones then
+    for _, m in pairs(self.modelClones) do
+      m:training()
+    end
   end
 end
 
