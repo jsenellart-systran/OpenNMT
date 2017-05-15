@@ -75,9 +75,13 @@ function SiameseRNN:enableProfiling()
 end
 
 local function switchInput(batch)
-  batch.sourceInput, batch.sourceInput2 = batch.sourceInput2, batch.sourceInput2
+  batch.sourceInput, batch.sourceInput2 = batch.sourceInput2, batch.sourceInput
+  batch.sourceInputRev, batch.sourceInputRev2 = batch.sourceInputRev2, batch.sourceInputRev
+  batch.sourceSize, batch.sourceSize2 = batch.sourceSize2, batch.sourceSize
   batch.sourceInputFeatures, batch.sourceInputFeatures2 = batch.sourceInputFeatures2, batch.sourceInputFeatures
+  batch.sourceInputRevFeatures, batch.sourceInputRevFeatures2 = batch.sourceInputRevFeatures2, batch.sourceInputRevFeatures
   batch.sourceInputPadLeft, batch.sourceInputPadLeft2 = batch.sourceInputPadLeft2, batch.sourceInputPadLeft
+  batch.sourceInputRevPadLeft, batch.sourceInputRevPadLeft2 = batch.sourceInputRevPadLeft2, sourceInputRevPadLeft
 end
 
 function Model:getOutputLabelsCount(batch)
