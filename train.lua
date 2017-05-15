@@ -62,7 +62,7 @@ local function buildData(opt, dataset)
   else
      trainData = onmt.data.Dataset.new(dataset.train.src, dataset.train.tgt, dataset.train.src2)
   end
-  local validData = onmt.data.Dataset.new(dataset.valid.src, dataset.valid.tgt, dataset.train.src2)
+  local validData = onmt.data.Dataset.new(dataset.valid.src, dataset.valid.tgt, dataset.valid.src2)
 
   local nTrainBatch, batchUsage = trainData:setBatchSize(opt.max_batch_size, opt.uneven_batches)
   validData:setBatchSize(opt.max_batch_size, opt.uneven_batches)
