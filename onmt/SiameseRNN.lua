@@ -42,6 +42,8 @@ function SiameseRNN:__init(args, dicts)
   self.models.comparator = onmt.ManhattanDistance(true)
 
   self.criterion = nn.MSECriterion()
+  self.criterion.sizeAverage = false
+
 end
 
 function SiameseRNN.load(args, models, _)
@@ -53,6 +55,7 @@ function SiameseRNN.load(args, models, _)
   self.models.encoder = onmt.Factory.loadEncoder(models.encoder)
   self.models.comparator = onmt.ManhattanDistance(true)
   self.criterion = nn.MSECriterion()
+  self.criterion.sizeAverage = false
 
   return self
 end
