@@ -181,7 +181,7 @@ function Batch:__init(src, srcFeatures, tgt, tgtFeatures, src2, src2Features)
       local sourceInputRev2 = src2[b]:index(1, torch.linspace(self.sourceSize2[b], 1, self.sourceSize2[b]):long())
 
       -- Source input is left padded [PPPPPPABCDE] .
-      self.sourceInput2[{{sourceOffset, self.sourceLength2}, b}]:copy(sourceInput2)
+      self.sourceInput2[{{sourceOffset2, self.sourceLength2}, b}]:copy(sourceInput2)
       self.sourceInputPadLeft2 = true
 
       -- Rev source input is right padded [EDCBAPPPPPP] .
