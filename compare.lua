@@ -181,6 +181,7 @@ local function main()
 
       if goldOutput then
         _G.logger:info('GOLD %d: %d', sentId, goldOutput)
+        if probability == 1 then probability = 0.999 end
         local loss = - goldOutput * math.log(probability) - (1-goldOutput) * math.log(1-probability)
         _G.logger:info('GOLD SCORE %d: %f', sentId, loss)
         score = score + loss
