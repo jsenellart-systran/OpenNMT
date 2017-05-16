@@ -117,6 +117,8 @@ local function main()
 
   onmt.utils.Cuda.convert(model)
 
+  model:evaluate()
+
   local dicts = checkpoint.dicts
 
   local outFile = io.open(opt.output, 'w')
