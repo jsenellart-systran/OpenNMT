@@ -165,7 +165,8 @@ local function main()
 
       local _, context1 = model.models.encoder1:forward(batch)
       batch:switchInput()
-      local _, context2 = model.models.encoder2:forward(batch)
+
+      local _, context2 = model.modelClones.encoder2:forward(batch)
       local diff = model.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
 
       local probability = diff[1]
