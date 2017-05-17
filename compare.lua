@@ -124,10 +124,10 @@ local function main()
   local outFile = io.open(opt.output, 'w')
 
   local withGoldScore = opt.tgt:len() > 0
+  local goldReader
 
   if withGoldScore then
     goldReader = onmt.utils.FileReader.new(opt.tgt, opt.idx_files)
-    goldBatch = {}
   end
 
   local timer
@@ -155,8 +155,8 @@ local function main()
       goldOutput = tonumber(goldOutputSeq[1])
     end
 
-    srcSeq1_fix = srcSeq1
-    srcSeq2_fix = srcSeq2
+    local srcSeq1_fix = {table.unpack(srcSeq1)}
+    local srcSeq2_fix = {table.unpack(srcSeq2)}
     onmt.data.Preprocessor.checkTritextUnk({false,false},{dicts.src,dicts.src2},{srcSeq1_fix,srcSeq2_fix})
 
     local srcBatch1 = {}

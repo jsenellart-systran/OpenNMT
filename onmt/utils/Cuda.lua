@@ -108,6 +108,17 @@ function Cuda.setRNGStates(rngStates)
 end
 
 --[[
+  Convert Long to Float
+]]
+function Cuda.long2float(tensor)
+  if Cuda.activated then
+    return tensor:cuda()
+  else
+    return tensor:float()
+  end
+end
+
+--[[
   Recursively move all supported objects in `obj` on the GPU.
   When using CPU only, converts to float instead of the default double.
 ]]

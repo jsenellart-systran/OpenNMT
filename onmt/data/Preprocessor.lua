@@ -409,9 +409,9 @@ function Preprocessor.checkTritextUnk(isInputVector, dicts, tokens)
   if isInputVector[1] or isInputVector[2] then
     return
   end
-  local words1, feats1 = onmt.utils.Features.extract(tokens[1])
+  local words1, _ = onmt.utils.Features.extract(tokens[1])
   local vec1 = dicts[1].words:convertToIdx(words1, onmt.Constants.UNK_WORD)
-  local words2, feats2 = onmt.utils.Features.extract(tokens[2])
+  local words2, _ = onmt.utils.Features.extract(tokens[2])
   local vec2 = dicts[2].words:convertToIdx(words2, onmt.Constants.UNK_WORD)
   for i = 1, #words1 do
     if vec1[i]==onmt.Constants.UNK then
