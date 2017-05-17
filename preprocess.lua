@@ -121,7 +121,8 @@ local function main()
   elseif dataType == 'tritext' then
     data.train.src, data.train.src2, data.train.tgt = Preprocessor:makeTritextData(opt.train_src1, opt.train_src2, opt.train_tgt,
                                                                     data.dicts.src, data.dicts.src2, data.dicts.tgt,
-                                                                    isValid)
+                                                                    isValid,
+                                                                    Preprocessor.checkTritextUnk)
   else
     data.train.src, data.train.tgt = Preprocessor:makeBilingualData(opt.train_src, opt.train_tgt,
                                                                     data.dicts.src, data.dicts.tgt,
@@ -141,7 +142,8 @@ local function main()
   elseif dataType == 'tritext' then
     data.valid.src, data.valid.src2, data.valid.tgt = Preprocessor:makeTritextData(opt.valid_src1, opt.valid_src2, opt.valid_tgt,
                                                                     data.dicts.src, data.dicts.src2, data.dicts.tgt,
-                                                                    isValid)
+                                                                    isValid,
+                                                                    Preprocessor.checkTritextUnk)
   else
     data.valid.src, data.valid.tgt = Preprocessor:makeBilingualData(opt.valid_src, opt.valid_tgt,
                                                                     data.dicts.src, data.dicts.tgt,

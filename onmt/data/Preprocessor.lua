@@ -164,7 +164,7 @@ end
   * `isValid`: validation function taking prepared table of tokens from each source
   * `generateFeatures`: table of feature extraction fucnction for each source
 ]]
-function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, constants, isValid, generateFeatures)
+function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, constants, isValid, generateFeatures, parallelCheck)
   assert(#files==#dicts, "dict table should match files table")
   local n = #files
   local sentenceDists = {}
@@ -196,6 +196,10 @@ function Preprocessor:makeGenericData(files, isInputVector, dicts, nameSources, 
         idxRange = #sentenceDists[i]
       end
       sentenceDists[i][idxRange] = sentenceDists[i][idxRange]+1
+    end
+
+    if parallelCheck then
+      parallelCheck(isInputVector, dicts, tokens)
     end
 
     if isValid(tokens) then
@@ -400,7 +404,49 @@ function Preprocessor:makeBilingualData(srcFile, tgtFile, srcDicts, tgtDicts, is
   return table.unpack(data)
 end
 
-function Preprocessor:makeTritextData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, tgtDicts, isValid)
+-- auxiliary function for tritext - check that <unk> are shared, otherwise rename them unk1, unk2
+function Preprocessor.checkTritextUnk(isInputVector, dicts, tokens)
+  if isInputVector[1] or isInputVector[2] then
+    return
+  end
+  local words1, feats1 = onmt.utils.Features.extract(tokens[1])
+  local vec1 = dicts[1].words:convertToIdx(words1, onmt.Constants.UNK_WORD)
+  local words2, feats2 = onmt.utils.Features.extract(tokens[2])
+  local vec2 = dicts[2].words:convertToIdx(words2, onmt.Constants.UNK_WORD)
+  for i = 1, #words1 do
+    if vec1[i]==onmt.Constants.UNK then
+      local found = false
+      for j = 1, #words2 do
+        -- dual unk
+        if words2[j]==words1[i] then
+          print(words1[i],tokens[1],tokens[2])
+          found = true
+          break
+        end
+      end
+      if not found then
+        tokens[1][i]="<unk1>"
+      end
+    end
+  end
+  for i = 1, #words2 do
+    if vec2[i]==onmt.Constants.UNK then
+      local found = false
+      for j = 1, #words1 do
+        -- dual unk
+        if words1[j]==words2[i] then
+          found = true
+          break
+        end
+      end
+      if not found then
+        tokens[2][i]="<unk2>"
+      end
+    end
+  end
+end
+
+function Preprocessor:makeTritextData(src1File, src2File, tgtFile, src1Dicts, src2Dicts, tgtDicts, isValid, parallelCheck)
   local data = self:makeGenericData(
                               { src1File, src2File, tgtFile },
                               { false, false, false },
@@ -431,7 +477,8 @@ function Preprocessor:makeTritextData(src1File, src2File, tgtFile, src1Dicts, sr
                                 onmt.utils.Features.generateSource,
                                 onmt.utils.Features.generateSource,
                                 onmt.utils.Features.generateTarget
-                              })
+                              },
+                              parallelCheck)
   return table.unpack(data)
 end
 

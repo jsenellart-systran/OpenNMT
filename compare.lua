@@ -155,10 +155,14 @@ local function main()
       goldOutput = tonumber(goldOutputSeq[1])
     end
 
+    srcSeq1_fix = srcSeq1
+    srcSeq2_fix = srcSeq2
+    onmt.data.Preprocessor.checkTritextUnk({false,false},{dicts.src,dicts.src2},{srcSeq1_fix,srcSeq2_fix})
+
     local srcBatch1 = {}
     local srcBatch2 = {}
-    table.insert(srcBatch1, buildInput(srcSeq1))
-    table.insert(srcBatch2, buildInput(srcSeq2))
+    table.insert(srcBatch1, buildInput(srcSeq1_fix))
+    table.insert(srcBatch2, buildInput(srcSeq2_fix))
 
     local data = buildData(srcBatch1, srcBatch2, dicts)
 
