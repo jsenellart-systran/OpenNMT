@@ -109,7 +109,7 @@ function SiameseRNN:trainNetwork(batch)
   local loss = self.criterion:forward(prob01, ref)
   local decProb01 = self.criterion:backward(prob01, ref)
   decProb01:div(batch.totalSize)
-  decComparatorOut = decProb01[{{},2}]
+  decComparatorOut = decProb01[{{},2}]-decProb01[{{},1}]
   local decEncoderOut = self.models.comparator:backward({context1[{{},-1,{}}], context2[{{},-1,{}}]}, decComparatorOut)
   context2:zero()[{{},-1,{}}]:copy(decEncoderOut[2])
   self.modelClones.encoder2:backward(batch, nil, context2)
