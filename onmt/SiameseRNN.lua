@@ -43,7 +43,7 @@ function SiameseRNN:__init(args, dicts)
 
   self.models.comparator = onmt.ManhattanDistance(true)
 
-  self.criterion = nn.MSECriterion()
+  self.criterion = onmt.TrueNLLCriterion()
   self.criterion.sizeAverage = false
 
 end
@@ -92,8 +92,10 @@ function SiameseRNN:forwardComputeLoss(batch)
   local _, context2 = self.modelClones.encoder2:forward(batch)
   batch:switchInput()
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
-  local ref = onmt.utils.Cuda.long2float(batch:getTargetInput(2)-5)
-  return self.criterion:forward(diff, ref)
+  local diff0 = 1 - diff
+  local prob01 = torch.cat(diff0,diff,2)
+  local ref = onmt.utils.Cuda.long2float(batch:getTargetInput(2)-4)
+  return self.criterion:forward(prob01, ref)
 end
 
 function SiameseRNN:trainNetwork(batch)
@@ -101,10 +103,13 @@ function SiameseRNN:trainNetwork(batch)
   batch:switchInput()
   local _, context2 = self.modelClones.encoder2:forward(batch)
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
-  local ref = onmt.utils.Cuda.long2float(batch:getTargetInput(2)-5)
-  local loss = self.criterion:forward(diff, ref)
-  local decComparatorOut = self.criterion:backward(diff, ref)
-  decComparatorOut:div(batch.totalSize)
+  local diff0 = 1 - diff
+  local prob01 = torch.cat(diff0,diff,2)
+  local ref = onmt.utils.Cuda.long2float(batch:getTargetInput(2)-4)
+  local loss = self.criterion:forward(prob01, ref)
+  local decProb01 = self.criterion:backward(prob01, ref)
+  decProb01:div(batch.totalSize)
+  decComparatorOut = decProb01[{{},2}]
   local decEncoderOut = self.models.comparator:backward({context1[{{},-1,{}}], context2[{{},-1,{}}]}, decComparatorOut)
   context2:zero()[{{},-1,{}}]:copy(decEncoderOut[2])
   self.modelClones.encoder2:backward(batch, nil, context2)

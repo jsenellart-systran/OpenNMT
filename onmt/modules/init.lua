@@ -28,5 +28,6 @@ require('onmt.modules.ManhattanDistance')
 require('onmt.modules.JoinReplicateTable')
 require('onmt.modules.ParallelClassNLLCriterion')
 require('onmt.modules.RIndexLinear')
+require('onmt.modules.TrueNLLCriterion')
 
 return onmt

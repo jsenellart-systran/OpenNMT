@@ -419,7 +419,6 @@ function Preprocessor.checkTritextUnk(isInputVector, dicts, tokens)
       for j = 1, #words2 do
         -- dual unk
         if words2[j]==words1[i] then
-          print(words1[i],tokens[1],tokens[2])
           found = true
           break
         end
