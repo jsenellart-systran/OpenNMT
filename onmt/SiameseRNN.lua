@@ -23,6 +23,10 @@ local options = {
     {
       structural = 1
     }
+  },
+  {
+    '-siamese', false,
+    [[Both encoders share the parameters.]]
   }
 }
 
@@ -39,7 +43,13 @@ function SiameseRNN:__init(args, dicts)
   self.modelClones = {}
 
   self.models.encoder1 = onmt.Factory.buildWordEncoder(args, dicts.src)
-  self.modelClones.encoder2 = self.models.encoder1:clone('weight', 'bias', 'gradWeight', 'gradBias')
+  if self.args.siamese then
+    self.modelClones.encoder2 = self.models.encoder1:clone('weight', 'bias', 'gradWeight', 'gradBias')
+    self.encoder2 = self.modelClones.encoder2
+  else
+    self.models.encoder2 = onmt.Factory.buildWordEncoder(args, dicts.src2)
+    self.encoder2 = self.models.encoder2
+  end
 
   self.models.comparator = onmt.ManhattanDistance(true)
 
@@ -57,7 +67,14 @@ function SiameseRNN.load(args, models, _)
   self.modelClones = {}
 
   self.models.encoder1 = onmt.Factory.loadEncoder(models.encoder1)
-  self.modelClones.encoder2 = self.models.encoder1:clone('weight', 'bias', 'gradWeight', 'gradBias')
+  if self.args.siamese then
+    self.modelClones.encoder2 = self.models.encoder1:clone('weight', 'bias', 'gradWeight', 'gradBias')
+    self.encoder2 = self.modelClones.encoder2
+  else
+    self.models.encoder2 = onmt.Factory.loadEncoder(models.encoder2)
+    self.encoder2 = self.models.encoder2
+  end
+
   self.models.comparator = onmt.ManhattanDistance(true)
   self.criterion = nn.MSECriterion()
   self.criterion.sizeAverage = false
@@ -77,7 +94,7 @@ end
 
 function SiameseRNN:enableProfiling()
   _G.profiler.addHook(self.models.encoder1, 'encoder1')
-  _G.profiler.addHook(self.modelClones.encoder2, 'encoder2')
+  _G.profiler.addHook(self.encoder2, 'encoder2')
   _G.profiler.addHook(self.models.comparator, 'comparator')
   _G.profiler.addHook(self.criterion, 'criterion')
 end
@@ -89,7 +106,7 @@ end
 function SiameseRNN:forwardComputeLoss(batch)
   local _, context1 = self.models.encoder1:forward(batch)
   batch:switchInput()
-  local _, context2 = self.modelClones.encoder2:forward(batch)
+  local _, context2 = self.encoder2:forward(batch)
   batch:switchInput()
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local diff0 = 1 - diff
@@ -101,7 +118,7 @@ end
 function SiameseRNN:trainNetwork(batch)
   local _, context1 = self.models.encoder1:forward(batch)
   batch:switchInput()
-  local _, context2 = self.modelClones.encoder2:forward(batch)
+  local _, context2 = self.encoder2:forward(batch)
   local diff = self.models.comparator:forward({context1[{{},-1,{}}], context2[{{},-1,{}}]})
   local diff0 = 1 - diff
   local prob01 = torch.cat(diff0,diff,2)
@@ -112,7 +129,7 @@ function SiameseRNN:trainNetwork(batch)
   decComparatorOut = decProb01[{{},2}]-decProb01[{{},1}]
   local decEncoderOut = self.models.comparator:backward({context1[{{},-1,{}}], context2[{{},-1,{}}]}, decComparatorOut)
   context2:zero()[{{},-1,{}}]:copy(decEncoderOut[2])
-  self.modelClones.encoder2:backward(batch, nil, context2)
+  self.encoder2:backward(batch, nil, context2)
   batch:switchInput()
   context1:zero()[{{},-1,{}}]:copy(decEncoderOut[1])
   self.models.encoder1:backward(batch, nil, context1)
