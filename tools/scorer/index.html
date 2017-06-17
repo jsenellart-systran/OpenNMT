@@ -15,7 +15,7 @@
     
     
       
-        <title>tag.lua - OpenNMT</title>
+        <title>Scorer - OpenNMT</title>
       
     
     
@@ -77,11 +77,11 @@
             
               
                 <span class="md-header-nav__parent">
-                  Reference: Options
+                  Tools
                 </span>
               
             
-            tag.lua
+            Scorer
           
         </span>
       </div>
@@ -440,10 +440,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
     
     <label class="md-nav__link" for="nav-7">
       Tools
@@ -461,7 +463,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../tools/tokenization/" title="Tokenization" class="md-nav__link">
+    <a href="../tokenization/" title="Tokenization" class="md-nav__link">
       Tokenization
     </a>
   </li>
@@ -471,11 +473,20 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../../tools/scorer/" title="Scorer" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Scorer" class="md-nav__link md-nav__link--active">
       Scorer
     </a>
+    
   </li>
 
         
@@ -485,7 +496,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../tools/servers/" title="Servers" class="md-nav__link">
+    <a href="../servers/" title="Servers" class="md-nav__link">
       Servers
     </a>
   </li>
@@ -500,12 +511,10 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
     
     <label class="md-nav__link" for="nav-8">
       Reference: Options
@@ -523,7 +532,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../usage/" title="Scripts usage" class="md-nav__link">
+    <a href="../../options/usage/" title="Scripts usage" class="md-nav__link">
       Scripts usage
     </a>
   </li>
@@ -535,7 +544,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../preprocess/" title="preprocess.lua" class="md-nav__link">
+    <a href="../../options/preprocess/" title="preprocess.lua" class="md-nav__link">
       preprocess.lua
     </a>
   </li>
@@ -547,7 +556,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../train/" title="train.lua" class="md-nav__link">
+    <a href="../../options/train/" title="train.lua" class="md-nav__link">
       train.lua
     </a>
   </li>
@@ -559,7 +568,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../translate/" title="translate.lua" class="md-nav__link">
+    <a href="../../options/translate/" title="translate.lua" class="md-nav__link">
       translate.lua
     </a>
   </li>
@@ -569,71 +578,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="toc">
-        tag.lua
-      </label>
-    
-    <a href="./" title="tag.lua" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../../options/tag/" title="tag.lua" class="md-nav__link">
       tag.lua
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
-    Cuda options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logger-options" title="Logger options" class="md-nav__link">
-    Logger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -643,7 +592,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+    <a href="../../options/build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
       tools/build_vocab.lua
     </a>
   </li>
@@ -655,7 +604,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../release_model/" title="tools/release_model.lua" class="md-nav__link">
+    <a href="../../options/release_model/" title="tools/release_model.lua" class="md-nav__link">
       tools/release_model.lua
     </a>
   </li>
@@ -667,7 +616,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../tokenize/" title="tools/tokenize.lua" class="md-nav__link">
+    <a href="../../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
   </li>
@@ -679,7 +628,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
+    <a href="../../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
     </a>
   </li>
@@ -691,7 +640,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../server/" title="tools/translation_server.lua" class="md-nav__link">
+    <a href="../../options/server/" title="tools/translation_server.lua" class="md-nav__link">
       tools/translation_server.lua
     </a>
   </li>
@@ -703,7 +652,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
+    <a href="../../options/rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
       tools/rest_translation_server.lua
     </a>
   </li>
@@ -715,7 +664,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../embeddings/" title="tools/embeddings.lua" class="md-nav__link">
+    <a href="../../options/embeddings/" title="tools/embeddings.lua" class="md-nav__link">
       tools/embeddings.lua
     </a>
   </li>
@@ -776,48 +725,8 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
   
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
-    Cuda options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logger-options" title="Logger options" class="md-nav__link">
-    Logger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
   
 </nav>
                   </div>
@@ -829,48 +738,33 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/tag.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/tools/scorer.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                  <h1>tag.lua</h1>
-                
-                <!--- This file was automatically generated. Do not modify it manually but use the docs/options/generate.sh script instead. -->
+                <p>OpenNMT provides native implementation of scoring metrics - for the moment, only BLEU.</p>
+<h1 id="bleu">BLEU<a class="headerlink" href="#bleu" title="Permanent link">&para;</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a> is a metric widely used for evaluation of machine translation output.</p>
+<p>Syntax follows <a href="https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl">multi-bleu.perl</a> syntax:</p>
+<div class="codehilite"><pre><span></span>$ th tools/score.lua REFERENCE <span class="o">[</span>-sample SN<span class="o">]</span> <span class="o">[</span>-scorer bleu<span class="o">]</span> <span class="o">[</span>-order N<span class="o">]</span> &lt; OUT
+</pre></div>
 
-<p><code>tag.lua</code> options:</p>
+
+<p>generating:</p>
+<div class="codehilite"><pre><span></span>[06/17/17 09:39:04 INFO] 4 references, 1002 sentences
+BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742, ref_len=28995)
+</pre></div>
+
+
+<p>where:</p>
 <ul>
-<li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
-<li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
-<li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
-<li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
+<li><code>REFERENCE</code> is either a single file, or a prefix for multiple-reference <code>REFERENCE0</code>, <code>REFERENCE1</code>, ...</li>
+<li><code>-order</code> is bleu n-gram order (default 4)</li>
+<li>parameter <code>-sample</code> indicates the number of sample to draw for evaluating <em>error margin</em> (default 20) - indicated with <code>+/- ERR</code> in the output</li>
 </ul>
-<h2 id="data-options">Data options<a class="headerlink" href="#data-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-src &lt;string&gt;</code> (required)<br/>Source sequences to tag.</li>
-<li><code>-output &lt;string&gt;</code> (default: <code>pred.txt</code>)<br/>Output file.</li>
-<li><code>-idx_files [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, source and target files are 'key value' with key match between source and target.</li>
-</ul>
-<h2 id="tagger-options">Tagger options<a class="headerlink" href="#tagger-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-model &lt;string&gt;</code> (required)<br/>Path to the serialized model file.</li>
-<li><code>-batch_size &lt;number&gt;</code> (default: <code>30</code>)<br/>Batch size.</li>
-</ul>
-<h2 id="cuda-options">Cuda options<a class="headerlink" href="#cuda-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-gpuid &lt;table&gt;</code> (default: <code>0</code>)<br/>List of GPU identifiers (1-indexed). CPU is used when set to 0.</li>
-<li><code>-fallback_to_cpu [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If GPU can't be used, rollback on the CPU.</li>
-<li><code>-fp16 [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Use half-precision float on GPU.</li>
-<li><code>-no_nccl [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Disable usage of nccl in parallel mode.</li>
-</ul>
-<h2 id="logger-options">Logger options<a class="headerlink" href="#logger-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
-<li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
-<li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
-</ul>
-<h2 id="other-options">Other options<a class="headerlink" href="#other-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-time [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Measure average translation time.</li>
-</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><em>Error margin</em> is a simple way to know if BLEU score variation is part of metric calculation variation or is significant.</p>
+</div>
                 
                   
                 
@@ -889,7 +783,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../translate/" title="translate.lua" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../tokenization/" title="Tokenization" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -898,19 +792,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                translate.lua
+                Tokenization
               </span>
             </div>
           </a>
         
         
-          <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../servers/" title="Servers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                tools/build_vocab.lua
+                Servers
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

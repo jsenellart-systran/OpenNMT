@@ -63,7 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="../.." title="OpenNMT" class="md-icon md-icon--home md-header-nav__button">
+          <a href="../.." title="OpenNMT" class="md-logo md-header-nav__button">
+            <img src="../../img/logo-alpha.png" width="24" height="24">
           </a>
         
       </div>
@@ -128,7 +129,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -152,7 +153,9 @@
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
-      <i class="md-icon md-icon--home md-nav__button"></i>
+      <i class="md-logo md-nav__button">
+        <img src="../../img/logo-alpha.png">
+      </i>
     
     OpenNMT
   </label>
@@ -173,7 +176,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -511,6 +514,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tools/scorer/" title="Scorer" class="md-nav__link">
+      Scorer
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tools/servers/" title="Servers" class="md-nav__link">
       Servers
     </a>
@@ -607,6 +622,30 @@
 
 
   <li class="md-nav__item">
+    <a href="../../options/build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+      tools/build_vocab.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../options/release_model/" title="tools/release_model.lua" class="md-nav__link">
+      tools/release_model.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
@@ -621,6 +660,18 @@
   <li class="md-nav__item">
     <a href="../../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../options/server/" title="tools/translation_server.lua" class="md-nav__link">
+      tools/translation_server.lua
     </a>
   </li>
 
@@ -743,15 +794,16 @@
                 
                 <p>The default translation mode allows the model to produce the <code>&lt;unk&gt;</code> symbol when it is not sure of the specific target word.</p>
 <p>Often times <code>&lt;unk&gt;</code> symbols will correspond to proper names that can be directly transposed between languages. The <code>-replace_unk</code> option will substitute <code>&lt;unk&gt;</code> with source words that have the highest attention weight.</p>
-<h2 id="phrase-table">Phrase table</h2>
+<h2 id="phrase-table">Phrase table<a class="headerlink" href="#phrase-table" title="Permanent link">&para;</a></h2>
 <p>Alternatively, advanced users may prefer to provide a pre-constructed phrase table from an external aligner (such as <a href="https://github.com/clab/fast_align">fast_align</a>) using the <code>-phrase_table</code> option to allow for non-identity replacement.</p>
 <p>Instead of copying the source token with the highest attention, it will lookup in the phrase table for a possible translation. If a valid replacement is not found only then the source token will be copied.</p>
 <p>The phrase table is a file with one translation per line in the format:</p>
-<pre><code class="text">source|||target
-</code></pre>
+<div class="codehilite"><pre><span></span>source|||target
+</pre></div>
+
 
 <p>Where <code>source</code> and <code>target</code> are <strong>case sensitive</strong> and <strong>single</strong> tokens.</p>
-<h2 id="workarounds">Workarounds</h2>
+<h2 id="workarounds">Workarounds<a class="headerlink" href="#workarounds" title="Permanent link">&para;</a></h2>
 <p>Several techniques exist to minimize the out-of-vocabulary issue:</p>
 <ul>
 <li>sub-tokenization like BPE or "wordpiece" to simulate <em>open</em> vocabularies</li>
@@ -819,6 +871,16 @@
       </div>
       
         
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="http://opennmt.net" class="md-footer-social__link fa fa-globe"></a>
+    
+      <a href="https://github.com/OpenNMT/OpenNMT" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
       
     </div>
   </div>
@@ -829,7 +891,7 @@
       <script src="../../assets/javascripts/application-ad1183cb07.js"></script>
       <script>app.initialize({url:{base:"../.."}})</script>
       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
       
     
     

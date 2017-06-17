@@ -63,7 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="../.." title="OpenNMT" class="md-icon md-icon--home md-header-nav__button">
+          <a href="../.." title="OpenNMT" class="md-logo md-header-nav__button">
+            <img src="../../img/logo-alpha.png" width="24" height="24">
           </a>
         
       </div>
@@ -128,7 +129,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -152,7 +153,9 @@
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
-      <i class="md-icon md-icon--home md-nav__button"></i>
+      <i class="md-logo md-nav__button">
+        <img src="../../img/logo-alpha.png">
+      </i>
     
     OpenNMT
   </label>
@@ -173,7 +176,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -470,6 +473,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tools/scorer/" title="Scorer" class="md-nav__link">
+      Scorer
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tools/servers/" title="Servers" class="md-nav__link">
       Servers
     </a>
@@ -568,6 +583,30 @@
 
 
   <li class="md-nav__item">
+    <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+      tools/build_vocab.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../release_model/" title="tools/release_model.lua" class="md-nav__link">
+      tools/release_model.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
@@ -622,6 +661,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../server/" title="tools/translation_server.lua" class="md-nav__link">
+      tools/translation_server.lua
+    </a>
   </li>
 
         
@@ -745,24 +796,25 @@
 
 <p><code>learn_bpe.lua</code> options:</p>
 <ul>
-<li><code>-h</code><br/>This help.</li>
-<li><code>-md</code><br/>Dump help in Markdown format.</li>
-<li><code>-config &lt;string&gt;</code><br/>Load options from this file.</li>
-<li><code>-save_config &lt;string&gt;</code><br/>Save options to this file.</li>
+<li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
+<li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
+<li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
+<li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
 </ul>
-<h2 id="bpe-options">BPE options</h2>
+<h2 id="bpe-options">BPE options<a class="headerlink" href="#bpe-options" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>-size &lt;string&gt;</code> (default: <code>30000</code>)<br/>The number of merge operations to learn.</li>
-<li><code>-t</code><br/>Tokenize the input with tokenizer, the same options as tokenize.lua, but only <code>-mode</code> is taken into account for BPE training.</li>
+<li><code>-t [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Tokenize the input with tokenizer, the same options as tokenize.lua, but only <code>-mode</code> is taken into account for BPE training.</li>
 <li><code>-mode &lt;string&gt;</code> (accepted: <code>conservative</code>, <code>aggressive</code>; default: <code>conservative</code>)<br/>Define how aggressive should the tokenization be. <code>aggressive</code> only keeps sequences of letters/numbers, <code>conservative</code> allows a mix of alphanumeric as in: "2,000", "E65", "soft-landing", etc.</li>
-<li><code>-lc</code><br/>Lowercase the output from the tokenizer before learning BPE.</li>
+<li><code>-segment_case [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment case feature, splits AbC to Ab C to be able to restore case</li>
+<li><code>-lc [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Lowercase the output from the tokenizer before learning BPE.</li>
 <li><code>-bpe_mode &lt;string&gt;</code> (accepted: <code>suffix</code>, <code>prefix</code>, <code>both</code>, <code>none</code>; default: <code>suffix</code>)<br/>Define the BPE mode. <code>prefix</code>: append <code>&lt;w&gt;</code> to the begining of each word to learn prefix-oriented pair statistics; <code>suffix</code>: append <code>&lt;/w&gt;</code> to the end of each word to learn suffix-oriented pair statistics, as in the original Python script; <code>both</code>: <code>suffix</code> and <code>prefix</code>; <code>none</code>: no <code>suffix</code> nor <code>prefix</code>.</li>
-<li><code>-save_bpe &lt;string&gt;</code><br/>Path to save the output model.</li>
+<li><code>-save_bpe &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to save the output model.</li>
 </ul>
-<h2 id="logger-options">Logger options</h2>
+<h2 id="logger-options">Logger options<a class="headerlink" href="#logger-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>-log_file &lt;string&gt;</code><br/>Output logs to a file under this path instead of stdout.</li>
-<li><code>-disable_logs</code><br/>If set, output nothing.</li>
+<li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
+<li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
 <li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
 </ul>
                 
@@ -798,13 +850,13 @@
           </a>
         
         
-          <a href="../rest_server/" title="tools/rest_translation_server.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../server/" title="tools/translation_server.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                tools/rest_translation_server.lua
+                tools/translation_server.lua
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -827,6 +879,16 @@
       </div>
       
         
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="http://opennmt.net" class="md-footer-social__link fa fa-globe"></a>
+    
+      <a href="https://github.com/OpenNMT/OpenNMT" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
       
     </div>
   </div>
@@ -837,7 +899,7 @@
       <script src="../../assets/javascripts/application-ad1183cb07.js"></script>
       <script>app.initialize({url:{base:"../.."}})</script>
       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
       
     
     

@@ -63,7 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="../.." title="OpenNMT" class="md-icon md-icon--home md-header-nav__button">
+          <a href="../.." title="OpenNMT" class="md-logo md-header-nav__button">
+            <img src="../../img/logo-alpha.png" width="24" height="24">
           </a>
         
       </div>
@@ -128,7 +129,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -152,7 +153,9 @@
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
-      <i class="md-icon md-icon--home md-nav__button"></i>
+      <i class="md-logo md-nav__button">
+        <img src="../../img/logo-alpha.png">
+      </i>
     
     OpenNMT
   </label>
@@ -173,7 +176,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -470,6 +473,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tools/scorer/" title="Scorer" class="md-nav__link">
+      Scorer
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tools/servers/" title="Servers" class="md-nav__link">
       Servers
     </a>
@@ -568,6 +583,30 @@
 
 
   <li class="md-nav__item">
+    <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+      tools/build_vocab.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../release_model/" title="tools/release_model.lua" class="md-nav__link">
+      tools/release_model.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
@@ -582,6 +621,18 @@
   <li class="md-nav__item">
     <a href="../learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../server/" title="tools/translation_server.lua" class="md-nav__link">
+      tools/translation_server.lua
     </a>
   </li>
 
@@ -636,6 +687,13 @@
         <li class="md-nav__item">
   <a href="#embedding-options" title="Embedding options" class="md-nav__link">
     Embedding options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logger-options" title="Logger options" class="md-nav__link">
+    Logger options
   </a>
   
 </li>
@@ -722,6 +780,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#logger-options" title="Logger options" class="md-nav__link">
+    Logger options
+  </a>
+  
+</li>
+      
       
       
     </ul>
@@ -745,23 +810,31 @@
 
 <p><code>embeddings.lua</code> options:</p>
 <ul>
-<li><code>-h</code><br/>This help.</li>
-<li><code>-md</code><br/>Dump help in Markdown format.</li>
-<li><code>-config &lt;string&gt;</code><br/>Load options from this file.</li>
-<li><code>-save_config &lt;string&gt;</code><br/>Save options to this file.</li>
+<li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
+<li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
+<li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
+<li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
 </ul>
-<h2 id="data-options">Data options</h2>
+<h2 id="data-options">Data options<a class="headerlink" href="#data-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>-dict_file &lt;string&gt;</code><br/>Path to outputted dict file from <code>preprocess.lua</code>.</li>
-<li><code>-embed_file &lt;string&gt;</code><br/>Path to the embedding file. Ignored if <code>-lang</code> is used.</li>
-<li><code>-save_data &lt;string&gt;</code><br/>Output file path/label.</li>
+<li><code>-dict_file &lt;string&gt;</code> (required)<br/>Path to outputted dict file from <code>preprocess.lua</code>.</li>
+<li><code>-embed_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to the embedding file. Ignored if <code>-lang</code> is used.</li>
+<li><code>-save_data &lt;string&gt;</code> (required)<br/>Output file path/label.</li>
+<li><code>-save_unknown_dict &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to file for saving vocabs not found in embedding.</li>
 </ul>
-<h2 id="embedding-options">Embedding options</h2>
+<h2 id="embedding-options">Embedding options<a class="headerlink" href="#embedding-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>-lang &lt;string&gt;</code><br/>Wikipedia Language Code to autoload embeddings.</li>
-<li><code>-embed_type &lt;string&gt;</code> (accepted: <code>word2vec</code>, <code>glove</code>; default: <code>word2vec</code>)<br/>Embeddings file origin. Ignored if <code>-lang</code> is used.</li>
-<li><code>-normalize &lt;number&gt;</code> (default: <code>1</code>)<br/>Boolean to normalize the word vectors, or not.</li>
+<li><code>-lang &lt;string&gt;</code> (default: <code>''</code>)<br/>Wikipedia Language Code to autoload embeddings.</li>
+<li><code>-embed_type &lt;string&gt;</code> (accepted: <code>word2vec-bin</code>, <code>word2vec-txt</code>, <code>glove</code>; default: <code>word2vec-bin</code>)<br/>Embeddings file origin. Ignored if <code>-lang</code> is used.</li>
+<li><code>-normalize [&lt;boolean&gt;]</code> (default: <code>true</code>)<br/>Boolean to normalize the word vectors, or not.</li>
+<li><code>-approximate [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, will also look for variants (case, joiner annotate) to match dictionary and word embedding.</li>
 <li><code>-report_every &lt;number&gt;</code> (default: <code>100000</code>)<br/>Print stats every this many lines read from embedding file.</li>
+</ul>
+<h2 id="logger-options">Logger options<a class="headerlink" href="#logger-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
+<li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
+<li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
 </ul>
                 
                   
@@ -825,6 +898,16 @@
       </div>
       
         
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="http://opennmt.net" class="md-footer-social__link fa fa-globe"></a>
+    
+      <a href="https://github.com/OpenNMT/OpenNMT" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
       
     </div>
   </div>
@@ -835,7 +918,7 @@
       <script src="../../assets/javascripts/application-ad1183cb07.js"></script>
       <script>app.initialize({url:{base:"../.."}})</script>
       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
       
     
     

@@ -63,7 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="../.." title="OpenNMT" class="md-icon md-icon--home md-header-nav__button">
+          <a href="../.." title="OpenNMT" class="md-logo md-header-nav__button">
+            <img src="../../img/logo-alpha.png" width="24" height="24">
           </a>
         
       </div>
@@ -128,7 +129,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -152,7 +153,9 @@
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
-      <i class="md-icon md-icon--home md-nav__button"></i>
+      <i class="md-logo md-nav__button">
+        <img src="../../img/logo-alpha.png">
+      </i>
     
     OpenNMT
   </label>
@@ -173,7 +176,7 @@
       </div>
     
     <div class="md-source__repository">
-      GitHub
+      OpenNMT/OpenNMT
     </div>
   </a>
 
@@ -400,6 +403,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#partition" title="Partition" class="md-nav__link">
+    Partition
+  </a>
+  
+</li>
+      
       
       
     </ul>
@@ -511,6 +521,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../../tools/scorer/" title="Scorer" class="md-nav__link">
+      Scorer
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../tools/servers/" title="Servers" class="md-nav__link">
       Servers
     </a>
@@ -607,6 +629,30 @@
 
 
   <li class="md-nav__item">
+    <a href="../../options/build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+      tools/build_vocab.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../options/release_model/" title="tools/release_model.lua" class="md-nav__link">
+      tools/release_model.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
@@ -621,6 +667,18 @@
   <li class="md-nav__item">
     <a href="../../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../options/server/" title="tools/translation_server.lua" class="md-nav__link">
+      tools/translation_server.lua
     </a>
   </li>
 
@@ -722,6 +780,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#partition" title="Partition" class="md-nav__link">
+    Partition
+  </a>
+  
+</li>
+      
       
       
     </ul>
@@ -741,17 +806,24 @@
                 
                   <h1>Data sampling</h1>
                 
-                <p>Data sampling is a technique to select a subset of the training set at each epoch. This could be a way to make the epoch unit smaller or select relevant training sequences at each epoch.</p>
-<h2 id="uniform">Uniform</h2>
+                <p>Data sampling is a technique to select a subset of the training set at each epoch. This could be a way to make the epoch unit smaller or select relevant training sequences at each epoch. There are different types of sampling that are selected using <code>-sample_type</code> option as defined below.</p>
+<p>When sampling, with the option <code>-sample_tgt_vocab</code> it is also possible to restrict the target vocabulary to the current sample which gives an approximate of the full generator as defined here <a href="http://www.aclweb.org/anthology/P15-1001">Jean et al, 2015</a> through a so-called "Importance Sampling" approach.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Importance Sampling is particularly useful when training systems with very large target vocabulary</p>
+</div>
+<h2 id="uniform">Uniform<a class="headerlink" href="#uniform" title="Permanent link">&para;</a></h2>
 <p>The simplest data sampling is to uniformly select a subset of the training data. Using the <code>-sample N</code> option, the training will randomly choose <script type="math/tex">N</script> training sequences at each epoch.</p>
 <p>A typical use case is to reduce the length of the epochs for more frequent learning rate updates and validation perplexity computation.</p>
-<h2 id="perplexity-based">Perplexity-based</h2>
-<p>This approach is an attempt to feed relevant training data at each epoch. When using the flag <code>-sample_w_ppl</code>, the perplexity of each sequence is used to generate a multinomial probability distribution over the training sequences. The higher the perplexity, the more likely the sequence is selected.</p>
-<p>Alternatively, perplexity-based sampling can be enabled when an average training perplexity is met with the <code>-sample_w_ppl_init</code> option.</p>
+<h2 id="perplexity-based">Perplexity-based<a class="headerlink" href="#perplexity-based" title="Permanent link">&para;</a></h2>
+<p>This approach is an attempt to feed relevant training data at each epoch. When using the flag <code>-sample_type perplexity</code>, the perplexity of each sequence is used to generate a multinomial probability distribution over the training sequences. The higher the perplexity, the more likely the sequence is selected.</p>
+<p>Alternatively, perplexity-based sampling can be enabled when an average training perplexity is met with the <code>-sample_perplexity_init</code> option.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This perplexity-based approach is experimental and effects are to be experimented. This also results in a ~10% slowdown as the perplexity of <strong>each</strong> sequence has to be independently computed.</p>
 </div>
+<h2 id="partition">Partition<a class="headerlink" href="#partition" title="Permanent link">&para;</a></h2>
+<p>When using the flag <code>-sample_type partition</code>, samples are drawn without random, uniformally and incrementally from the corpus training. Use this mode for making sure all training sequences will be sent the same number of time.</p>
                 
                   
                 
@@ -814,6 +886,16 @@
       </div>
       
         
+  <div class="md-footer-social">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+      <a href="http://opennmt.net" class="md-footer-social__link fa fa-globe"></a>
+    
+      <a href="https://github.com/OpenNMT/OpenNMT" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
       
     </div>
   </div>
@@ -824,7 +906,7 @@
       <script src="../../assets/javascripts/application-ad1183cb07.js"></script>
       <script>app.initialize({url:{base:"../.."}})</script>
       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
       
     
     

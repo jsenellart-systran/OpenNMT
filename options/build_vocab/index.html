@@ -15,7 +15,7 @@
     
     
       
-        <title>tag.lua - OpenNMT</title>
+        <title>tools/build_vocab.lua - OpenNMT</title>
       
     
     
@@ -81,7 +81,7 @@
                 </span>
               
             
-            tag.lua
+            tools/build_vocab.lua
           
         </span>
       </div>
@@ -569,6 +569,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../tag/" title="tag.lua" class="md-nav__link">
+      tag.lua
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -578,11 +590,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        tag.lua
+        tools/build_vocab.lua
       </label>
     
-    <a href="./" title="tag.lua" class="md-nav__link md-nav__link--active">
-      tag.lua
+    <a href="./" title="tools/build_vocab.lua" class="md-nav__link md-nav__link--active">
+      tools/build_vocab.lua
     </a>
     
       
@@ -594,22 +606,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
-    Cuda options
+  <a href="#vocabulary-options" title="Vocabulary options" class="md-nav__link">
+    Vocabulary options
   </a>
   
 </li>
@@ -621,31 +619,12 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
-  </a>
-  
-</li>
-      
       
       
     </ul>
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
-      tools/build_vocab.lua
-    </a>
   </li>
 
         
@@ -781,22 +760,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
-    Cuda options
+  <a href="#vocabulary-options" title="Vocabulary options" class="md-nav__link">
+    Vocabulary options
   </a>
   
 </li>
@@ -804,13 +769,6 @@
         <li class="md-nav__item">
   <a href="#logger-options" title="Logger options" class="md-nav__link">
     Logger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
   </a>
   
 </li>
@@ -829,47 +787,34 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/tag.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/build_vocab.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                  <h1>tag.lua</h1>
+                  <h1>tools/build_vocab.lua</h1>
                 
                 <!--- This file was automatically generated. Do not modify it manually but use the docs/options/generate.sh script instead. -->
 
-<p><code>tag.lua</code> options:</p>
+<p><code>build_vocab.lua</code> options:</p>
 <ul>
 <li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
 <li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
 <li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
 <li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
 </ul>
-<h2 id="data-options">Data options<a class="headerlink" href="#data-options" title="Permanent link">&para;</a></h2>
+<h2 id="vocabulary-options">Vocabulary options<a class="headerlink" href="#vocabulary-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>-src &lt;string&gt;</code> (required)<br/>Source sequences to tag.</li>
-<li><code>-output &lt;string&gt;</code> (default: <code>pred.txt</code>)<br/>Output file.</li>
-<li><code>-idx_files [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, source and target files are 'key value' with key match between source and target.</li>
-</ul>
-<h2 id="tagger-options">Tagger options<a class="headerlink" href="#tagger-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-model &lt;string&gt;</code> (required)<br/>Path to the serialized model file.</li>
-<li><code>-batch_size &lt;number&gt;</code> (default: <code>30</code>)<br/>Batch size.</li>
-</ul>
-<h2 id="cuda-options">Cuda options<a class="headerlink" href="#cuda-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-gpuid &lt;table&gt;</code> (default: <code>0</code>)<br/>List of GPU identifiers (1-indexed). CPU is used when set to 0.</li>
-<li><code>-fallback_to_cpu [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If GPU can't be used, rollback on the CPU.</li>
-<li><code>-fp16 [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Use half-precision float on GPU.</li>
-<li><code>-no_nccl [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Disable usage of nccl in parallel mode.</li>
+<li><code>-data &lt;string&gt;</code> (required)<br/>Data file.</li>
+<li><code>-save_vocab &lt;string&gt;</code> (required)<br/>Vocabulary dictionary prefix.</li>
+<li><code>-vocab_size &lt;table&gt;</code> (default: <code>50000</code>)<br/>List of source vocabularies size: <code>word[ feat1[ feat2[ ...] ] ]</code>. If = 0, vocabularies are not pruned.</li>
+<li><code>-words_min_frequency &lt;table&gt;</code> (default: <code>0</code>)<br/>List of source words min frequency: <code>word[ feat1[ feat2[ ...] ] ]</code>. If = 0, vocabularies are pruned by size.</li>
+<li><code>-keep_frequency [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Keep frequency of words in dictionary.</li>
+<li><code>-idx_files [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, each line of the data file starts with a first field which is the index of the sentence.</li>
 </ul>
 <h2 id="logger-options">Logger options<a class="headerlink" href="#logger-options" title="Permanent link">&para;</a></h2>
 <ul>
 <li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
 <li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
 <li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
-</ul>
-<h2 id="other-options">Other options<a class="headerlink" href="#other-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-time [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Measure average translation time.</li>
 </ul>
                 
                   
@@ -889,7 +834,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../translate/" title="translate.lua" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../tag/" title="tag.lua" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -898,19 +843,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                translate.lua
+                tag.lua
               </span>
             </div>
           </a>
         
         
-          <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../release_model/" title="tools/release_model.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                tools/build_vocab.lua
+                tools/release_model.lua
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

@@ -15,7 +15,7 @@
     
     
       
-        <title>tag.lua - OpenNMT</title>
+        <title>tools/release_model.lua - OpenNMT</title>
       
     
     
@@ -81,7 +81,7 @@
                 </span>
               
             
-            tag.lua
+            tools/release_model.lua
           
         </span>
       </div>
@@ -569,71 +569,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="toc">
-        tag.lua
-      </label>
-    
-    <a href="./" title="tag.lua" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../tag/" title="tag.lua" class="md-nav__link">
       tag.lua
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
-    Cuda options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#logger-options" title="Logger options" class="md-nav__link">
-    Logger options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
-  </a>
-  
-</li>
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -653,11 +593,57 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../release_model/" title="tools/release_model.lua" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        tools/release_model.lua
+      </label>
+    
+    <a href="./" title="tools/release_model.lua" class="md-nav__link md-nav__link--active">
       tools/release_model.lua
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-options" title="Model options" class="md-nav__link">
+    Model options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cuda-options" title="Cuda options" class="md-nav__link">
+    Cuda options
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logger-options" title="Logger options" class="md-nav__link">
+    Logger options
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -781,15 +767,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#data-options" title="Data options" class="md-nav__link">
-    Data options
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tagger-options" title="Tagger options" class="md-nav__link">
-    Tagger options
+  <a href="#model-options" title="Model options" class="md-nav__link">
+    Model options
   </a>
   
 </li>
@@ -808,13 +787,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#other-options" title="Other options" class="md-nav__link">
-    Other options
-  </a>
-  
-</li>
-      
       
       
     </ul>
@@ -829,30 +801,25 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/tag.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/options/release_model.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                  <h1>tag.lua</h1>
+                  <h1>tools/release_model.lua</h1>
                 
                 <!--- This file was automatically generated. Do not modify it manually but use the docs/options/generate.sh script instead. -->
 
-<p><code>tag.lua</code> options:</p>
+<p><code>release_model.lua</code> options:</p>
 <ul>
 <li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
 <li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
 <li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
 <li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
 </ul>
-<h2 id="data-options">Data options<a class="headerlink" href="#data-options" title="Permanent link">&para;</a></h2>
+<h2 id="model-options">Model options<a class="headerlink" href="#model-options" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>-src &lt;string&gt;</code> (required)<br/>Source sequences to tag.</li>
-<li><code>-output &lt;string&gt;</code> (default: <code>pred.txt</code>)<br/>Output file.</li>
-<li><code>-idx_files [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, source and target files are 'key value' with key match between source and target.</li>
-</ul>
-<h2 id="tagger-options">Tagger options<a class="headerlink" href="#tagger-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-model &lt;string&gt;</code> (required)<br/>Path to the serialized model file.</li>
-<li><code>-batch_size &lt;number&gt;</code> (default: <code>30</code>)<br/>Batch size.</li>
+<li><code>-model &lt;string&gt;</code> (required)<br/>Path to the trained model to release.</li>
+<li><code>-output_model &lt;string&gt;</code> (default: <code>''</code>)<br/>Path the released model. If not set, the <code>release</code> suffix will be automatically added to the model filename.</li>
+<li><code>-force [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Force output model creation even if the target file exists.</li>
 </ul>
 <h2 id="cuda-options">Cuda options<a class="headerlink" href="#cuda-options" title="Permanent link">&para;</a></h2>
 <ul>
@@ -866,10 +833,6 @@
 <li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
 <li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
 <li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
-</ul>
-<h2 id="other-options">Other options<a class="headerlink" href="#other-options" title="Permanent link">&para;</a></h2>
-<ul>
-<li><code>-time [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Measure average translation time.</li>
 </ul>
                 
                   
@@ -889,7 +852,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../translate/" title="translate.lua" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -898,19 +861,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                translate.lua
+                tools/build_vocab.lua
               </span>
             </div>
           </a>
         
         
-          <a href="../build_vocab/" title="tools/build_vocab.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../tokenize/" title="tools/tokenize.lua" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                tools/build_vocab.lua
+                tools/tokenize.lua
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
