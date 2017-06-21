@@ -9,20 +9,20 @@
       
       
       
-        <link rel="shortcut icon" href="../../assets/images/favicon.png">
+        <link rel="shortcut icon" href="../assets/images/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.5.5">
     
     
       
-        <title>Scorer - OpenNMT</title>
+        <title>Applications - OpenNMT</title>
       
     
     
-      <script src="../../assets/javascripts/modernizr-56ade86843.js"></script>
+      <script src="../assets/javascripts/modernizr-56ade86843.js"></script>
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application-b1a1975878.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-b1a1975878.css">
       
     
     
@@ -36,7 +36,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
     
-      <link rel="stylesheet" href="../../css/extra.css">
+      <link rel="stylesheet" href="../css/extra.css">
     
     
   </head>
@@ -63,8 +63,8 @@
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
         
-          <a href="../.." title="OpenNMT" class="md-logo md-header-nav__button">
-            <img src="../../img/logo-alpha.png" width="24" height="24">
+          <a href=".." title="OpenNMT" class="md-logo md-header-nav__button">
+            <img src="../img/logo-alpha.png" width="24" height="24">
           </a>
         
       </div>
@@ -76,12 +76,8 @@
           
             
               
-                <span class="md-header-nav__parent">
-                  Tools
-                </span>
-              
             
-            Scorer
+            Applications
           
         </span>
       </div>
@@ -154,7 +150,7 @@
   <label class="md-nav__title md-nav__title--site" for="drawer">
     
       <i class="md-logo md-nav__button">
-        <img src="../../img/logo-alpha.png">
+        <img src="../img/logo-alpha.png">
       </i>
     
     OpenNMT
@@ -190,7 +186,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../.." title="Overview" class="md-nav__link">
+    <a href=".." title="Overview" class="md-nav__link">
       Overview
     </a>
   </li>
@@ -202,7 +198,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../installation/" title="Installation" class="md-nav__link">
+    <a href="../installation/" title="Installation" class="md-nav__link">
       Installation
     </a>
   </li>
@@ -214,7 +210,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../quickstart/" title="Quickstart" class="md-nav__link">
+    <a href="../quickstart/" title="Quickstart" class="md-nav__link">
       Quickstart
     </a>
   </li>
@@ -224,47 +220,78 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
     
-    <label class="md-nav__link" for="nav-4">
-      Data
-    </label>
-    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-4">
-        Data
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        Applications
       </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../data/preparation/" title="Preparation" class="md-nav__link">
-      Preparation
+    
+    <a href="./" title="Applications" class="md-nav__link md-nav__link--active">
+      Applications
     </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../data/word_features/" title="Word features" class="md-nav__link">
-      Word features
-    </a>
-  </li>
-
-        
-      </ul>
-    </nav>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#machine-translation" title="Machine Translation" class="md-nav__link">
+    Machine Translation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summarization" title="Summarization" class="md-nav__link">
+    Summarization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#im2text" title="Im2Text" class="md-nav__link">
+    Im2Text
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speech-recognition" title="Speech Recognition" class="md-nav__link">
+    Speech Recognition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-tagging" title="Sequence Tagging" class="md-nav__link">
+    Sequence Tagging
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-modelling" title="Language Modelling" class="md-nav__link">
+    Language Modelling
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -278,11 +305,11 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
     
     <label class="md-nav__link" for="nav-5">
-      Training
+      Data
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-5">
-        Training
+        Data
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -293,8 +320,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/models/" title="Models" class="md-nav__link">
-      Models
+    <a href="../data/preparation/" title="Preparation" class="md-nav__link">
+      Preparation
     </a>
   </li>
 
@@ -305,68 +332,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../training/embeddings/" title="Embeddings" class="md-nav__link">
-      Embeddings
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../training/logs/" title="Logs" class="md-nav__link">
-      Logs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../training/multi_gpu/" title="Multi GPU" class="md-nav__link">
-      Multi GPU
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../training/retraining/" title="Retraining" class="md-nav__link">
-      Retraining
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../training/decay/" title="Decay strategies" class="md-nav__link">
-      Decay strategies
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../../training/sampling/" title="Data sampling" class="md-nav__link">
-      Data sampling
+    <a href="../data/word_features/" title="Word features" class="md-nav__link">
+      Word features
     </a>
   </li>
 
@@ -386,11 +353,11 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
     
     <label class="md-nav__link" for="nav-6">
-      Translation
+      Training
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-6">
-        Translation
+        Training
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -401,8 +368,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../translation/inference/" title="Inference" class="md-nav__link">
-      Inference
+    <a href="../training/models/" title="Models" class="md-nav__link">
+      Models
     </a>
   </li>
 
@@ -413,8 +380,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../../translation/beam_search/" title="Beam search" class="md-nav__link">
-      Beam search
+    <a href="../training/embeddings/" title="Embeddings" class="md-nav__link">
+      Embeddings
     </a>
   </li>
 
@@ -425,8 +392,56 @@
 
 
   <li class="md-nav__item">
-    <a href="../../translation/unknowns/" title="Unknown words" class="md-nav__link">
-      Unknown words
+    <a href="../training/logs/" title="Logs" class="md-nav__link">
+      Logs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../training/multi_gpu/" title="Multi GPU" class="md-nav__link">
+      Multi GPU
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../training/retraining/" title="Retraining" class="md-nav__link">
+      Retraining
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../training/decay/" title="Decay strategies" class="md-nav__link">
+      Decay strategies
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../training/sampling/" title="Data sampling" class="md-nav__link">
+      Data sampling
     </a>
   </li>
 
@@ -440,19 +455,17 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+  <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
     
     <label class="md-nav__link" for="nav-7">
-      Tools
+      Translation
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-7">
-        Tools
+        Translation
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -463,30 +476,9 @@
 
 
   <li class="md-nav__item">
-    <a href="../tokenization/" title="Tokenization" class="md-nav__link">
-      Tokenization
+    <a href="../translation/inference/" title="Inference" class="md-nav__link">
+      Inference
     </a>
-  </li>
-
-        
-          
-          
-          
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-      
-    
-    
-    <a href="./" title="Scorer" class="md-nav__link md-nav__link--active">
-      Scorer
-    </a>
-    
   </li>
 
         
@@ -496,8 +488,20 @@
 
 
   <li class="md-nav__item">
-    <a href="../servers/" title="Servers" class="md-nav__link">
-      Servers
+    <a href="../translation/beam_search/" title="Beam search" class="md-nav__link">
+      Beam search
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../translation/unknowns/" title="Unknown words" class="md-nav__link">
+      Unknown words
     </a>
   </li>
 
@@ -517,10 +521,58 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
     
     <label class="md-nav__link" for="nav-8">
-      Reference: Options
+      Tools
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-8">
+        Tools
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tools/tokenization/" title="Tokenization" class="md-nav__link">
+      Tokenization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tools/servers/" title="Servers" class="md-nav__link">
+      Servers
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      Reference: Options
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
         Reference: Options
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -532,7 +584,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/usage/" title="Scripts usage" class="md-nav__link">
+    <a href="../options/usage/" title="Scripts usage" class="md-nav__link">
       Scripts usage
     </a>
   </li>
@@ -544,7 +596,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/preprocess/" title="preprocess.lua" class="md-nav__link">
+    <a href="../options/preprocess/" title="preprocess.lua" class="md-nav__link">
       preprocess.lua
     </a>
   </li>
@@ -556,7 +608,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/train/" title="train.lua" class="md-nav__link">
+    <a href="../options/train/" title="train.lua" class="md-nav__link">
       train.lua
     </a>
   </li>
@@ -568,7 +620,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/translate/" title="translate.lua" class="md-nav__link">
+    <a href="../options/translate/" title="translate.lua" class="md-nav__link">
       translate.lua
     </a>
   </li>
@@ -580,7 +632,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/tag/" title="tag.lua" class="md-nav__link">
+    <a href="../options/tag/" title="tag.lua" class="md-nav__link">
       tag.lua
     </a>
   </li>
@@ -592,7 +644,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
+    <a href="../options/build_vocab/" title="tools/build_vocab.lua" class="md-nav__link">
       tools/build_vocab.lua
     </a>
   </li>
@@ -604,7 +656,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/release_model/" title="tools/release_model.lua" class="md-nav__link">
+    <a href="../options/release_model/" title="tools/release_model.lua" class="md-nav__link">
       tools/release_model.lua
     </a>
   </li>
@@ -616,7 +668,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
+    <a href="../options/tokenize/" title="tools/tokenize.lua" class="md-nav__link">
       tools/tokenize.lua
     </a>
   </li>
@@ -628,7 +680,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
+    <a href="../options/learn_bpe/" title="tools/learn_bpe.lua" class="md-nav__link">
       tools/learn_bpe.lua
     </a>
   </li>
@@ -640,7 +692,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/server/" title="tools/translation_server.lua" class="md-nav__link">
+    <a href="../options/server/" title="tools/translation_server.lua" class="md-nav__link">
       tools/translation_server.lua
     </a>
   </li>
@@ -652,7 +704,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
+    <a href="../options/rest_server/" title="tools/rest_translation_server.lua" class="md-nav__link">
       tools/rest_translation_server.lua
     </a>
   </li>
@@ -664,7 +716,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../options/embeddings/" title="tools/embeddings.lua" class="md-nav__link">
+    <a href="../options/embeddings/" title="tools/embeddings.lua" class="md-nav__link">
       tools/embeddings.lua
     </a>
   </li>
@@ -681,7 +733,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../extensions/" title="Extensions" class="md-nav__link">
+    <a href="../extensions/" title="Extensions" class="md-nav__link">
       Extensions
     </a>
   </li>
@@ -693,7 +745,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../references/" title="References" class="md-nav__link">
+    <a href="../references/" title="References" class="md-nav__link">
       References
     </a>
   </li>
@@ -705,7 +757,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../../issues/" title="Common issues" class="md-nav__link">
+    <a href="../issues/" title="Common issues" class="md-nav__link">
       Common issues
     </a>
   </li>
@@ -725,8 +777,55 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
   
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#machine-translation" title="Machine Translation" class="md-nav__link">
+    Machine Translation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summarization" title="Summarization" class="md-nav__link">
+    Summarization
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#im2text" title="Im2Text" class="md-nav__link">
+    Im2Text
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#speech-recognition" title="Speech Recognition" class="md-nav__link">
+    Speech Recognition
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sequence-tagging" title="Sequence Tagging" class="md-nav__link">
+    Sequence Tagging
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-modelling" title="Language Modelling" class="md-nav__link">
+    Language Modelling
+  </a>
+  
+</li>
+      
+      
+      
+    </ul>
   
 </nav>
                   </div>
@@ -738,33 +837,44 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/tools/scorer.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
+                  <a href="https://github.com/OpenNMT/OpenNMT/edit/master/docs/applications.md" title="Edit this page" class="md-icon md-content__icon">edit</a>
                 
                 
-                <p>OpenNMT provides native implementation of scoring metrics - for the moment, only BLEU.</p>
-<h1 id="bleu">BLEU<a class="headerlink" href="#bleu" title="Permanent link">&para;</a></h1>
-<p><a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a> is a metric widely used for evaluation of machine translation output.</p>
-<p>Syntax follows <a href="https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl">multi-bleu.perl</a> syntax:</p>
-<div class="codehilite"><pre><span></span>$ th tools/score.lua REFERENCE <span class="o">[</span>-sample SN<span class="o">]</span> <span class="o">[</span>-scorer bleu<span class="o">]</span> <span class="o">[</span>-order N<span class="o">]</span> &lt; OUT
-</pre></div>
-
-
-<p>generating:</p>
-<div class="codehilite"><pre><span></span>[06/17/17 09:39:04 INFO] 4 references, 1002 sentences
-BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742, ref_len=28995)
-</pre></div>
-
-
-<p>where:</p>
+                  <h1>Applications</h1>
+                
+                <h2 id="machine-translation">Machine Translation<a class="headerlink" href="#machine-translation" title="Permanent link">&para;</a></h2>
+<p>Neural Machine Translation (NMT) is the default and original task for OpenNMT. It requires a corpus of bilingual sentences (for instance as available on <a href="http://opus.lingfil.uu.se">Opus</a> for a very large variety of domains and language pairs). Training a NMT engine is a 3 steps process:</p>
 <ul>
-<li><code>REFERENCE</code> is either a single file, or a prefix for multiple-reference <code>REFERENCE0</code>, <code>REFERENCE1</code>, ...</li>
-<li><code>-order</code> is bleu n-gram order (default 4)</li>
-<li>parameter <code>-sample</code> indicates the number of sample to draw for evaluating <em>error margin</em> (default 20) - indicated with <code>+/- ERR</code> in the output</li>
+<li><a href="../tools/tokenization/">Tokenization</a></li>
+<li>Preprocessing</li>
+<li>Training</li>
 </ul>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p><em>Error margin</em> is a simple way to know if BLEU score variation is part of metric calculation variation or is significant.</p>
-</div>
+<p>Step by step process is described on the <a href="../quickstart/">quickstart page</a> and full process to train large system is described on the forum <a href="http://forum.opennmt.net/t/training-english-german-wmt15-nmt-engine/29">here</a>.</p>
+<p><img alt="Neural Machine Translation" src="../../img/nmt.png" /></p>
+<h2 id="summarization">Summarization<a class="headerlink" href="#summarization" title="Permanent link">&para;</a></h2>
+<p>Summarization models are trained exactly like NMT models - the nature of the training data is different: source corpus are full length document / articles, and target are summaries. <a href="http://forum.opennmt.net/t/text-summarization-on-gigaword-and-rouge-scoring/85/">This forum post</a> details how to train and evaluation a summarization model.</p>
+<h2 id="im2text">Im2Text<a class="headerlink" href="#im2text" title="Permanent link">&para;</a></h2>
+<p>Im2Text, written by Yuntian Deng from HarvardNLP group, is implementing a generic image-to-text application on top of OpenNMT libraries for <a href="https://arxiv.org/pdf/1609.04938v1.pdf">visual markup decompilation</a>. Main modification to generic OpenNMT is the encoder introducing CNN layers in combination with RNN.</p>
+<h2 id="speech-recognition">Speech Recognition<a class="headerlink" href="#speech-recognition" title="Permanent link">&para;</a></h2>
+<p>While OpenNMT is not primarily targetting speech recognition applications, its ability to support <a href="../data/preparation/#input-vectors">input vectors</a> and <a href="../training/models/#pyramidal-deep-bidirectional-encoder">pyramidal RNN</a> make possible end-to-end experiments on speech to text applications as described for instance in <a href="https://arxiv.org/abs/1508.01211">Listen, Attend and Spell</a>. See for instance <a href="http://forum.opennmt.net/t/monophone-speech-recognition-with-opennmt/542">monophone speech recognition with OpenNMT</a> on the forum.</p>
+<p><img alt="Listen, Attend and Spell" src="../../img/las.png" /></p>
+<h2 id="sequence-tagging">Sequence Tagging<a class="headerlink" href="#sequence-tagging" title="Permanent link">&para;</a></h2>
+<p>A Sequence Tagger is available in OpenNMT. Sharing the same encoder code, it does not need a decoder, since each input is synced with an output - a sequence tagger just needs an encoder and a generation layer. Sequence Tagging can be used for any annotation task such as part of speech tagging.</p>
+<p><img alt="Sequence Tagger" src="../../img/seqtagger.png" /></p>
+<p>To train a sequence tagger:</p>
+<ul>
+<li>prepare the bitext with source and target sequence length identical (you can use <code>-check_plength</code> option in preprocessor).</li>
+<li>train the model with <code>-model_type seqtagger</code></li>
+<li>use the model with <code>tag.lua</code></li>
+</ul>
+<h2 id="language-modelling">Language Modelling<a class="headerlink" href="#language-modelling" title="Permanent link">&para;</a></h2>
+<p>A language model is very similar to a sequence tagger - the main difference is that the output "tag" for each token is the following word in source sentence.</p>
+<p><img alt="Language Model" src="../../img/lm.png" /></p>
+<ul>
+<li>prepare data with <code>-data_type monotext</code> in preprocessor</li>
+<li>train the model with <code>-model_type lm</code></li>
+<li>use the model with <code>lm.lua</code></li>
+</ul>
                 
                   
                 
@@ -783,7 +893,7 @@ BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../tokenization/" title="Tokenization" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../quickstart/" title="Quickstart" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -792,19 +902,19 @@ BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Tokenization
+                Quickstart
               </span>
             </div>
           </a>
         
         
-          <a href="../servers/" title="Servers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../data/preparation/" title="Preparation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Servers
+                Preparation
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
@@ -844,8 +954,8 @@ BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742
       
     </div>
     
-      <script src="../../assets/javascripts/application-ad1183cb07.js"></script>
-      <script>app.initialize({url:{base:"../.."}})</script>
+      <script src="../assets/javascripts/application-ad1183cb07.js"></script>
+      <script>app.initialize({url:{base:".."}})</script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
       
