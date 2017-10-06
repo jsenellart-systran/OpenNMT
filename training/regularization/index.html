@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Regularization - OpenNMT</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../logs/">Logs</a>
+</li>
+                            
+<li >
+    <a href="../multi_gpu/">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../retraining/">Retraining</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../translation/inference/">Inference</a>
+</li>
+                            
+<li >
+    <a href="../../translation/beam_search/">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../../translation/unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../tools/tokenization/">Tokenization</a>
+</li>
+                            
+<li >
+    <a href="../../tools/scorer/">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../../tools/servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../options/usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../../options/preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/train/">train.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/translate/">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../lua_python_comparison/">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../retraining/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../decay/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#dropout">Dropout</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>To prevent neural networks from overfitting and increase generalization capacity, several regularization methods are available.</p>
+<h2 id="dropout">Dropout<a class="headerlink" href="#dropout" title="Permanent link">&para;</a></h2>
+<p>Dropout is an effective and simple regularization technique introduced by <a href="http://www.jmlr.org/papers/volume15/srivastava14a.old/source/srivastava14a.pdf">Srivastava et al., 2015</a>. Dropout is only applied during training. The idea is to disable for a given batch individual neurons with some probability (p). Setting (p) to 0 disables the dropout. Default regularization is dropout with (p=0.2).</p>
+<p><img alt="Dropout" src="../../img/dropout.jpg" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Dropout value can be changed dynamically when restarting the training. So it can be adjusted all along the training process.</p>
+</div>
+<p>Dropout is applied on the output of each layer, the output of the attention layer, and can be enabled also between word embeddings and the first layer with the <code>-dropout_input</code> option.</p>
+<p>Because of recurrence, applying dropout to recurrent neural networks requires some specific care and two implementations are available and can be configured using the <code>-dropout_type</code> option:</p>
+<ul>
+<li><code>naive</code> (default): implements the approach described in <a href="https://arxiv.org/pdf/1409.2329.pdf">Zaremba et al., 2015</a>. The dropout is only applied on non-recurrent connections.</li>
+<li><code>variational</code>: implements the approach described in <a href="https://arxiv.org/pdf/1512.05287.pdf">Gal et al., 2016</a>. In this approach, dropout is also applied to the recurrent connections but each timestep applies the same dropout mask.</li>
+</ul>
+<p>The following picture (from Gal et al. paper) describes both different approaches. On the left side, the naive dropout: no dropout on recurrent connections, and dropout for each timestep is different. On the right side, the variational dropout: there is dropout on recurrent connections, but dropout for each timesteps are the same,</p>
+<p><img alt="Dropout Types" src="../../img/dropout-type.jpg" /></p>
+<p>Finally, dropout can also be applied to the words themselves. In that case, a set of individual words randomly selected with probability (p_{words}) are replaced by padding tokens. You can apply this option using <code>-dropout_words pwords</code> with a non zero value.</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
