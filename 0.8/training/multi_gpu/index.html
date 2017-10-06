@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Multi GPU - OpenNMT</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../logs/">Logs</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../retraining/">Retraining</a>
+</li>
+                            
+<li >
+    <a href="../regularization/">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../translation/inference/">Inference</a>
+</li>
+                            
+<li >
+    <a href="../../translation/beam_search/">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../../translation/unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../tools/tokenization/">Tokenization</a>
+</li>
+                            
+<li >
+    <a href="../../tools/scorer/">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../../tools/servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../options/usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../../options/preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/train/">train.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/translate/">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../lua_python_comparison/">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../logs/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../retraining/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#synchronous">Synchronous</a></li>
+        <li class="main "><a href="#asynchronous">Asynchronous</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>OpenNMT can make use of multiple GPU during the training by implementing <strong>data parallelism</strong>. This technique trains batches in parallel on different network replicas. To use data parallelism, assign a list of GPU identifiers to the <code>-gpuid</code> option. For example:</p>
+<div class="codehilite"><pre><span></span>th train.lua -data data/demo-train.t7 -save_model demo -gpuid <span class="m">1</span> <span class="m">2</span> <span class="m">4</span>
+</pre></div>
+
+
+<p>will use the first, the second and the fourth GPU of the machine as returned by the CUDA API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>nvidia-smi</code> enumerates devices based on the driver API which can be in a different order than the CUDA API.</p>
+</div>
+<h2 id="synchronous">Synchronous<a class="headerlink" href="#synchronous" title="Permanent link">&para;</a></h2>
+<p>In this default mode, each replica processes in parallel a different batch at each iteration. The gradients from each replica are accumulated, and parameters updated and synchronized.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When using (N) GPU(s), the actual batch size is (N \times) <code>-max_batch_size</code>.</p>
+</div>
+<h2 id="asynchronous">Asynchronous<a class="headerlink" href="#asynchronous" title="Permanent link">&para;</a></h2>
+<p><em>(Also known as asynchronous SGD or downpour SGD.)</em></p>
+<p>In this mode enabled with the <code>-async_parallel</code> flag, the different replicas are independently
+calculating their own gradients, updating a master copy of the parameters and getting updated values
+of the parameters. To enable convergence at the beginning of the training, only one replica is working for the first <code>-async_parallel_minbatch</code> iterations to prepare a better initialization for the asynchronous part.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>A GPU core is dedicated to store the master copy of the parameters and is not used for training.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As training logs and saving require synchronization, consider using higher <code>-report_every</code> and <code>-save_every</code> values.</p>
+</div></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

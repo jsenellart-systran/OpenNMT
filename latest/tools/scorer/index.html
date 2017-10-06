@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Scorer - OpenNMT</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../training/models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../../training/embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../../training/logs/">Logs</a>
+</li>
+                            
+<li >
+    <a href="../../training/multi_gpu/">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../../training/retraining/">Retraining</a>
+</li>
+                            
+<li >
+    <a href="../../training/regularization/">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../../training/decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../../training/sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../translation/inference/">Inference</a>
+</li>
+                            
+<li >
+    <a href="../../translation/beam_search/">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../../translation/unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../tokenization/">Tokenization</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../options/usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../../options/preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/train/">train.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/translate/">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../lua_python_comparison/">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../tokenization/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../servers/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#bleu">BLEU</a></li>
+        <li class="main "><a href="#ter">TER</a></li>
+        <li class="main "><a href="#dlratio">DLRATIO</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>OpenNMT provides native implementation of scoring metrics - BLEU, TER, DLRATIO</p>
+<p>All metrics can be used as a validation metric (see <a href="../../options/train/#trainer-options">option <code>-validation_metric</code></a>) during training or standalone using <code>tools/score.lua</code>:</p>
+<div class="codehilite"><pre><span></span>$ th tools/score.lua REFERENCE <span class="o">[</span>-sample SN<span class="o">]</span> <span class="o">[</span>-scorer bleu<span class="p">|</span>ter<span class="p">|</span>dlratio<span class="o">]</span> PARAMS &lt; OUT
+</pre></div>
+
+
+<p>The actual metric is selected with <code>scorer</code> option and the output is a line with 3 field, tab separated like:</p>
+<div class="codehilite"><pre><span></span>34.73        +/-0.83        BLEU = 34.77, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742, ref_len=28995)
+54.77                       TER = 54.77 (Ins 1.8, Del 4.4, Sub 9.6, Shft 1.9, WdSh 2.6)
+</pre></div>
+
+
+<p>The fields are:</p>
+<ul>
+<li>numeric value of the score</li>
+<li>95% confidence error margin (1.96*standard deviation) for k samples of half-size</li>
+<li>formated scorer output</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><em>Error margin</em> is a simple way to know if score variation is part of metric calculation variation or is significant.</p>
+</div>
+<h1 id="bleu">BLEU<a class="headerlink" href="#bleu" title="Permanent link">&para;</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/BLEU">BLEU</a> is a metric widely used for evaluation of machine translation output.</p>
+<p>Syntax follows <a href="https://github.com/moses-smt/mosesdecoder/blob/master/scripts/generic/multi-bleu.perl">multi-bleu.perl</a> syntax:</p>
+<div class="codehilite"><pre><span></span>$ th tools/score.lua REFERENCE <span class="o">[</span>-sample SN<span class="o">]</span> <span class="o">[</span>-scorer bleu<span class="o">]</span> <span class="o">[</span>-order N<span class="o">]</span> &lt; OUT
+</pre></div>
+
+
+<p>generating:</p>
+<div class="codehilite"><pre><span></span>[06/17/17 09:39:04 INFO] 4 references, 1002 sentences
+BLEU = 34.77 +/- 0.43, 79.8/49.1/29.6/17.6 (BP=0.919, ratio=0.922, hyp_len=26742, ref_len=28995)
+</pre></div>
+
+
+<p>where:</p>
+<ul>
+<li><code>REFERENCE</code> is either a single file, or a prefix for multiple-reference <code>REFERENCE0</code>, <code>REFERENCE1</code>, ...</li>
+<li><code>-order</code> is bleu n-gram order (default 4)</li>
+</ul>
+<h1 id="ter">TER<a class="headerlink" href="#ter" title="Permanent link">&para;</a></h1>
+<p><a href="http://www.cs.umd.edu/~snover/tercom/">TER</a> is an error metric for machine translation that messures the number of edits required to change a system output into one of the references. It is generally prefered to BLEU for estimation of sentence post-editing effort.</p>
+<h1 id="dlratio">DLRATIO<a class="headerlink" href="#dlratio" title="Permanent link">&para;</a></h1>
+<p><a href="https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance">Damerau-Levenshtein edit distance</a> is edit distance between 2 sentences. It is a simplified version of <code>TER</code> (in particular, <code>TER</code> that also integrates numbers of sequence shift).</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

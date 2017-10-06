@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Beam search - OpenNMT</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../training/models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../../training/embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../../training/logs/">Logs</a>
+</li>
+                            
+<li >
+    <a href="../../training/multi_gpu/">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../../training/retraining/">Retraining</a>
+</li>
+                            
+<li >
+    <a href="../../training/regularization/">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../../training/decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../../training/sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../inference/">Inference</a>
+</li>
+                            
+<li class="active">
+    <a href="./">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../tools/tokenization/">Tokenization</a>
+</li>
+                            
+<li >
+    <a href="../../tools/scorer/">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../../tools/servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../options/usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../../options/preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/train/">train.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/translate/">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../../options/average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../lua_python_comparison/">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../inference/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../unknowns/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#hypotheses-filtering">Hypotheses filtering</a></li>
+        <li class="main "><a href="#normalization">Normalization</a></li>
+            <li><a href="#length-normalization">Length normalization</a></li>
+            <li><a href="#coverage-normalization">Coverage normalization</a></li>
+            <li><a href="#end-of-sentence-normalization">End of sentence normalization</a></li>
+        <li class="main "><a href="#decoding-with-auxiliary-language-model">Decoding with auxiliary language model</a></li>
+        <li class="main "><a href="#output-attention-to-a-file">Output attention to a file</a></li>
+        <li class="main "><a href="#visualizing-the-beam-search">Visualizing the beam search</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>By default, translation is done using beam search. The <code>-beam_size</code> option can be used to trade-off translation time and search accuracy, with <code>-beam_size 1</code> giving greedy search. The small default beam size is often enough in practice.</p>
+<p>Beam search can also be used to provide an approximate n-best list of translations by setting <code>-n_best</code> greater than 1. For analysis, the translation command also takes an oracle/gold <code>-tgt</code> file and will output a comparison of scores.</p>
+<h2 id="hypotheses-filtering">Hypotheses filtering<a class="headerlink" href="#hypotheses-filtering" title="Permanent link">&para;</a></h2>
+<p>The beam search provides a built-in filter based on unknown words: <code>-max_num_unks</code>. Hypotheses with more unknown words than this value are dropped.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As dropped hypotheses temporarily reduce the beam size, the <code>-pre_filter_factor</code> is a way to increase the number of considered hypotheses before applying filters.</p>
+</div>
+<h2 id="normalization">Normalization<a class="headerlink" href="#normalization" title="Permanent link">&para;</a></h2>
+<p>The beam search also supports various normalization techniques that are disabled by default and can be used to biased the scores generated by the model:</p>
+<p>$$s(Y,X)=\frac{\log P(Y|X)}{lp(Y)}+cp(X,Y)$$</p>
+<p>where (X) is the source, (Y) is the current target, and the functions as defined below. An additional penalty on end of sentence tokens can also be added to prioritize longer sentences.</p>
+<h3 id="length-normalization">Length normalization<a class="headerlink" href="#length-normalization" title="Permanent link">&para;</a></h3>
+<p>Scores are normalized by the following formula as defined in <a href="../../references/#GNMT">Wu et al. (2016)</a>:</p>
+<p>$$lp(Y) = \frac{(5+|Y|)^\alpha}{(5+1)^\alpha}$$</p>
+<p>where (|Y|) is the current target length and (\alpha) is the length normalization coefficient <code>-length_norm</code>.</p>
+<h3 id="coverage-normalization">Coverage normalization<a class="headerlink" href="#coverage-normalization" title="Permanent link">&para;</a></h3>
+<p>Scores are penalized by the following formula as defined in <a href="../../references/#GNMT">Wu et al. (2016)</a>:</p>
+<p>$$cp(X,Y) = \beta\sum_{i=1}^{|X|}\log(\min(\sum_{j=1}^{|Y|}p_{i,j},1.0))$$</p>
+<p>where (p_{i,j}) is the attention probability of the (j)-th target word (y_j) on the (i)-th source word (x_i), (|X|) is the source length, (|Y|) is the current target length and (\beta) is the coverage normalization coefficient <code>-coverage_norm</code>.</p>
+<h3 id="end-of-sentence-normalization">End of sentence normalization<a class="headerlink" href="#end-of-sentence-normalization" title="Permanent link">&para;</a></h3>
+<p>The score of the end of sentence token is penalized by the following formula:</p>
+<p>$$ep(X,Y)=\gamma\frac{|X|}{|Y|}$$</p>
+<p>where (|X|) is the source length, (|Y|) is the current target length and (\gamma) is the end of sentence normalization coefficient <code>-eos_norm</code>.</p>
+<h2 id="decoding-with-auxiliary-language-model">Decoding with auxiliary language model<a class="headerlink" href="#decoding-with-auxiliary-language-model" title="Permanent link">&para;</a></h2>
+<p>Beam search can use an additional language model to modify score of each option as defined in <a href="../../references/#LMShallowFusion">Gulcehre et al. (2015)</a> as "Shallow Fusion":</p>
+<p>$$s(Y,X) = s_{TM}(Y,X) + \beta.s_{LM}(Y)$$</p>
+<p>Where (s_{LM}(Y)) is the language model log-probability of the sequence  (Y) and (\beta) is defined by <code>-lm_weight</code> parameter.
+To activate the language model, simply use <code>-lm_model lm.t7</code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The language model cannot use bidirectional RNN and needs to share the same vocabulary (tokens and features) than the translation model.</p>
+</div>
+<h2 id="output-attention-to-a-file">Output attention to a file<a class="headerlink" href="#output-attention-to-a-file" title="Permanent link">&para;</a></h2>
+<p>The option <code>-save_attention FILE</code> can be used to save attention state to a file during translation. The format of the file is as following (compatible with NEMATUS):</p>
+<div class="codehilite"><pre><span></span>sentence id ||| target words ||| score ||| source words ||| number of source words ||| number of target words
+ALIGNMENT FOR T_1
+ALIGNMENT FOR T_2
+...
+ALIGNMENT FOR T_n
+</pre></div>
+
+
+<p>Where <code>T_1</code> ... <code>T_n</code> are the target words - each alignement line is space separated probability to source word.</p>
+<h2 id="visualizing-the-beam-search">Visualizing the beam search<a class="headerlink" href="#visualizing-the-beam-search" title="Permanent link">&para;</a></h2>
+<p>To visualize the beam search exploration, you can use the option <code>-save_beam_to beam.json</code>. It will save a JSON serialization of the beam search history.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This option requires the <code>dkjson</code> package.</p>
+</div>
+<p>This representation can then be visualized dynamically using the <code>generate_beam_viz.py</code> script from the <a href="https://github.com/OpenNMT/VisTools"><code>OpenNMT/VisTools</code></a> repository:</p>
+<div class="codehilite"><pre><span></span>git clone https://github.com/OpenNMT/VisTools.git
+<span class="nb">cd</span> VisTools
+mkdir out/
+python generate_beam_viz.py -d ~/OpenNMT/beam.json -o out/
+firefox out/000000.html
+</pre></div>
+
+
+<p><img alt="Beam search visualization" src="../../img/beam_search.png" /></p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

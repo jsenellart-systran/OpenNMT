@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>translate.lua - OpenNMT</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../training/models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../../training/embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../../training/logs/">Logs</a>
+</li>
+                            
+<li >
+    <a href="../../training/multi_gpu/">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../../training/retraining/">Retraining</a>
+</li>
+                            
+<li >
+    <a href="../../training/regularization/">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../../training/decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../../training/sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../translation/inference/">Inference</a>
+</li>
+                            
+<li >
+    <a href="../../translation/beam_search/">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../../translation/unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../tools/tokenization/">Tokenization</a>
+</li>
+                            
+<li >
+    <a href="../../tools/scorer/">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../../tools/servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../train/">train.lua</a>
+</li>
+                            
+<li class="active">
+    <a href="./">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../lua_python_comparison/">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../train/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../tag/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#data-options">Data options</a></li>
+        <li class="main "><a href="#translator-options">Translator options</a></li>
+        <li class="main "><a href="#tokenizer-options">Tokenizer options</a></li>
+        <li class="main "><a href="#cuda-options">Cuda options</a></li>
+        <li class="main "><a href="#logger-options">Logger options</a></li>
+        <li class="main "><a href="#other-options">Other options</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<!--- This file was automatically generated. Do not modify it manually but use the docs/options/generate.sh script instead. -->
+
+<p><code>translate.lua</code> options:</p>
+<ul>
+<li><code>-h [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>This help.</li>
+<li><code>-md [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Dump help in Markdown format.</li>
+<li><code>-config &lt;string&gt;</code> (default: <code>''</code>)<br/>Load options from this file.</li>
+<li><code>-save_config &lt;string&gt;</code> (default: <code>''</code>)<br/>Save options to this file.</li>
+</ul>
+<h2 id="data-options">Data options<a class="headerlink" href="#data-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-src &lt;string&gt;</code> (required)<br/>Source sequences to translate.</li>
+<li><code>-tgt &lt;string&gt;</code> (default: <code>''</code>)<br/>Optional true target sequences.</li>
+<li><code>-output &lt;string&gt;</code> (default: <code>pred.txt</code>)<br/>Output file.</li>
+<li><code>-save_attention &lt;string&gt;</code> (default: <code>''</code>)<br/>Optional attention output file.</li>
+<li><code>-batch_size &lt;number&gt;</code> (default: <code>30</code>)<br/>Batch size.</li>
+<li><code>-idx_files [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, source and target files are 'key value' with key match between source and target.</li>
+</ul>
+<h2 id="translator-options">Translator options<a class="headerlink" href="#translator-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-model &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to the serialized model file.</li>
+<li><code>-lm_model &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to serialized language model file.</li>
+<li><code>-lm_weight &lt;number&gt;</code> (default: <code>0.1</code>)<br/>Relative weight of language model.</li>
+<li><code>-beam_size &lt;number&gt;</code> (default: <code>5</code>)<br/>Beam size.</li>
+<li><code>-max_sent_length &lt;number&gt;</code> (default: <code>250</code>)<br/>Maximum output sentence length.</li>
+<li><code>-replace_unk [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Replace the generated <unk> tokens with the source token that has the highest attention weight. If <code>-phrase_table</code> is provided, it will lookup the identified source token and give the corresponding target token. If it is not provided (or the identified source token does not exist in the table) then it will copy the source token</li>
+<li><code>-replace_unk_tagged [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>The same as -replace_unk, but wrap the replaced token in ｟unk:xxxxx｠ if it is not found in the phrase table.</li>
+<li><code>-phrase_table &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to source-target dictionary to replace <code>&lt;unk&gt;</code> tokens.</li>
+<li><code>-n_best &lt;number&gt;</code> (default: <code>1</code>)<br/>If &gt; 1, it will also output an n-best list of decoded sentences.</li>
+<li><code>-max_num_unks &lt;number&gt;</code> (default: <code>inf</code>)<br/>All sequences with more <code>&lt;unk&gt;</code>s than this will be ignored during beam search.</li>
+<li><code>-target_subdict &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to target words dictionary corresponding to the source.</li>
+<li><code>-pre_filter_factor &lt;number&gt;</code> (default: <code>1</code>)<br/>Optional, set this only if filter is being used. Before applying filters, hypotheses with top <code>beam_size * pre_filter_factor</code> scores will be considered. If the returned hypotheses voilate filters, then set this to a larger value to consider more.</li>
+<li><code>-length_norm &lt;number&gt;</code> (default: <code>0</code>)<br/>Length normalization coefficient (alpha). If set to 0, no length normalization.</li>
+<li><code>-coverage_norm &lt;number&gt;</code> (default: <code>0</code>)<br/>Coverage normalization coefficient (beta). An extra coverage term multiplied by beta is added to hypotheses scores. If is set to 0, no coverage normalization.</li>
+<li><code>-eos_norm &lt;number&gt;</code> (default: <code>0</code>)<br/>End of sentence normalization coefficient (gamma). If set to 0, no EOS normalization.</li>
+<li><code>-dump_input_encoding [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Instead of generating target tokens conditional on the source tokens, we print the representation (encoding/embedding) of the input.</li>
+<li><code>-save_beam_to &lt;string&gt;</code> (default: <code>''</code>)<br/>Path to a file where the beam search exploration will be saved in a JSON format. Requires the <code>dkjson</code> package.</li>
+</ul>
+<h2 id="tokenizer-options">Tokenizer options<a class="headerlink" href="#tokenizer-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-tok_src_mode &lt;string&gt;</code> (accepted: <code>conservative</code>, <code>aggressive</code>, <code>space</code>; default: <code>space</code>)<br/>Define how aggressive should the tokenization be. <code>space</code> is space-tokenization.</li>
+<li><code>-tok_tgt_mode &lt;string&gt;</code> (accepted: <code>conservative</code>, <code>aggressive</code>, <code>space</code>; default: <code>space</code>)<br/>Define how aggressive should the tokenization be. <code>space</code> is space-tokenization.</li>
+<li><code>-tok_src_joiner_annotate [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Include joiner annotation using <code>-joiner</code> character.</li>
+<li><code>-tok_tgt_joiner_annotate [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Include joiner annotation using <code>-joiner</code> character.</li>
+<li><code>-tok_src_joiner &lt;string&gt;</code> (default: <code>￭</code>)<br/>Character used to annotate joiners.</li>
+<li><code>-tok_tgt_joiner &lt;string&gt;</code> (default: <code>￭</code>)<br/>Character used to annotate joiners.</li>
+<li><code>-tok_src_joiner_new [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>In <code>-joiner_annotate</code> mode, <code>-joiner</code> is an independent token.</li>
+<li><code>-tok_tgt_joiner_new [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>In <code>-joiner_annotate</code> mode, <code>-joiner</code> is an independent token.</li>
+<li><code>-tok_src_case_feature [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Generate case feature.</li>
+<li><code>-tok_tgt_case_feature [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Generate case feature.</li>
+<li><code>-tok_src_segment_case [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment case feature, splits AbC to Ab C to be able to restore case</li>
+<li><code>-tok_tgt_segment_case [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment case feature, splits AbC to Ab C to be able to restore case</li>
+<li><code>-tok_src_segment_alphabet &lt;table&gt;</code> (accepted: <code>Arabic</code>, <code>Kangxi</code>, <code>Cyrillic</code>, <code>Devanagari</code>, <code>Thaana</code>, <code>Hangul</code>, <code>Hanunoo</code>, <code>Mongolian</code>, <code>Hebrew</code>, <code>Tagbanwa</code>, <code>Cherokee</code>, <code>Bopomofo</code>, <code>Kanbun</code>, <code>Telugu</code>, <code>Braille</code>, <code>Tagalog</code>, <code>Katakana</code>, <code>Hiragana</code>, <code>Kannada</code>, <code>Yi</code>, <code>Greek</code>, <code>Gujarati</code>, <code>Gurmukhi</code>, <code>Armenian</code>, <code>Syriac</code>, <code>Han</code>, <code>Malayalam</code>, <code>Khmer</code>, <code>Buhid</code>, <code>Ogham</code>, <code>Ethiopic</code>, <code>Georgian</code>, <code>Myanmar</code>, <code>Sinhala</code>, <code>Oriya</code>, <code>Latin</code>, <code>Lao</code>, <code>Limbu</code>, <code>Tibetan</code>, <code>Thai</code>, <code>Tamil</code>, <code>Bengali</code>)<br/>Segment all letters from indicated alphabet.</li>
+<li><code>-tok_tgt_segment_alphabet &lt;table&gt;</code> (accepted: <code>Arabic</code>, <code>Kangxi</code>, <code>Cyrillic</code>, <code>Devanagari</code>, <code>Thaana</code>, <code>Hangul</code>, <code>Hanunoo</code>, <code>Mongolian</code>, <code>Hebrew</code>, <code>Tagbanwa</code>, <code>Cherokee</code>, <code>Bopomofo</code>, <code>Kanbun</code>, <code>Telugu</code>, <code>Braille</code>, <code>Tagalog</code>, <code>Katakana</code>, <code>Hiragana</code>, <code>Kannada</code>, <code>Yi</code>, <code>Greek</code>, <code>Gujarati</code>, <code>Gurmukhi</code>, <code>Armenian</code>, <code>Syriac</code>, <code>Han</code>, <code>Malayalam</code>, <code>Khmer</code>, <code>Buhid</code>, <code>Ogham</code>, <code>Ethiopic</code>, <code>Georgian</code>, <code>Myanmar</code>, <code>Sinhala</code>, <code>Oriya</code>, <code>Latin</code>, <code>Lao</code>, <code>Limbu</code>, <code>Tibetan</code>, <code>Thai</code>, <code>Tamil</code>, <code>Bengali</code>)<br/>Segment all letters from indicated alphabet.</li>
+<li><code>-tok_src_segment_numbers [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment numbers into single digits.</li>
+<li><code>-tok_tgt_segment_numbers [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment numbers into single digits.</li>
+<li><code>-tok_src_segment_alphabet_change [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment if alphabet change between 2 letters.</li>
+<li><code>-tok_tgt_segment_alphabet_change [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Segment if alphabet change between 2 letters.</li>
+<li><code>-tok_src_bpe_model &lt;string&gt;</code> (default: <code>''</code>)<br/>Apply Byte Pair Encoding if the BPE model path is given. If the option is used, BPE related options will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>.</li>
+<li><code>-tok_tgt_bpe_model &lt;string&gt;</code> (default: <code>''</code>)<br/>Apply Byte Pair Encoding if the BPE model path is given. If the option is used, BPE related options will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>.</li>
+<li><code>-tok_src_bpe_EOT_marker &lt;string&gt;</code> (default: <code>&lt;/w&gt;</code>)<br/>Marker used to mark the End of Token while applying BPE in mode 'prefix' or 'both'.</li>
+<li><code>-tok_tgt_bpe_EOT_marker &lt;string&gt;</code> (default: <code>&lt;/w&gt;</code>)<br/>Marker used to mark the End of Token while applying BPE in mode 'prefix' or 'both'.</li>
+<li><code>-tok_src_bpe_BOT_marker &lt;string&gt;</code> (default: <code>&lt;w&gt;</code>)<br/>Marker used to mark the Beginning of Token while applying BPE in mode 'suffix' or 'both'.</li>
+<li><code>-tok_tgt_bpe_BOT_marker &lt;string&gt;</code> (default: <code>&lt;w&gt;</code>)<br/>Marker used to mark the Beginning of Token while applying BPE in mode 'suffix' or 'both'.</li>
+<li><code>-tok_src_bpe_case_insensitive [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Apply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>.</li>
+<li><code>-tok_tgt_bpe_case_insensitive [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Apply BPE internally in lowercase, but still output the truecase units. This option will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>.</li>
+<li><code>-tok_src_bpe_mode &lt;string&gt;</code> (accepted: <code>suffix</code>, <code>prefix</code>, <code>both</code>, <code>none</code>; default: <code>suffix</code>)<br/>Define the BPE mode. This option will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>. <code>prefix</code>: append <code>-bpe_BOT_marker</code> to the begining of each word to learn prefix-oriented pair statistics; <code>suffix</code>: append <code>-bpe_EOT_marker</code> to the end of each word to learn suffix-oriented pair statistics, as in the original Python script; <code>both</code>: <code>suffix</code> and <code>prefix</code>; <code>none</code>: no <code>suffix</code> nor <code>prefix</code>.</li>
+<li><code>-tok_tgt_bpe_mode &lt;string&gt;</code> (accepted: <code>suffix</code>, <code>prefix</code>, <code>both</code>, <code>none</code>; default: <code>suffix</code>)<br/>Define the BPE mode. This option will be overridden/set automatically if the BPE model specified by <code>-bpe_model</code> is learnt using <code>learn_bpe.lua</code>. <code>prefix</code>: append <code>-bpe_BOT_marker</code> to the begining of each word to learn prefix-oriented pair statistics; <code>suffix</code>: append <code>-bpe_EOT_marker</code> to the end of each word to learn suffix-oriented pair statistics, as in the original Python script; <code>both</code>: <code>suffix</code> and <code>prefix</code>; <code>none</code>: no <code>suffix</code> nor <code>prefix</code>.</li>
+<li><code>-tok_src_normalize_cmd &lt;string&gt;</code> (default: <code>''</code>)<br/>Command for on-the-fly corpus normalization. It should work in 'pipeline' mode.</li>
+<li><code>-tok_tgt_normalize_cmd &lt;string&gt;</code> (default: <code>''</code>)<br/>Command for on-the-fly corpus normalization. It should work in 'pipeline' mode.</li>
+<li><code>-detokenize_output [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Detokenize output.</li>
+</ul>
+<h2 id="cuda-options">Cuda options<a class="headerlink" href="#cuda-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-gpuid &lt;table&gt;</code> (default: <code>0</code>)<br/>List of GPU identifiers (1-indexed). CPU is used when set to 0.</li>
+<li><code>-fallback_to_cpu [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If GPU can't be used, rollback on the CPU.</li>
+<li><code>-fp16 [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Use half-precision float on GPU.</li>
+<li><code>-no_nccl [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Disable usage of nccl in parallel mode.</li>
+</ul>
+<h2 id="logger-options">Logger options<a class="headerlink" href="#logger-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-log_file &lt;string&gt;</code> (default: <code>''</code>)<br/>Output logs to a file under this path instead of stdout.</li>
+<li><code>-disable_logs [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>If set, output nothing.</li>
+<li><code>-log_level &lt;string&gt;</code> (accepted: <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>, <code>NOERROR</code>; default: <code>INFO</code>)<br/>Output logs at this level and above.</li>
+</ul>
+<h2 id="other-options">Other options<a class="headerlink" href="#other-options" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>-time [&lt;boolean&gt;]</code> (default: <code>false</code>)<br/>Measure average translation time.</li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

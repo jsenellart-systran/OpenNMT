@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Lua and Python OpenNMT - OpenNMT</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/highlight.css">
+        <link href="../css/extra.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+	
+	<script src="../js/jquery-1.10.2.min.js"></script>
+        <script src="../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../js/highlight.pack.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89222039-1', 'opennmt.net');
+            ga('send', 'pageview');
+        </script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="..">OpenNMT</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="..">Overview</a>
+                    </li>
+                    <li >
+                        <a href="../installation/">Installation</a>
+                    </li>
+                    <li >
+                        <a href="../quickstart/">Quickstart</a>
+                    </li>
+                    <li >
+                        <a href="../applications/">Applications</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../data/preparation/">Preparation</a>
+</li>
+                            
+<li >
+    <a href="../data/word_features/">Word features</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Training <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../training/models/">Models</a>
+</li>
+                            
+<li >
+    <a href="../training/embeddings/">Embeddings</a>
+</li>
+                            
+<li >
+    <a href="../training/logs/">Logs</a>
+</li>
+                            
+<li >
+    <a href="../training/multi_gpu/">Multi GPU</a>
+</li>
+                            
+<li >
+    <a href="../training/retraining/">Retraining</a>
+</li>
+                            
+<li >
+    <a href="../training/regularization/">Regularization</a>
+</li>
+                            
+<li >
+    <a href="../training/decay/">Decay strategies</a>
+</li>
+                            
+<li >
+    <a href="../training/sampling/">Data sampling</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Translation <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../translation/inference/">Inference</a>
+</li>
+                            
+<li >
+    <a href="../translation/beam_search/">Beam search</a>
+</li>
+                            
+<li >
+    <a href="../translation/unknowns/">Unknown words</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tools <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../tools/tokenization/">Tokenization</a>
+</li>
+                            
+<li >
+    <a href="../tools/scorer/">Scorer</a>
+</li>
+                            
+<li >
+    <a href="../tools/servers/">Servers</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference: Options <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../options/usage/">Scripts usage</a>
+</li>
+                            
+<li >
+    <a href="../options/preprocess/">preprocess.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/train/">train.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/translate/">translate.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/tag/">tag.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/lm/">lm.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/build_vocab/">tools/build_vocab.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/release_model/">tools/release_model.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/tokenize/">tools/tokenize.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/learn_bpe/">tools/learn_bpe.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/server/">tools/translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/rest_server/">tools/rest_translation_server.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/embeddings/">tools/embeddings.lua</a>
+</li>
+                            
+<li >
+    <a href="../options/average_models/">tools/average_models.lua</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="active">
+                        <a href="./">Lua and Python OpenNMT</a>
+                    </li>
+                    <li >
+                        <a href="../references/">References</a>
+                    </li>
+                    <li >
+                        <a href="../issues/">Common issues</a>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../options/average_models/">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../references/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OpenNMT/OpenNMT">OpenNMT/OpenNMT
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#tokenizelua-learn_bpelua">tokenize.lua, learn_bpe.lua</a></li>
+        <li class="main "><a href="#preprocessluapy">preprocess.(lua|py)</a></li>
+        <li class="main "><a href="#trainluapy">train.(lua|py)</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p>This page lists all the differences between commandline options of <code>OpenNMT</code> (lua version) and <code>OpenNMT-py</code> (python version). Identical options are not described.</p>
+<h2 id="tokenizelua-learn_bpelua"><code>tokenize.lua</code>, <code>learn_bpe.lua</code><a class="headerlink" href="#tokenizelua-learn_bpelua" title="Permanent link">&para;</a></h2>
+<p>There is no python version yet of tokenization/bpe scripts.</p>
+<h2 id="preprocessluapy"><code>preprocess.(lua|py)</code><a class="headerlink" href="#preprocessluapy" title="Permanent link">&para;</a></h2>
+<p>OpenNMT-lua reference option list for <code>preprocess.lua</code> is documented <a href="http://opennmt.net/OpenNMT/options/preprocess/">here</a>.</p>
+<p>Commandline options differences:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>OpenNMT-lua</code></th>
+<th><code>OpenNMT-py</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config</code><br><code>save_config</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>src_img_dir</code></td>
+<td><em>not supported</em></td>
+<td>used for <code>src_type img</code></td>
+</tr>
+<tr>
+<td><code>data_type</code></td>
+<td><code>bitext</code>, <code>monotext</code>, <code>feattext</code> - used for ASR and LM models</td>
+<td><code>text</code>, <code>img</code> (*)</td>
+</tr>
+<tr>
+<td><code>src_seq_length_trunc</code></td>
+<td><em>not supported</em></td>
+<td>if sentence too long, truncate it</td>
+</tr>
+<tr>
+<td><code>tgt_seq_length_trunc</code></td>
+<td><em>not supported</em></td>
+<td>if sentence too long, truncate it</td>
+</tr>
+<tr>
+<td><code>check_plength</code></td>
+<td>check alignment of source/target for sequence tagging</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>time_shift_features</code></td>
+<td>shift feature by one timestep</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>keep_frequency</code></td>
+<td>used by sampled softmax</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td></td>
+<td><em>not optional</em>: can not be disabled</td>
+</tr>
+<tr>
+<td><code>idx_files</code></td>
+<td>for <code>feattext</code> - provide format to align source&amp;target alignment</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><span style="color:blue">Logging Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>log_file</code><br><code>disable_logs</code><br><code>log_level</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+</tbody>
+</table>
+<p>(*) Lua implementation of <code>im2text</code> is in independent repository <a href="https://github.com/OpenNMT/Im2Text">here</a>.</p>
+<h2 id="trainluapy"><code>train.(lua|py)</code><a class="headerlink" href="#trainluapy" title="Permanent link">&para;</a></h2>
+<p>OpenNMT-lua reference option list for <code>preprocess.lua</code> is documented <a href="http://opennmt.net/OpenNMT/options/train/">here</a>.</p>
+<p>Commandline options differences:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>OpenNMT-lua</code></th>
+<th><code>OpenNMT-py</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config</code><br><code>save_config</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><span style="color:blue">Sampling Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>sample</code><br><code>sample_type</code><br><code>sample_perplexity_init</code><br><code>sample_perplexity_max</code><br><code>sample_vocab</code></td>
+<td><a href="../options/train/#sampled-dataset-options">Sampled dataset options</a></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><span style="color:blue">Model Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>model_type</code></td>
+<td><code>lm</code>, <code>seq2seq</code>, <code>seqtagger</code></td>
+<td><code>text</code>, <code>img</code></td>
+</tr>
+<tr>
+<td><code>share_decoder_embeddings</code></td>
+<td><em>not supported</em></td>
+<td>share the word and softmax embeddings for decoder</td>
+</tr>
+<tr>
+<td><code>use_pos_emb</code></td>
+<td>add positional embeddings to word embeddings</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>max_pos</code></td>
+<td>connected to <code>use_pos_emb</code></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>position_encoding</code></td>
+<td><em>not supported</em></td>
+<td>use a sinusoid to mark relative words positions.</td>
+</tr>
+<tr>
+<td><code>feat_merge</code></td>
+<td><code>concat</code>, <code>sum</code></td>
+<td><code>concat</code>, <code>sum</code>, <code>mlp</code></td>
+</tr>
+<tr>
+<td><code>dropout_input</code></td>
+<td>Dropout applied to the input of the recurrent module</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>dropout_words</code></td>
+<td>Dropout applied to the full source sequence</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>dropout_type</code></td>
+<td><code>naive</code>, <code>variational</code></td>
+<td><em>not supported</em>: dropout is <code>naive</code></td>
+</tr>
+<tr>
+<td><code>residual</code></td>
+<td>Add residual connections between recurrent layers</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>bridge</code></td>
+<td><code>copy</code>, <code>dense</code>, <code>dense_nonlinear</code></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>encoder_type</code></td>
+<td><code>rnn</code>, <code>brnn</code>, <code>dbrnn</code>, <code>pdbrnn</code>, <code>gnmt</code>, <code>cnn</code></td>
+<td><code>rnn</code>, <code>mean</code>, <code>transformer</code></td>
+</tr>
+<tr>
+<td><code>decoder_layer</code></td>
+<td><em>not supported</em></td>
+<td><code>rnn</code>, <code>transformer</code></td>
+</tr>
+<tr>
+<td><code>pdbrnn_reduction</code><br><code>pdbrnn_merge</code></td>
+<td>for <code>encoder_type</code> set to <code>pdbrnn</code></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>cnn_layers</code><br><code>cnn_kernel</code><br><code>cnn_size</code></td>
+<td>for <code>encoder_type</code> set to <code>cnn</code></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>truncated_decoder</code></td>
+<td><em>not supported</em></td>
+<td>truncated back propagation through time</td>
+</tr>
+<tr>
+<td><span style="color:blue">Attention Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>attention</code></td>
+<td><code>none</code>, <code>global</code></td>
+<td><em>not supported</em>: only global attention</td>
+</tr>
+<tr>
+<td><code>global_attention</code></td>
+<td><code>general</code>, <code>dot</code>, <code>concat</code></td>
+<td><code>dot</code>, <code>general</code>, <code>mlp</code></td>
+</tr>
+<tr>
+<td><code>copy_attn</code></td>
+<td><em>not supported</em></td>
+<td>copy attention layer</td>
+</tr>
+<tr>
+<td><code>coverage_attn</code><br><code>lambda_coverage</code></td>
+<td><em>not supported</em></td>
+<td>coverage attention layer</td>
+</tr>
+<tr>
+<td><code>context_gate</code></td>
+<td><em>not supported</em></td>
+<td><code>source</code>, <code>target</code>, <code>both</code></td>
+</tr>
+<tr>
+<td><span style="color:blue">Training Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>async_parallel</code><br><code>async_parallel_minbatch</code></td>
+<td>Async multi-gpu training</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>start_iteration</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>end_epoch</code></td>
+<td>final epoch of the training</td>
+<td><em>not supported</em>: see <code>epochs</code></td>
+</tr>
+<tr>
+<td><code>epochs</code></td>
+<td><em>not supported</em>: see <code>end_epoch</code></td>
+<td>number of training epochs</td>
+</tr>
+<tr>
+<td><code>validation_metric</code></td>
+<td><code>perplexity</code>, <code>loss</code>, <code>bleu</code>, <code>ter</code>, <code>dlratio</code></td>
+<td><em>not supported</em> always perplexity</td>
+</tr>
+<tr>
+<td><code>save_validation_translation_every</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><span style="color:blue">Optim Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>max_batch_size</code></td>
+<td>maximum batch size</td>
+<td><em>not supported</em>: see <code>max_generator_batches</code></td>
+</tr>
+<tr>
+<td><code>uneven_batches</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>max_generator_batches</code></td>
+<td><em>not supported</em></td>
+<td></td>
+</tr>
+<tr>
+<td><code>min_learning_rate</code></td>
+<td>do not continue the training past this learning rate value</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>start_decay_score_delta</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>decay</code></td>
+<td>default, epoch_only, score_only</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>decay_method</code></td>
+<td></td>
+<td>use a custom learning rate decay (?)</td>
+</tr>
+<tr>
+<td><code>warmup_steps</code></td>
+<td><em>not supported</em></td>
+<td>number of warmup steps for custom decay</td>
+</tr>
+<tr>
+<td><span style="color:blue">Saver Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>continue</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>start_checkpoint_at</code></td>
+<td><em>not supported</em></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_every</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>save_every_epochs</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><span style="color:blue">Logging Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>log_file</code><br><code>disable_logs</code><br><code>log_level</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>exp_port</code></td>
+<td>port of the Crayon server</td>
+<td><em>not supported</em>: default port 8889 is used</td>
+</tr>
+<tr>
+<td><span style="color:blue">GPU Options<span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>fp16</code></td>
+<td>half-float precision for GPU</td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>fallback_to_cpu</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+<tr>
+<td><code>no_nccl</code></td>
+<td></td>
+<td><em>not supported</em></td>
+</tr>
+</tbody>
+</table></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '..';</script>
+        <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+        <script src="../js/base.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script><div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
