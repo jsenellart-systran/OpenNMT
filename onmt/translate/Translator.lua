@@ -162,6 +162,10 @@ function Translator:__init(args, model, dicts)
     self.phraseTable = onmt.translate.PhraseTable.new(self.args.phrase_table)
   end
 
+  if args.limit_lexical_constraints and args.placeholder_constraints then
+    self.placeholderMask = self.dicts.tgt.words:getPlaceholderMask()
+  end
+
   if args.lm_model ~= '' then
     local tmodel = args.model
     args.model = args.lm_model
@@ -263,7 +267,6 @@ function Translator:buildData(src, gold)
         end
 
         if self.args.placeholder_constraints then
-          self.args.limit_lexical_constraints = true
           local c = {}
           for ph,_ in pairs(src[b].placeholders) do
             if (self.dicts.tgt.words:lookup(ph)) then
@@ -398,7 +401,6 @@ function Translator:translateBatch(batch)
                                                       context,
                                                       self.args.max_sent_length,
                                                       self.args.max_num_unks,
-                                                      self.args.limit_lexical_constraints,
                                                       decInitStates,
                                                       self.lm and self.lm.model.models,
                                                       lmStates, lmContext, self.args.lm_weight,
@@ -420,7 +422,9 @@ function Translator:translateBatch(batch)
   local beamSearcher = onmt.translate.BeamSearcher.new(advancer, self.args.save_beam_to:len() > 0)
   local results, histories = beamSearcher:search(self.args.beam_size,
                                                  self.args.n_best,
-                                                 self.args.pre_filter_factor)
+                                                 self.args.pre_filter_factor,
+                                                 false,
+                                                 self.placeholderMask)
 
   local allHyp = {}
   local allFeats = {}
